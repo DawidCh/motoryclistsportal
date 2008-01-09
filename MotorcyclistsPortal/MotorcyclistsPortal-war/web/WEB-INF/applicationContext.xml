@@ -19,7 +19,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           p:username="${jdbc.username}"
           p:password="${jdbc.password}" />
           
-    <bean id="Test" class="test.Test"/>
+    <bean id="indexController" class="main.IndexController"/>
     
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
           
