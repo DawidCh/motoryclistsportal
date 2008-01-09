@@ -17,7 +17,8 @@ import org.springframework.web.servlet.mvc.Controller;
 public class IndexController implements Controller{
 
     public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
-        return new ModelAndView("index.html");
+        String message="pupka";
+        return new ModelAndView("index", "message", message);
     }
 
 }
