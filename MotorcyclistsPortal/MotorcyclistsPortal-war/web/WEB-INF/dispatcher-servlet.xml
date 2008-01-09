@@ -30,9 +30,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     for the majority of the controllers use the new ControllerClassNameHandlerMapping 
     above, but because the class used is the ParameterizableViewController we
     are specifying a bean name to define the mapping as /index.htm
-    -->
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
+    -->
+    
+    
     
 </beans>
