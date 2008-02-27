@@ -12,6 +12,8 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
+    <!-- log4j configuration-->
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>/WEB-INF/log4j.properties</param-value>
@@ -23,6 +25,8 @@
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
+    <!-- log4j configuration end-->
+    
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -35,4 +39,49 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    
+    <!--security-->
+    <security-constraint>
+        <display-name>formConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>allPages</web-resource-name>
+            <description/>
+            <url-pattern>/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>HEAD</http-method>
+            <http-method>PUT</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>TRACE</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>userConstraint</description>
+            <role-name>admins</role-name>
+            <role-name>moders</role-name>
+            <role-name>user</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description>confidential constraint</description>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>motorealm</realm-name>
+        </login-config>
+    <security-role>
+        <description>Portal admins</description>
+        <role-name>admins</role-name>
+    </security-role>
+    <security-role>
+        <description>Portal moderators</description>
+        <role-name>moders</role-name>
+    </security-role>
+    <security-role>
+        <description>Portal users</description>
+        <role-name>users</role-name>
+    </security-role>
+    
 </web-app>
