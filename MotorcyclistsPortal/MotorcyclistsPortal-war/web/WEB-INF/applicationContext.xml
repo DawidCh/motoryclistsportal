@@ -7,19 +7,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-    
-    <bean id="propertyConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-          p:location="/WEB-INF/jdbc.properties" />
-    
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-          p:driverClassName="${jdbc.driverClassName}"
-          p:url="${jdbc.url}"
-          p:username="${jdbc.username}"
-          p:password="${jdbc.password}" />
           
+    <!-- my mappings-->
     <bean id="indexController" class="main.IndexController"/>
+    <bean id="testController" class="test.Test"/>
+    <!-- end my mappings-->
     
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
           
