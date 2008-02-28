@@ -10,14 +10,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
     
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <props>
-                <prop key="/index.html">indexController</prop>
-            </props>
-        </property>
-    </bean>
-    
     <bean id="viewNameTranslator"
           class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator" />
     
@@ -35,6 +27,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           p:viewName="index" />
     -->
     
-    
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/index.html">indexController</prop>
+                <prop key="/test.html">testController</prop>
+            </props>
+        </property>
+    </bean>
     
 </beans>

@@ -17,8 +17,7 @@ import org.springframework.web.servlet.mvc.Controller;
 public class Test implements Controller{
 
     public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
-        String name = arg0.getParameter("name");
-        return new ModelAndView("testView", "name", name);
+        return new ModelAndView("testView", "name", "kalosh");
     }
 
 }
