@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/jsp/taglibs.jsp" %>
+<%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
     <table>
       <tr>
         <td><a href="<c:url value="/secured/test.html"/>">Test</a></td>

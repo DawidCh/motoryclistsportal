@@ -1,5 +1,5 @@
-<%@ include file="/WEB-INF/jsp/taglibs.jsp" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
+<%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
+<%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 Welcome page.
 <br/><c:out value="${message}"/>
@@ -10,4 +10,4 @@ Welcome page.
         <tr><td colspan="2"><input type="submit" value="Login" /></td></tr>
         </table>
     </form>
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
