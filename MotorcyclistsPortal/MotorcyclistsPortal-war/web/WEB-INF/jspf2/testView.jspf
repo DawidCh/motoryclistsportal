@@ -1,0 +1,6 @@
+<%@ include file="/WEB-INF/jsp/taglibs.jsp" %>
+<%@ include file="/WEB-INF/jsp/header.jsp" %>
+
+        Siema: <c:out value="${name}"/>
+        
+<%@ include file="/WEB-INF/jsp/footer.jsp" %>
