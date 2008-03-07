@@ -15,8 +15,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/jspf/"
-          p:suffix=".jspf" />
+          p:prefix="/WEB-INF/jsp/"
+          p:suffix=".jsp" />
     
     <!-- 
     for the majority of the controllers use the new ControllerClassNameHandlerMapping 
@@ -32,7 +32,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             <props>
                 <prop key="/index.html">indexController</prop>
                 <prop key="/secured/test.html">testController</prop>
-                <prop key="/logout.html">logoutController</prop>
+                <prop key="/login.html">credentialController</prop>
+                <prop key="/logout.html">credentialController</prop>
             </props>
         </property>
     </bean>

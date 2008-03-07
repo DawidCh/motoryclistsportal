@@ -1,5 +1,0 @@
-<%@ include file="/WEB-INF/jsp/taglibs.jsp" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
-
-Welcome page.
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>

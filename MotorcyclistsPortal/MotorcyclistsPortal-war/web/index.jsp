@@ -7,4 +7,4 @@ this jsp is here to provide a redirect to your controller
 servlet but should be the only jsp outide of the web-inf
 ========================================================
 --%>
-<% response.sendRedirect("index.html"); %>
+<% response.sendRedirect(request.getContextPath()+"/login.html"); %>

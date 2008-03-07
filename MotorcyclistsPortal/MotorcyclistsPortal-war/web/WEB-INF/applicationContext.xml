@@ -11,7 +11,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <!-- my mappings-->
     <bean id="indexController" class="main.IndexController"/>
     <bean id="testController" class="test.Test"/>
-    <bean id="logoutController" class="main.Logout"/>
+    <bean id="credentialController" class="main.Credentials"/>
     <!-- end my mappings-->
     
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
