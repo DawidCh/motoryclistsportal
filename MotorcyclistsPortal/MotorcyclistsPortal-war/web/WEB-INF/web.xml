@@ -44,9 +44,9 @@
     <security-constraint>
         <display-name>admin pages</display-name>
         <web-resource-collection>
-            <web-resource-name>allPages</web-resource-name>
+            <web-resource-name>admin pages</web-resource-name>
             <description/>
-            <url-pattern>/testView.html</url-pattern>
+            <url-pattern>/test.html</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
             <http-method>HEAD</http-method>
