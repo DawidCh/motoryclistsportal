@@ -19,18 +19,21 @@ public class Credentials implements Controller{
 
     public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
         String reqURI = arg0.getRequestURI();
+        
+        HttpSession session = arg0.getSession();
         if(reqURI.split("/")[2].equals("logout.html"))
         {
-            HttpSession session = arg0.getSession(false);
             if(null != session)
                 session.invalidate();
             return new ModelAndView("index");
         }
-        else if(reqURI.split("/")[2].equals("login.html"))
+        else// if(reqURI.split("/")[2].equals("login.html"))
         {
-            return new ModelAndView("login");
+            if(null == arg0.getUserPrincipal())
+                return new ModelAndView("login");
+            else
+                return new ModelAndView("redirect:/secured/main.html");
         }
-        return new ModelAndView("index");
     }
 
 }

@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
     <table>
       <tr>
-        <td><a href="<c:url value="/secured/test.html"/>">Test</a></td>
+        <td><a href="<c:url value="/secured/main.html"/>">Test</a></td>
         <td><a href="<c:url value="/logout.html"/>">Logout</a></td>
       </tr>
     </table>
