@@ -7,11 +7,28 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-          
+    
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <!--public pages-->
+                <prop key="/index.html">indexController</prop>
+                <prop key="/login.html">credentialController</prop>
+                <prop key="/logout.html">credentialController</prop>
+                <!--secured pages-->
+                <prop key="/secured/main.html">mainController</prop>
+                <prop key="/secured/profile.html">profileController</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <!-- scoped beans-->
+    <bean id="userSession" class="user.UserSession" scope="session"/>
     <!-- my mappings-->
     <bean id="indexController" class="main.IndexController"/>
     <bean id="mainController" class="user.Main"/>
     <bean id="credentialController" class="main.Credentials"/>
+    <bean id="profileController" class="user.Profile"/>
     <!-- end my mappings-->
     
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->

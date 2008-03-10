@@ -27,17 +27,4 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           p:viewName="index" />
     -->
     
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-        <property name="mappings">
-            <props>
-                <!--public pages-->
-                <prop key="/index.html">indexController</prop>
-                <prop key="/login.html">credentialController</prop>
-                <prop key="/logout.html">credentialController</prop>
-                <!--secured pages-->
-                <prop key="/secured/main.html">mainController</prop>
-            </props>
-        </property>
-    </bean>
-    
 </beans>
