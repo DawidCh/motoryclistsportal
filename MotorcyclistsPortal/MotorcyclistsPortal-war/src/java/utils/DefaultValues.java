@@ -12,13 +12,14 @@ import java.util.Locale;
  * @author kalosh
  */
 public class DefaultValues {
-    private Locale locale;
+    private static Locale locale = new Locale("pl_PL");
+    private static int[] passLength = {5,10};
 
-    public DefaultValues() {
-        this.locale = new Locale("pl_PL");
+    public static Locale getLocale() {
+        return DefaultValues.locale;
     }
 
-    public Locale getLocale() {
-        return this.locale;
+    public static int[] getPassLength() {
+        return passLength;
     }
 }

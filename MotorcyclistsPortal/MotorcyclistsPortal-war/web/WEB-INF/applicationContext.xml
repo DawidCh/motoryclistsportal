@@ -26,7 +26,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     
     <!-- scoped beans-->
     <bean id="userSession" class="user.UserSession" scope="session"/>
-    <bean id="defaultValues" class="utils.DefaultValues" scope="singleton"/>
     
     <!-- my mappings-->
     <bean id="index" class="main.IndexController"/>

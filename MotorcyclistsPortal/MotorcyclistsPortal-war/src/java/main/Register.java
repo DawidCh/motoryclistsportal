@@ -7,15 +7,20 @@ package main;
 import entities.LoginData;
 import entities.Privileges;
 import entities.User;
+import java.security.MessageDigest;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import user.UserSession;
 import utils.BeanGetter;
+import utils.DefaultValues;
 import utils.LocaleProvider;
 
 /**
@@ -27,40 +32,110 @@ public class Register implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if(null != request.getParameter("form"))
         {
-            String login = request.getParameter("login");
-            String pass = request.getParameter("password");
-            String passAgain = request.getParameter("passwordAgain");
-            String name = request.getParameter("name");
-            String surname = request.getParameter("surname");
-            String city = request.getParameter("city");
-            String birthdate = request.getParameter("birthdate");
-            String gender = request.getParameter("gender");
-            MPLogger.severe(login+" "+pass+" "+passAgain+" "+name+" "+surname+" "+city+" "+birthdate+" "+gender);
+            LocaleProvider loc = (LocaleProvider)BeanGetter.getScopedBean("localeProvider", request);
+            UserSession userSession = (UserSession) BeanGetter.getScopedBean("userSession", request);
+            Locale defaultLocale = userSession.getLanguage();
+            String message = new String();
+            HashMap<String, String> formInfo = new HashMap<String, String>();
+            formInfo.put("newLogin", request.getParameter("newLogin"));
+            formInfo.put("pass", request.getParameter("password"));
+            formInfo.put("passwordAgain", request.getParameter("passwordAgain"));
+            formInfo.put("name", request.getParameter("name"));
+            formInfo.put("surname", request.getParameter("surname"));
+            formInfo.put("city", request.getParameter("city"));
+            formInfo.put("birthdate", request.getParameter("birthdate"));
+            formInfo.put("gender", request.getParameter("gender"));
+            formInfo.put("form", request.getParameter("form"));
+
+            String[] keyList = formInfo.keySet().toArray(new String[formInfo.keySet().size()]);
+            for (int i = 0; i < keyList.length; i++) {     
+                if(null == formInfo.get(keyList[i]) || formInfo.get(keyList[i]).equals(new String(""))){
+                    message = loc.getMessage("register.notAllFilled", null, defaultLocale);
+                    formInfo.put("message", message);
+                    formInfo.put("pass", null);
+                    formInfo.put("passwordAgain", null);
+                    return new ModelAndView("unsecured/register", formInfo);
+                }
+            }
+            
+            int passCheckingRes = this.checkPassword(formInfo.get("pass"), formInfo.get("passwordAgain"));
+            if(passCheckingRes == 1)
+            {
+                message = loc.getMessage("register.differentPass", null, defaultLocale);
+                formInfo.put("message", message);
+                formInfo.put("pass", null);
+                formInfo.put("passwordAgain", null);
+                return new ModelAndView("unsecured/register", formInfo);
+            }
+            else if(passCheckingRes == 2)
+            {
+                message = loc.getMessage("register.wrongLength", null, defaultLocale);
+                formInfo.put("message", message);
+                formInfo.put("pass", null);
+                formInfo.put("passwordAgain", null);
+                return new ModelAndView("unsecured/register", formInfo);
+            }
             
             //rejestracja
             
             Calendar cal = Calendar.getInstance();
             Date now = cal.getTime();
-            String date[] = birthdate.split("-");
-            cal.set(new Integer(date[0]), new Integer(date[1]), new Integer(date[2]));
+            Date birthdate = null;
+            try{
+                birthdate = DateFormat.getInstance().parse(formInfo.get("birthdate"));
+            }catch(ParseException ex){
+                message = loc.getMessage("register.wrongDate", null, defaultLocale);
+                formInfo.put("message", message);
+                formInfo.put("pass", null);
+                formInfo.put("passwordAgain", null);
+                MPLogger.severe("Wrong date format in Register");
+                return new ModelAndView("unsecured/register", formInfo);
+            }
             
             Privileges choosenPriv = BeanGetter.lookupPrivilegesFacade().findByDesc("userusers");
-            
-            User user = new User(login, name, surname, city, gender, cal.getTime());
-            LoginData loginData = new LoginData(login, pass, now);
+            User user = new User(formInfo.get("newLogin"), formInfo.get("name"),
+            formInfo.get("surname"), formInfo.get("city"), formInfo.get("gender"), birthdate);
+            LoginData loginData = null;
+            try {
+                loginData = new LoginData(formInfo.get("newLogin"), this.computeSha(formInfo.get("pass")), now);
+
+            } catch (Exception exception) {
+                MPLogger.severe("Error while creating LoginData object");
+                formInfo.put("message", loc.getMessage("register.shaerror", null, defaultLocale));
+                return new ModelAndView("unsecured/register", formInfo);
+            }
             
             user.setLoginData(loginData);
             loginData.setUser(user);
             loginData.setPrivileges(choosenPriv);
-            
+                
             BeanGetter.lookupUserBean().createUser(user, loginData);
             //
-            LocaleProvider loc = (LocaleProvider)BeanGetter.getScopedBean("localeProvider", request);
-            UserSession userSession = (UserSession) BeanGetter.getScopedBean("userSession", request);
-            String message = loc.getMessage("success", null, userSession.getLanguage());
-            message += ", "+loc.getMessage("register.lognowin", null, userSession.getLanguage());
-            return new ModelAndView("unsecured/register", "message", message);
+            message = loc.getMessage("success", null, defaultLocale);
+            message += ", "+loc.getMessage("register.lognowin", null, defaultLocale);
+            formInfo.put("message", message);
+            return new ModelAndView("unsecured/register", formInfo);
         }
         return new ModelAndView("unsecured/register");
+    }
+    
+    private String computeSha(String messageToDigest) throws Exception
+    {
+        String result = new String();
+        MessageDigest md = MessageDigest.getInstance("sha");
+        md.reset();
+        md.update(messageToDigest.getBytes());
+        for(byte b:md.digest())
+            result += Integer.toHexString(b & 0xff);
+        return result;
+    }
+
+    private int checkPassword(String pass, String secPass) {
+        if(!pass.equals(secPass))
+            return 1;
+        else if(pass.length() > DefaultValues.getPassLength()[1] || pass.length() < DefaultValues.getPassLength()[0])
+            return 2;
+        else
+            return 0;
     }
 }
