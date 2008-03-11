@@ -20,8 +20,7 @@ public class Profile implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap<String, Object> profile = new HashMap<String, Object>();
-        UserSession us = (UserSession) BeanGetter.getBean("userSession", request);
-        us.setValues(request.getUserPrincipal().getName());
+        UserSession us = (UserSession) BeanGetter.getScopedBean("userSession", request);
         profile.put("login", request.getUserPrincipal().getName());
         return new ModelAndView("user/profile",profile);
     }

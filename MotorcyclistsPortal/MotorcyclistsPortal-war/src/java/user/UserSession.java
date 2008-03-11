@@ -5,6 +5,8 @@
 
 package user;
 
+import java.util.Locale;
+import javax.servlet.http.HttpServletRequest;
 import main.MPLogger;
 
 /**
@@ -12,13 +14,32 @@ import main.MPLogger;
  * @author kalosh
  */
 public class UserSession {
+    
+    Locale currentLocale;
+    String login;
 
-    public UserSession() {
+    private UserSession() {
     }
     
-    public void setValues(String login)
+    public void setValues(HttpServletRequest request)
     {
-        MPLogger.severe(login);
+        MPLogger.severe("get data from database");
+        this.login = request.getUserPrincipal().getName();
+        this.currentLocale = request.getLocale();
+    }
+    
+    public Locale getLanguage()
+    {
+        return this.currentLocale;
+    }
+    
+    public void setLanguage(String language)
+    {
+        this.currentLocale = new Locale(language);
+    }
+
+    public String getLogin() {
+        return login;
     }
 
 }

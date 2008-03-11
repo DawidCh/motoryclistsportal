@@ -1,11 +1,27 @@
 <%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <!--<link rel="stylesheet" href="style/style.css" type="text/css" media="screen,projection" />-->
-        <title>index page</title>
-    </head>
-    <body>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <!--<link rel="stylesheet" href="style/style.css" type="text/css" media="screen,projection" />-->
+    <title>MP</title>
+</head>
+<body>
+<table>
+    <tr>
+        <c:choose>
+            <c:when test="${login != null}">
+                <td><a href="<c:url value="/logout.html"/>"><fmt:message key="header.logout"/>, <c:out value="${login}"/></a></td>
+                <td><a href="<c:url value="/secured/profile.html"/>"><fmt:message key="header.profile"/></a></td>
+                <td><a href="<c:url value="/secured/main.html"/>"><fmt:message key="header.main"/></a></td>
+            </c:when>
+            <c:otherwise>
+                <td><a href="<c:url value="/secured/main.html"/>"><fmt:message key="header.login"/></a></td>
+                <td><a href="<c:url value="/register.html"/>"><fmt:message key="header.register"/></a></td>
+            </c:otherwise>
+        </c:choose>
+    </tr>
+    <th><c:out value="${message}"/></th>
+</table>
