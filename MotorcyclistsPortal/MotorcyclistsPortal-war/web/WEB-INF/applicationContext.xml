@@ -22,8 +22,19 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         </property>
     </bean>
     
+    <!-- locales configuration -->
+    <bean id="localeProvider" class="utils.LocaleProvider" scope="singleton">
+        <property name="locales" ref="messageSource"/>
+    </bean>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="/WEB-INF/locales"/>
+        <property name="cacheSeconds" value="10"/>
+    </bean>
+    
     <!-- scoped beans-->
     <bean id="userSession" class="user.UserSession" scope="session"/>
+    <bean id="defaultValues" class="utils.DefaultValues" scope="singleton"/>
+    
     <!-- my mappings-->
     <bean id="indexController" class="main.IndexController"/>
     <bean id="mainController" class="user.Main"/>
@@ -32,5 +43,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <!-- end my mappings-->
     
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
-          
+    
 </beans>

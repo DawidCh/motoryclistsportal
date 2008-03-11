@@ -13,7 +13,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     
-    <!-- log4j configuration-->
+    <!-- log4j configuration 
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>/WEB-INF/log4j.properties</param-value>
@@ -24,7 +24,7 @@
     </context-param>
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
+    </listener>-->
     <!-- log4j configuration end-->
     
     <servlet-mapping>
@@ -32,17 +32,15 @@
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>5</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
-        </welcome-file-list>
+    </welcome-file-list>
     
     <!--security-->
     <security-constraint>
-        <display-name>admin pages</display-name>
+        <display-name>pages for logged users</display-name>
         <web-resource-collection>
             <web-resource-name>secured pages</web-resource-name>
             <description/>
@@ -60,21 +58,40 @@
             <role-name>admins</role-name>
             <role-name>users</role-name>
             <role-name>moders</role-name>
-            </auth-constraint>
+        </auth-constraint>
         <user-data-constraint>
             <description>confidential constraint</description>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-   
+    
+    <security-constraint>
+        <display-name>login page for secure sended info</display-name>
+        <web-resource-collection>
+            <web-resource-name>login page</web-resource-name>
+            <description/>
+            <url-pattern>/login.html</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>HEAD</http-method>
+            <http-method>PUT</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>TRACE</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <user-data-constraint>
+            <description>confidential constraint</description>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>motorealm</realm-name>
         <form-login-config>
             <form-login-page>/login.html</form-login-page>
-            <form-error-page>/login.html</form-error-page>
-            </form-login-config>
-        </login-config>
+            <form-error-page>/login.html?error=loginpage.invalidpass</form-error-page>
+        </form-login-config>
+    </login-config>
     <security-role>
         <description>Portal admins</description>
         <role-name>admins</role-name>
@@ -87,5 +104,5 @@
         <description>Portal users</description>
         <role-name>users</role-name>
     </security-role>
-    
-</web-app>
+--&gt;
+    </web-app>

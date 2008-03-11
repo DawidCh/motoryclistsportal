@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class BeanGetter {
 
-    public static Object getBean(String beanId, HttpServletRequest request)
+    public static Object getScopedBean(String beanId, HttpServletRequest request)
     {
          ApplicationContext ac = org.springframework.web.context.support.
            WebApplicationContextUtils.getRequiredWebApplicationContext(
