@@ -23,5 +23,5 @@
             </c:otherwise>
         </c:choose>
     </tr>
-    <th><c:out value="${message}"/></th>
 </table>
+<p><c:out value="${message}"/></p>

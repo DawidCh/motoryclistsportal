@@ -12,16 +12,31 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="mappings">
             <props>
                 <!--public pages-->
-                <prop key="/index.html">indexController</prop>
-                <prop key="/login.html">credentialController</prop>
-                <prop key="/logout.html">credentialController</prop>
+                <prop key="/index.html">index</prop>
+                <prop key="/login.html">credential</prop>
+                <prop key="/logout.html">credential</prop>
+                <prop key="/error.html">error</prop>
+                <prop key="/register.html">register</prop>
                 <!--secured pages-->
-                <prop key="/secured/main.html">mainController</prop>
-                <prop key="/secured/profile.html">profileController</prop>
+                <prop key="/secured/main.html">main</prop>
+                <prop key="/secured/profile.html">profile</prop>
             </props>
         </property>
     </bean>
     
+    <!-- scoped beans-->
+    <bean id="userSession" class="user.UserSession" scope="session"/>
+    <bean id="defaultValues" class="utils.DefaultValues" scope="singleton"/>
+    
+    <!-- my mappings-->
+    <bean id="index" class="main.IndexController"/>
+    <bean id="main" class="user.Main"/>
+    <bean id="credential" class="main.Credentials"/>
+    <bean id="profile" class="user.Profile"/>
+    <bean id="error" class="main.Error"/>
+    <bean id="register" class="main.Register"/>
+    <!-- end my mappings-->
+        
     <!-- locales configuration -->
     <bean id="localeProvider" class="utils.LocaleProvider" scope="singleton">
         <property name="locales" ref="messageSource"/>
@@ -30,18 +45,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="basename" value="/WEB-INF/locales"/>
         <property name="cacheSeconds" value="10"/>
     </bean>
-    
-    <!-- scoped beans-->
-    <bean id="userSession" class="user.UserSession" scope="session"/>
-    <bean id="defaultValues" class="utils.DefaultValues" scope="singleton"/>
-    
-    <!-- my mappings-->
-    <bean id="indexController" class="main.IndexController"/>
-    <bean id="mainController" class="user.Main"/>
-    <bean id="credentialController" class="main.Credentials"/>
-    <bean id="profileController" class="user.Profile"/>
-    <!-- end my mappings-->
-    
-    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
     
 </beans>
