@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package main;
+package utils;
 
 import java.util.logging.Logger;
 

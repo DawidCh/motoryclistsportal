@@ -12,7 +12,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import main.MPLogger;
+import utils.MPLogger;
 import org.springframework.context.ApplicationContext;
 import services.UserLocal;
 

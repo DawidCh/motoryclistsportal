@@ -6,17 +6,17 @@ Profile register page.
     <input type="hidden" name="form" value="submitted"/>
     <table>
         <tr><td>
-            <c:choose><c:when test='${(login == null || login=="") && form != null}'><font color="red">*</font></c:when>
+            <c:choose><c:when test='${(newLogin == null || newLogin=="") && form != null}'><font color="red">*</font></c:when>
             <c:otherwise>*</c:otherwise></c:choose>
             <fmt:message key="register.login"/></td><td><input name="newLogin" value="<c:out value="${newLogin}"/>"/></td></tr>
         <tr><td>
             <c:choose><c:when test='${(password == null || password=="") && form != null}'><font color="red">*</font></c:when>
             <c:otherwise>*</c:otherwise></c:choose>
-            <fmt:message key="register.password"/></td><td><input name="password" type="password"/></td></tr>
+            <fmt:message key="register.password"/></td><td><input name="password" type="password" value="<c:out value="${password}"/>"/></td></tr>
         <tr><td>
             <c:choose><c:when test='${(passwordAgain == null || passwordAgain=="") && form != null}'><font color="red">*</font></c:when>
             <c:otherwise>*</c:otherwise></c:choose>
-            <fmt:message key="register.passwordagain"/></td><td><input name="passwordAgain" type="password"/></td></tr>
+            <fmt:message key="register.passwordagain"/></td><td><input name="passwordAgain" type="password" value="<c:out value="${passwordAgain}"/>"/></td></tr>
         <tr><td>
             <c:choose><c:when test='${(name == null || name=="") && form != null}'><font color="red">*</font></c:when>
             <c:otherwise>*</c:otherwise></c:choose>
