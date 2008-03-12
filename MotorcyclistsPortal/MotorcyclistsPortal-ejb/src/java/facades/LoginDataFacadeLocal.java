@@ -8,6 +8,7 @@ package facades;
 import entities.LoginData;
 import java.util.List;
 import javax.ejb.Local;
+import utils.MPException;
 
 /**
  *
@@ -16,7 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface LoginDataFacadeLocal {
 
-    void create(LoginData loginData);
+    void create(LoginData loginData) throws MPException;
 
     void edit(LoginData loginData);
 

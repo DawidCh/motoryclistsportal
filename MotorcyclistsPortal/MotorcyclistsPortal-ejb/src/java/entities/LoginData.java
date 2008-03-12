@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ public class LoginData implements Serializable {
     @Column(name = "lastlogindate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastlogindate;
-    @Column(name = "currentlogindate")
+    @Column(name = "currentlogindate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date currentlogindate;
     @Id
@@ -53,10 +54,11 @@ public class LoginData implements Serializable {
         this.login = login;
     }
 
-    public LoginData(String login, String password, Date lastlogindate) {
+    public LoginData(String login, String password) {
         this.login = login;
         this.password = password;
-        this.lastlogindate = lastlogindate;
+        this.lastlogindate = Calendar.getInstance().getTime();
+        this.currentlogindate = Calendar.getInstance().getTime();
     }
 
     public String getPassword() {

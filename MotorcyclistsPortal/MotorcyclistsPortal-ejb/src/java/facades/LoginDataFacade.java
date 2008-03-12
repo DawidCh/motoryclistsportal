@@ -6,10 +6,12 @@
 package facades;
 
 import entities.LoginData;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import utils.MPException;
 
 /**
  *
@@ -20,8 +22,13 @@ public class LoginDataFacade implements LoginDataFacadeLocal {
     @PersistenceContext
     private EntityManager em;
 
-    public void create(LoginData loginData) {
-        em.persist(loginData);
+    public void create(LoginData loginData) throws MPException {
+        LoginData ld = this.find(loginData.getLogin());
+        if(null == ld){
+            em.persist(loginData);
+            return;
+        }
+        throw new MPException(MPException.LOGIN_EXISTS);
     }
 
     public void edit(LoginData loginData) {

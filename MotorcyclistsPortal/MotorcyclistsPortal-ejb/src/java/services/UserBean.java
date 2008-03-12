@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import utils.MPException;
 
 /**
  *
@@ -26,7 +27,7 @@ public class UserBean implements UserLocal {
     private UserFacadeLocal userFacade;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void createUser(User user, LoginData loginData)
+    public void createUser(User user, LoginData loginData) throws MPException
     {
         this.loginDataFacade.create(loginData);
         this.userFacade.create(user);

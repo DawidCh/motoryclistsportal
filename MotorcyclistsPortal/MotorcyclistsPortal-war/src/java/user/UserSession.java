@@ -23,7 +23,7 @@ public class UserSession {
     
     public void setValues(HttpServletRequest request)
     {
-        MPLogger.severe("get data from database");
+        
         this.login = request.getUserPrincipal().getName();
         this.currentLocale = request.getLocale();
     }

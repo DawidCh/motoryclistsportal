@@ -23,6 +23,7 @@ import user.UserSession;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
+import utils.MPException;
 
 /**
  *
@@ -88,14 +89,12 @@ public class Register implements Controller {
             //end of verification
             
             
-            Calendar cal = Calendar.getInstance();
-            Date now = cal.getTime();
             Privileges choosenPriv = BeanGetter.lookupPrivilegesFacade().findByDesc("userusers");
             User user = new User(formInfo.get("newLogin"), formInfo.get("name"),
             formInfo.get("surname"), formInfo.get("city"), formInfo.get("gender"), birthdate);
             LoginData loginData = null;
             try {
-                loginData = new LoginData(formInfo.get("newLogin"), this.computeSha(formInfo.get("password")), now);
+                loginData = new LoginData(formInfo.get("newLogin"), this.computeSha(formInfo.get("password")));
             } catch (Exception exception) {
                 MPLogger.severe("Error while creating LoginData object");
                 formInfo.put("message", loc.getMessage("register.shaerror", null, defaultLocale));
@@ -109,9 +108,14 @@ public class Register implements Controller {
             try {
                 BeanGetter.lookupUserBean().createUser(user, loginData);
             } catch (Exception exception) {
-                MPLogger.severe("Error while adding to database in Register");
-                formInfo.put("message", loc.getMessage("register.addtobase", null, defaultLocale)+": "+
-                        exception.getMessage());
+                String excMess = exception.getMessage();
+                MPLogger.severe("Error while adding to database in Register: "+ excMess);
+                message = loc.getMessage("register.addtobase", null, defaultLocale);
+                if(excMess.equals(MPException.LOGIN_EXISTS))
+                    message += ": "+loc.getMessage("register.loginExists", null, defaultLocale);
+                else
+                    message += ": "+loc.getMessage("otherError", null, defaultLocale);
+                formInfo.put("message", message);
                 return new ModelAndView("unsecured/register", formInfo);
             }
 
