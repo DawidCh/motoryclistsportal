@@ -11,6 +11,8 @@ import facades.LoginDataFacadeLocal;
 import facades.UserFacadeLocal;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 /**
  *
@@ -23,10 +25,11 @@ public class UserBean implements UserLocal {
     @EJB
     private UserFacadeLocal userFacade;
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createUser(User user, LoginData loginData)
     {
-        this.userFacade.create(user);
         this.loginDataFacade.create(loginData);
+        this.userFacade.create(user);
     }
  
 }

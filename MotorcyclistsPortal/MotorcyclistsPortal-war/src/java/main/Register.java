@@ -4,12 +4,13 @@
  */
 package main;
 
+import utils.MPLogger;
 import entities.LoginData;
 import entities.Privileges;
 import entities.User;
 import java.security.MessageDigest;
-import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,13 +33,14 @@ public class Register implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if(null != request.getParameter("form"))
         {
+            //data verification
             LocaleProvider loc = (LocaleProvider)BeanGetter.getScopedBean("localeProvider", request);
             UserSession userSession = (UserSession) BeanGetter.getScopedBean("userSession", request);
             Locale defaultLocale = userSession.getLanguage();
             String message = new String();
             HashMap<String, String> formInfo = new HashMap<String, String>();
             formInfo.put("newLogin", request.getParameter("newLogin"));
-            formInfo.put("pass", request.getParameter("password"));
+            formInfo.put("password", request.getParameter("password"));
             formInfo.put("passwordAgain", request.getParameter("passwordAgain"));
             formInfo.put("name", request.getParameter("name"));
             formInfo.put("surname", request.getParameter("surname"));
@@ -52,18 +54,26 @@ public class Register implements Controller {
                 if(null == formInfo.get(keyList[i]) || formInfo.get(keyList[i]).equals(new String(""))){
                     message = loc.getMessage("register.notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("pass", null);
-                    formInfo.put("passwordAgain", null);
                     return new ModelAndView("unsecured/register", formInfo);
                 }
             }
             
-            int passCheckingRes = this.checkPassword(formInfo.get("pass"), formInfo.get("passwordAgain"));
+            Date birthdate = null;
+            try{
+                birthdate = new SimpleDateFormat("d M y").parse(formInfo.get("birthdate"));
+            }catch(ParseException ex){
+                message = loc.getMessage("register.wrongDate", null, defaultLocale);
+                formInfo.put("message", message);
+                MPLogger.severe("Wrong date format in Register from "+formInfo.get("birthdate"));
+                return new ModelAndView("unsecured/register", formInfo);
+            }
+            
+            int passCheckingRes = this.checkPassword(formInfo.get("password"), formInfo.get("passwordAgain"));
             if(passCheckingRes == 1)
             {
                 message = loc.getMessage("register.differentPass", null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("pass", null);
+                formInfo.put("password", null);
                 formInfo.put("passwordAgain", null);
                 return new ModelAndView("unsecured/register", formInfo);
             }
@@ -71,34 +81,21 @@ public class Register implements Controller {
             {
                 message = loc.getMessage("register.wrongLength", null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("pass", null);
+                formInfo.put("password", null);
                 formInfo.put("passwordAgain", null);
                 return new ModelAndView("unsecured/register", formInfo);
             }
+            //end of verification
             
-            //rejestracja
             
             Calendar cal = Calendar.getInstance();
             Date now = cal.getTime();
-            Date birthdate = null;
-            try{
-                birthdate = DateFormat.getInstance().parse(formInfo.get("birthdate"));
-            }catch(ParseException ex){
-                message = loc.getMessage("register.wrongDate", null, defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("pass", null);
-                formInfo.put("passwordAgain", null);
-                MPLogger.severe("Wrong date format in Register");
-                return new ModelAndView("unsecured/register", formInfo);
-            }
-            
             Privileges choosenPriv = BeanGetter.lookupPrivilegesFacade().findByDesc("userusers");
             User user = new User(formInfo.get("newLogin"), formInfo.get("name"),
             formInfo.get("surname"), formInfo.get("city"), formInfo.get("gender"), birthdate);
             LoginData loginData = null;
             try {
-                loginData = new LoginData(formInfo.get("newLogin"), this.computeSha(formInfo.get("pass")), now);
-
+                loginData = new LoginData(formInfo.get("newLogin"), this.computeSha(formInfo.get("password")), now);
             } catch (Exception exception) {
                 MPLogger.severe("Error while creating LoginData object");
                 formInfo.put("message", loc.getMessage("register.shaerror", null, defaultLocale));
@@ -109,7 +106,15 @@ public class Register implements Controller {
             loginData.setUser(user);
             loginData.setPrivileges(choosenPriv);
                 
-            BeanGetter.lookupUserBean().createUser(user, loginData);
+            try {
+                BeanGetter.lookupUserBean().createUser(user, loginData);
+            } catch (Exception exception) {
+                MPLogger.severe("Error while adding to database in Register");
+                formInfo.put("message", loc.getMessage("register.addtobase", null, defaultLocale)+": "+
+                        exception.getMessage());
+                return new ModelAndView("unsecured/register", formInfo);
+            }
+
             //
             message = loc.getMessage("success", null, defaultLocale);
             message += ", "+loc.getMessage("register.lognowin", null, defaultLocale);

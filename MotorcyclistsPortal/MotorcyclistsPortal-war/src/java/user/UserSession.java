@@ -7,7 +7,7 @@ package user;
 
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-import main.MPLogger;
+import utils.MPLogger;
 
 /**
  *
