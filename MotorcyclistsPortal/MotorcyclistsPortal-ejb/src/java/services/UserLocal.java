@@ -6,6 +6,7 @@
 package services;
 
 import javax.ejb.Local;
+import utils.MPException;
 
 /**
  *
@@ -14,6 +15,6 @@ import javax.ejb.Local;
 @Local
 public interface UserLocal {
 
-    public void createUser(entities.User user, entities.LoginData loginData);
+    public void createUser(entities.User user, entities.LoginData loginData) throws MPException;
     
 }
