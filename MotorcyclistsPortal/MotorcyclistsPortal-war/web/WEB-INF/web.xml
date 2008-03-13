@@ -112,17 +112,29 @@
         <local>services.UserLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#UserBean</ejb-link>
     </ejb-local-ref>
-    <ejb-local-ref>
-        <ejb-ref-name>UserBean1</ejb-ref-name>
-        <ejb-ref-type>Session</ejb-ref-type>
-        <local>services.UserLocal</local>
-        <ejb-link>MotorcyclistsPortal-ejb.jar#UserBean</ejb-link>
-    </ejb-local-ref>
-    
+
     <ejb-local-ref>
         <ejb-ref-name>PrivilegesFacade</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
         <local>facades.PrivilegesFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#PrivilegesFacade</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>UserFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.UserFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#UserFacade</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>LoginDataFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.LoginDataFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#LoginDataFacade</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>AvailableLangsFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.AvailableLangsFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#AvailableLangsFacade</ejb-link>
     </ejb-local-ref>
     </web-app>

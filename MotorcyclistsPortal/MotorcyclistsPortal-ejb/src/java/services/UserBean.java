@@ -9,6 +9,8 @@ import entities.LoginData;
 import entities.User;
 import facades.LoginDataFacadeLocal;
 import facades.UserFacadeLocal;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -26,6 +28,7 @@ public class UserBean implements UserLocal {
     @EJB
     private UserFacadeLocal userFacade;
 
+    @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createUser(User user, LoginData loginData) throws MPException
     {
@@ -33,4 +36,11 @@ public class UserBean implements UserLocal {
         this.userFacade.create(user);
     }
  
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @RolesAllowed({"admins", "moders", "users"})
+    public void editUser(User user, LoginData loginData) throws MPException
+    {
+        this.loginDataFacade.edit(loginData);
+        this.userFacade.edit(user);
+    }
 }

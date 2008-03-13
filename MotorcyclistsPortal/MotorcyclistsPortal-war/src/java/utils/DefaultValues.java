@@ -14,6 +14,8 @@ import java.util.Locale;
 public class DefaultValues {
     private static Locale locale = new Locale("pl_PL");
     private static int[] passLength = {5,10};
+    private static String succColor = "green";
+    private static String failColor = "red";
 
     public static Locale getLocale() {
         return DefaultValues.locale;
@@ -22,4 +24,13 @@ public class DefaultValues {
     public static int[] getPassLength() {
         return passLength;
     }
+
+    public static String getFailColor() {
+        return failColor;
+    }
+
+    public static String getSuccColor() {
+        return succColor;
+    }
+    
 }
