@@ -2,11 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <!--<link rel="stylesheet" href="style/style.css" type="text/css" media="screen,projection" />-->
-    <title>MP</title>
+    <title><c:out value="${pageTitle}"/></title>
 </head>
 <body>
 <table>
@@ -22,6 +22,13 @@
                 <td><a href="<c:url value="/register.html"/>"><fmt:message key="header.register"/></a></td>
             </c:otherwise>
         </c:choose>
+        <td><fmt:message key="header.chooseLanguage"/>
+            <select id="newLanguage">
+                <c:forEach var="currLoopLan" items="${languages}">
+                    <option value="location.href('<%= request.getContextPath() + request.getRequestURI() %>?siteLanguage=${currLoopLan}')">${currLoopLan}</option>
+                </c:forEach>
+            </select>
+        </td>
     </tr>
 </table>
-<p><c:out value="${message}"/></p>
+<p style="color:<c:out value="${messColor}"/>"><c:out value="${message}"/></p>

@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,6 +32,8 @@ public class User implements Serializable {
     private String name;
     @Column(name = "surname", nullable = false)
     private String surname;
+    @Column(name = "locale", nullable = false)
+    private String locale;
     @Column(name = "city", nullable = false)
     private String city;
     @Column(name = "gender", nullable = false)
@@ -62,6 +65,7 @@ public class User implements Serializable {
         else
             this.gender = false;
         this.birthdate = birthdate;
+        this.locale = "pl_PL";
     }
 
     public String getName() {
@@ -149,6 +153,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "entities.User[login=" + login + "]";
+    }
+
+    public Locale getLocale() {
+        return new Locale(this.locale.split("_")[0],this.locale.split("_")[1]);
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale.toString();
     }
 
 }

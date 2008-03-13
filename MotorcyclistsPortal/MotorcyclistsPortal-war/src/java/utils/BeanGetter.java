@@ -5,14 +5,14 @@
 
 package utils;
 
-import entities.Privileges;
+import facades.AvailableLangsFacadeLocal;
+import facades.LoginDataFacadeLocal;
 import facades.PrivilegesFacadeLocal;
-import java.util.List;
+import facades.UserFacadeLocal;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import utils.MPLogger;
 import org.springframework.context.ApplicationContext;
 import services.UserLocal;
 
@@ -46,6 +46,36 @@ public class BeanGetter {
             return (PrivilegesFacadeLocal) c.lookup("java:comp/env/PrivilegesFacade");
         } catch (NamingException ne) {
             MPLogger.severe("Exception while looking up PrivilegesFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static UserFacadeLocal lookupUserFacade() {
+        try {
+            Context c = new InitialContext();
+            return (UserFacadeLocal) c.lookup("java:comp/env/UserFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up UserFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static LoginDataFacadeLocal lookupLoginDataFacade() {
+        try {
+            Context c = new InitialContext();
+            return (LoginDataFacadeLocal) c.lookup("java:comp/env/LoginDataFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up LoginFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static AvailableLangsFacadeLocal lookupAvailableLangsFacade() {
+        try {
+            Context c = new InitialContext();
+            return (AvailableLangsFacadeLocal) c.lookup("java:comp/env/AvailableLangsFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up AvailableLangs in BeanGetter");
             throw new RuntimeException(ne);
         }
     }

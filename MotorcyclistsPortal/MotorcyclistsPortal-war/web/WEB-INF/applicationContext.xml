@@ -9,6 +9,11 @@
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
     
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="localeChangeInterceptor"/>
+            </list>
+        </property>
         <property name="mappings">
             <props>
                 <!--public pages-->
@@ -26,7 +31,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     
     <!-- scoped beans-->
     <bean id="userSession" class="user.UserSession" scope="session"/>
-    
+    <bean id="settings" class="utils.ApplicationSettings" scope="singleton"/>
     <!-- my mappings-->
     <bean id="index" class="main.IndexController"/>
     <bean id="main" class="user.Main"/>
@@ -44,5 +49,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="basename" value="/WEB-INF/locales"/>
         <property name="cacheSeconds" value="10"/>
     </bean>
+    
+    <bean id="localeChangeInterceptor"
+          class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="siteLanguage"/>
+    </bean>
+    
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
     
 </beans>
