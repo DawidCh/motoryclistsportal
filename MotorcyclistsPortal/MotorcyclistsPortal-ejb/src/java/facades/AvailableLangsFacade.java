@@ -6,7 +6,9 @@
 package facades;
 
 import entities.AvailableLangs;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,8 +38,14 @@ public class AvailableLangsFacade implements AvailableLangsFacadeLocal {
         return em.find(entities.AvailableLangs.class, id);
     }
 
-    public List<AvailableLangs> findAll() {
-        return em.createQuery("select object(o) from AvailableLangs as o").getResultList();
+    public List<Locale> findAll() {
+        List<Locale> result = new ArrayList<Locale>();
+        List<AvailableLangs> langs = 
+                em.createQuery("select object(o) from AvailableLangs as o").getResultList();
+        for (int i = 0; i < langs.size(); i++) {
+            result.add(langs.get(i).getLocale());
+        }
+        return result;
     }
 
 }

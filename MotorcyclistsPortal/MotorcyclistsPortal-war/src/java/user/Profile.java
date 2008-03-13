@@ -15,9 +15,8 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import utils.ApplicationSettings;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
@@ -27,11 +26,14 @@ import utils.MPLogger;
  *
  * @author kalosh
  */
-public class Profile implements Controller {
+public class Profile extends AbstractController {
 
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        this.setRequireSession(true);
+        // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
-        LocaleProvider loc = (LocaleProvider) BeanGetter.getScopedBean("localeProvider", request);
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         LoginData loginData;
         User user;
@@ -40,18 +42,14 @@ public class Profile implements Controller {
             user = BeanGetter.lookupUserFacade().find(request.getUserPrincipal().getName());
 
         } catch (Exception exception) {
-            formInfo.put("message", loc.getMessage("profile.errorRecivingData", null, defaultLocale));
+            formInfo.put("message", localeProvider.getMessage("profile.errorRecivingData", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
             MPLogger.severe("Error while reciving data from database at Profile: "+exception.getMessage());
             return new ModelAndView("user/profile", formInfo);
         }
         
-        formInfo.put("login", request.getUserPrincipal().getName());
-        formInfo.put("failColor", DefaultValues.getFailColor());
-        formInfo.put("succColor", DefaultValues.getSuccColor());
-        formInfo.put("pageTitle", loc.getMessage("profile.pageTitle", null, defaultLocale));
-        formInfo.put("languages",
-                ((ApplicationSettings)BeanGetter.getScopedBean("settings", request)).getAvailableLanguages(request));
+        formInfo.put("defaultLocale", defaultLocale);
+        formInfo.put("pageTitle", localeProvider.getMessage("profile.pageTitle", null, defaultLocale));
 
         formInfo.put("name", user.getName());
         formInfo.put("surname", user.getSurname());
@@ -59,7 +57,7 @@ public class Profile implements Controller {
         formInfo.put("gender", user.getGender());
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
         formInfo.put("birthdate", sdf.format(user.getBirthdate()));
-
+        // </editor-fold>
         if (null != request.getParameter("form")) {
             MPLogger.severe(request.getParameter("city"));
             //data verification
@@ -77,7 +75,7 @@ public class Profile implements Controller {
             String[] keyList = formInfo.keySet().toArray(new String[formInfo.keySet().size()]);
             for (int i = 0; i < keyList.length; i++) {
                 if (null == formInfo.get(keyList[i]) || formInfo.get(keyList[i]).equals(new String(""))) {
-                    message = loc.getMessage("profile.notAllFilled", null, defaultLocale);
+                    message = localeProvider.getMessage("profile.notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColor());
                     return new ModelAndView("user/profile", formInfo);
@@ -88,7 +86,7 @@ public class Profile implements Controller {
             try {
                 birthdate = new SimpleDateFormat("dd MM yyyy").parse((String)formInfo.get("birthdate"));
             } catch (ParseException ex) {
-                message = loc.getMessage("profile.wrongDate", null, defaultLocale);
+                message = localeProvider.getMessage("profile.wrongDate", null, defaultLocale);
                 formInfo.put("message", message);
                 MPLogger.severe("Wrong date format in Register from " + formInfo.get("birthdate"));
                 formInfo.put("messColor", DefaultValues.getFailColor());
@@ -98,12 +96,12 @@ public class Profile implements Controller {
             if (!password.equals(new String("")) || !passwordAgain.equals(new String(""))) {
                 int passCheckingRes = this.checkPassword(password, passwordAgain);
                 if (passCheckingRes == 1) {
-                    message = loc.getMessage("profile.differentPass", null, defaultLocale);
+                    message = localeProvider.getMessage("profile.differentPass", null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColor());
                     return new ModelAndView("user/profile", formInfo);
                 } else if (passCheckingRes == 2) {
-                    message = loc.getMessage("profile.wrongLength", null, defaultLocale);
+                    message = localeProvider.getMessage("profile.wrongLength", null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColor());
                     return new ModelAndView("user/profile", formInfo);
@@ -136,14 +134,14 @@ public class Profile implements Controller {
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
                 MPLogger.severe("Error while setting data to database in Profile: " + excMess);
-                message = loc.getMessage("profile.addtobase", null, defaultLocale) + loc.getMessage("otherError", null, defaultLocale);
+                message = localeProvider.getMessage("profile.addtobase", null, defaultLocale) + localeProvider.getMessage("otherError", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("user/profile", formInfo);
             }
 
             //
-            message = loc.getMessage("success", null, defaultLocale);
+            message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getSuccColor());
             return new ModelAndView("user/profile", formInfo);

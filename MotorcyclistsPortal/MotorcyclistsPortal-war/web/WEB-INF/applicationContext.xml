@@ -12,39 +12,60 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="interceptors">
             <list>
                 <ref bean="localeChangeInterceptor"/>
+                <ref bean="varLoaderInterceptor"/>
             </list>
         </property>
         <property name="mappings">
             <props>
                 <!--public pages-->
                 <prop key="/index.html">index</prop>
-                <prop key="/login.html">credential</prop>
-                <prop key="/logout.html">credential</prop>
+                <prop key="/login.html">credentials</prop>
+                <prop key="/**/logout.html">credentials</prop>
                 <prop key="/error.html">error</prop>
                 <prop key="/register.html">register</prop>
                 <!--secured pages-->
-                <prop key="/secured/main.html">main</prop>
+                <prop key="/secured/index.html">main</prop>
                 <prop key="/secured/profile.html">profile</prop>
             </props>
         </property>
     </bean>
     
-    <!-- scoped beans-->
-    <bean id="userSession" class="user.UserSession" scope="session"/>
-    <bean id="settings" class="utils.ApplicationSettings" scope="singleton"/>
+    <!--multicontrollers-->
+    <bean id="credentials" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <value>
+                        /login.html=login
+                        /**/logout.html=logout
+                    </value>
+                </property>
+            </bean>
+        </property>
+        <property name="delegate">
+            <bean class="main.Credentials"/>
+        </property>
+    </bean>
+    
     <!-- my mappings-->
     <bean id="index" class="main.IndexController"/>
     <bean id="main" class="user.Main"/>
-    <bean id="credential" class="main.Credentials"/>
     <bean id="profile" class="user.Profile"/>
     <bean id="error" class="main.Error"/>
     <bean id="register" class="main.Register"/>
-    <!-- end my mappings-->
-        
+    
+    <!--interceptors-->
+    <bean id="varLoaderInterceptor" class="main.VarLoader"/>
+    
+    <!-- scoped beans-->
+    <bean id="userSession" class="user.UserSession" scope="session"/>
+    <bean id="settings" class="utils.ApplicationSettings" scope="singleton"/>
+    
     <!-- locales configuration -->
     <bean id="localeProvider" class="utils.LocaleProvider" scope="singleton">
         <property name="locales" ref="messageSource"/>
     </bean>
+    
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="/WEB-INF/locales"/>
         <property name="cacheSeconds" value="10"/>
@@ -55,6 +76,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="paramName" value="siteLanguage"/>
     </bean>
     
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
-    
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
 </beans>

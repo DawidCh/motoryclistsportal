@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import utils.ApplicationSettings;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
@@ -32,15 +31,12 @@ import utils.MPException;
 public class Register implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        LocaleProvider loc = (LocaleProvider) BeanGetter.getScopedBean("localeProvider", request);
+        // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
-        formInfo.put("failColor", DefaultValues.getFailColor());
-        formInfo.put("succColor", DefaultValues.getSuccColor());
-        formInfo.put("pageTitle", loc.getMessage("register.pageTitle", null, defaultLocale));
-        formInfo.put("languages",
-                ((ApplicationSettings)BeanGetter.getScopedBean("settings", request)).getAvailableLanguages(request));
-
+        formInfo.put("pageTitle", localeProvider.getMessage("register.pageTitle", null, defaultLocale));
+        // </editor-fold>
         if (null != request.getParameter("form")) {
             //data verification
             String message = new String();
@@ -57,7 +53,7 @@ public class Register implements Controller {
             String[] keyList = formInfo.keySet().toArray(new String[formInfo.keySet().size()]);
             for (int i = 0; i < keyList.length; i++) {
                 if (null == formInfo.get(keyList[i]) || formInfo.get(keyList[i]).equals(new String(""))) {
-                    message = loc.getMessage("register.notAllFilled", null, defaultLocale);
+                    message = localeProvider.getMessage("register.notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColor());
                     return new ModelAndView("unsecured/register", formInfo);
@@ -68,7 +64,7 @@ public class Register implements Controller {
             try {
                 birthdate = new SimpleDateFormat("d M y").parse((String)formInfo.get("birthdate"));
             } catch (ParseException ex) {
-                message = loc.getMessage("register.wrongDate", null, defaultLocale);
+                message = localeProvider.getMessage("register.wrongDate", null, defaultLocale);
                 formInfo.put("message", message);
                 MPLogger.severe("Wrong date format in Register from " + formInfo.get("birthdate"));
                 formInfo.put("messColor", DefaultValues.getFailColor());
@@ -77,14 +73,14 @@ public class Register implements Controller {
 
             int passCheckingRes = this.checkPassword((String)formInfo.get("password"), (String)formInfo.get("passwordAgain"));
             if (passCheckingRes == 1) {
-                message = loc.getMessage("register.differentPass", null, defaultLocale);
+                message = localeProvider.getMessage("register.differentPass", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("password", null);
                 formInfo.put("passwordAgain", null);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("unsecured/register", formInfo);
             } else if (passCheckingRes == 2) {
-                message = loc.getMessage("register.wrongLength", null, defaultLocale);
+                message = localeProvider.getMessage("register.wrongLength", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("password", null);
                 formInfo.put("passwordAgain", null);
@@ -102,12 +98,13 @@ public class Register implements Controller {
                 loginData = new LoginData((String)formInfo.get("newLogin"), this.computeSha((String)formInfo.get("password")));
             } catch (Exception exception) {
                 MPLogger.severe("Error while creating LoginData object");
-                formInfo.put("message", loc.getMessage("register.shaerror", null, defaultLocale));
+                formInfo.put("message", localeProvider.getMessage("register.shaerror", null, defaultLocale));
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("unsecured/register", formInfo);
             }
 
             user.setLoginData(loginData);
+            user.setLocale(defaultLocale);
             loginData.setUser(user);
             loginData.setPrivileges(choosenPriv);
 
@@ -116,11 +113,11 @@ public class Register implements Controller {
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
                 MPLogger.severe("Error while adding to database in Register: " + excMess);
-                message = loc.getMessage("register.addtobase", null, defaultLocale);
+                message = localeProvider.getMessage("register.addtobase", null, defaultLocale);
                 if (excMess.equals(MPException.LOGIN_EXISTS)) {
-                    message += ": " + loc.getMessage("register.loginExists", null, defaultLocale);
+                    message += ": " + localeProvider.getMessage("register.loginExists", null, defaultLocale);
                 } else {
-                    message += ": " + loc.getMessage("otherError", null, defaultLocale);
+                    message += ": " + localeProvider.getMessage("otherError", null, defaultLocale);
                 }
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
@@ -128,8 +125,8 @@ public class Register implements Controller {
             }
 
             //
-            message = loc.getMessage("success", null, defaultLocale);
-            message += ", " + loc.getMessage("register.lognowin", null, defaultLocale);
+            message = localeProvider.getMessage("success", null, defaultLocale);
+            message += ", " + localeProvider.getMessage("register.lognowin", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getSuccColor());
             return new ModelAndView("unsecured/register", formInfo);

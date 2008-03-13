@@ -14,7 +14,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import services.UserLocal;
+import user.UserSession;
 
 /**
  *
@@ -22,7 +24,23 @@ import services.UserLocal;
  */
 public class BeanGetter {
 
-    public static Object getScopedBean(String beanId, HttpServletRequest request)
+    public static UserSession getUserSession(HttpServletRequest request){
+        return (UserSession) BeanGetter.getScopedBean("userSession", request);
+    }
+    
+    public static LocaleProvider getLocaleProvider(HttpServletRequest request){
+        return (LocaleProvider) BeanGetter.getScopedBean("localeProvider", request);
+    }
+    
+    public static SessionLocaleResolver getLocaleResolver(HttpServletRequest request){
+        return (SessionLocaleResolver) BeanGetter.getScopedBean("localeResolver", request);
+    }
+    
+    public static ApplicationSettings getApplicationSettings(HttpServletRequest request){
+        return (ApplicationSettings) BeanGetter.getScopedBean("settings", request);
+    }
+    
+    private static Object getScopedBean(String beanId, HttpServletRequest request)
     {
          ApplicationContext ac = org.springframework.web.context.support.
            WebApplicationContextUtils.getRequiredWebApplicationContext(

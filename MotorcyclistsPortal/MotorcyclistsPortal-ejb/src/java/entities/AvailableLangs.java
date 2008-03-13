@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Locale;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,12 +34,12 @@ public class AvailableLangs implements Serializable {
         this.locale = locale;
     }
 
-    public String getLocale() {
-        return locale;
+    public Locale getLocale() {
+        return new Locale(this.locale.split("_")[0], this.locale.split("_")[1]);
     }
 
-    public void setLocale(String locale) {
-        this.locale = locale;
+    public void setLocale(Locale locale) {
+        this.locale = locale.toString();
     }
 
     @Override
