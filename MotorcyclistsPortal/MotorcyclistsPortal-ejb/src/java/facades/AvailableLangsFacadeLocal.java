@@ -7,6 +7,7 @@ package facades;
 
 import entities.AvailableLangs;
 import java.util.List;
+import java.util.Locale;
 import javax.ejb.Local;
 
 /**
@@ -24,6 +25,6 @@ public interface AvailableLangsFacadeLocal {
 
     AvailableLangs find(Object id);
 
-    List<AvailableLangs> findAll();
+    List<Locale> findAll();
 
 }

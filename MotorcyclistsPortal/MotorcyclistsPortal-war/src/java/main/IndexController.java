@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import utils.ApplicationSettings;
 import utils.BeanGetter;
-import utils.DefaultValues;
 import utils.LocaleProvider;
 
 /**
@@ -24,14 +22,12 @@ import utils.LocaleProvider;
 public class IndexController implements Controller{
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        LocaleProvider loc = (LocaleProvider) BeanGetter.getScopedBean("localeProvider", request);
-        Locale defaultLocale = RequestContextUtils.getLocale(request);
+        // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+        Locale currentLocale = RequestContextUtils.getLocale(request);
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
-        formInfo.put("failColor", DefaultValues.getFailColor());
-        formInfo.put("succColor", DefaultValues.getSuccColor());
-        formInfo.put("languages",
-                ((ApplicationSettings)BeanGetter.getScopedBean("settings", request)).getAvailableLanguages(request));
-        formInfo.put("pageTitle", loc.getMessage("index.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.getMessage("index.pageTitle", null, currentLocale));
+        // </editor-fold>
         return new ModelAndView("index", formInfo);
     }
 

@@ -38,6 +38,16 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
+    <!--error pages-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.html</location>
+    </error-page>
+
     <!--security-->
     <security-constraint>
         <display-name>pages for logged users</display-name>
@@ -84,6 +94,7 @@
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+    
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>motorealm</realm-name>

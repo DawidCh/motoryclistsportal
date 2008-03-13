@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <!--<link rel="stylesheet" href="style/style.css" type="text/css" media="screen,projection" />-->
@@ -15,17 +15,20 @@
             <c:when test="${login != null}">
                 <td><a href="<c:url value="/logout.html"/>"><fmt:message key="header.logout"/>, <c:out value="${login}"/></a></td>
                 <td><a href="<c:url value="/secured/profile.html"/>"><fmt:message key="header.profile"/></a></td>
-                <td><a href="<c:url value="/secured/main.html"/>"><fmt:message key="header.main"/></a></td>
+                <td><a href="<c:url value="/secured/index.html"/>"><fmt:message key="header.main"/></a></td>
+                <c:if test="${favouriteLocale != currentLocale}">
+                    <td><a href="<c:url value="?saveLocale=true"/>"><fmt:message key="header.saveLang"/></a></td>
+                </c:if>
             </c:when>
             <c:otherwise>
-                <td><a href="<c:url value="/secured/main.html"/>"><fmt:message key="header.login"/></a></td>
+                <td><a href="<c:url value="/secured/index.html"/>"><fmt:message key="header.login"/></a></td>
                 <td><a href="<c:url value="/register.html"/>"><fmt:message key="header.register"/></a></td>
             </c:otherwise>
         </c:choose>
         <td><fmt:message key="header.chooseLanguage"/>
-            <select id="newLanguage">
+            <select onchange="window.location.href=this.options[this.selectedIndex].value">
                 <c:forEach var="currLoopLan" items="${languages}">
-                    <option value="location.href('<%= request.getContextPath() + request.getRequestURI() %>?siteLanguage=${currLoopLan}')">${currLoopLan}</option>
+                    <option value="?siteLanguage=${currLoopLan}" <c:if test="${currentLocale == currLoopLan}">selected="selected"</c:if>>${currLoopLan}</option>
                 </c:forEach>
             </select>
         </td>
