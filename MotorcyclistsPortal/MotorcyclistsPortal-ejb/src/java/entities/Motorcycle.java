@@ -24,18 +24,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "motorcycles")
-@NamedQueries({@NamedQuery(name = "Motorcycle.findById", query = "SELECT m FROM Motorcycle m WHERE m.id = :id"), @NamedQuery(name = "Motorcycle.findByModel", query = "SELECT m FROM Motorcycle m WHERE m.model = :model"), @NamedQuery(name = "Motorcycle.findByProducer", query = "SELECT m FROM Motorcycle m WHERE m.producer = :producer"), @NamedQuery(name = "Motorcycle.findByYear", query = "SELECT m FROM Motorcycle m WHERE m.year = :year"), @NamedQuery(name = "Motorcycle.findByEnginecapacity", query = "SELECT m FROM Motorcycle m WHERE m.enginecapacity = :enginecapacity"), @NamedQuery(name = "Motorcycle.findByPower", query = "SELECT m FROM Motorcycle m WHERE m.power = :power"), @NamedQuery(name = "Motorcycle.findByTorque", query = "SELECT m FROM Motorcycle m WHERE m.torque = :torque")})
+@NamedQueries({@NamedQuery(name = "Motorcycle.findById", query = "SELECT m FROM Motorcycle m WHERE m.id = :id"), @NamedQuery(name = "Motorcycle.findByModel", query = "SELECT m FROM Motorcycle m WHERE m.model = :model"), @NamedQuery(name = "Motorcycle.findByManufacturer", query = "SELECT m FROM Motorcycle m WHERE m.manufacturer = :manufacturer"), @NamedQuery(name = "Motorcycle.findByYear", query = "SELECT m FROM Motorcycle m WHERE m.year = :year"), @NamedQuery(name = "Motorcycle.findByEnginecapacity", query = "SELECT m FROM Motorcycle m WHERE m.enginecapacity = :enginecapacity"), @NamedQuery(name = "Motorcycle.findByPower", query = "SELECT m FROM Motorcycle m WHERE m.power = :power"), @NamedQuery(name = "Motorcycle.findByTorque", query = "SELECT m FROM Motorcycle m WHERE m.torque = :torque"), @NamedQuery(name = "Motorcycle.findByNickname", query = "SELECT m FROM Motorcycle m WHERE m.nickname = :nickname")})
 public class Motorcycle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="generator", sequenceName="motorcycles_id_seq")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="generator")
+    @SequenceGenerator(name="motorcyclegenerator", sequenceName="motorcycles_id_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="motorcyclegenerator")
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "model", nullable = false)
     private String model;
-    @Column(name = "producer", nullable = false)
-    private String producer;
+    @Column(name = "manufacturer", nullable = false)
+    private String manufacturer;
     @Column(name = "year", nullable = false)
     private int year;
     @Column(name = "enginecapacity", nullable = false)
@@ -44,9 +44,8 @@ public class Motorcycle implements Serializable {
     private int power;
     @Column(name = "torque", nullable = false)
     private int torque;
-    @JoinColumn(name = "fishier", referencedColumnName = "id")
-    @ManyToOne
-    private Fishier fishier;
+    @Column(name = "nickname")
+    private String nickname;
 
     public Motorcycle() {
     }
@@ -55,10 +54,10 @@ public class Motorcycle implements Serializable {
         this.id = id;
     }
 
-    public Motorcycle(Integer id, String model, String producer, int year, int enginecapacity, int power, int torque) {
+    public Motorcycle(Integer id, String model, String manufacturer, int year, int enginecapacity, int power, int torque) {
         this.id = id;
         this.model = model;
-        this.producer = producer;
+        this.manufacturer = manufacturer;
         this.year = year;
         this.enginecapacity = enginecapacity;
         this.power = power;
@@ -81,12 +80,12 @@ public class Motorcycle implements Serializable {
         this.model = model;
     }
 
-    public String getProducer() {
-        return producer;
+    public String getManufacturer() {
+        return manufacturer;
     }
 
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public int getYear() {
@@ -121,12 +120,12 @@ public class Motorcycle implements Serializable {
         this.torque = torque;
     }
 
-    public Fishier getFishier() {
-        return fishier;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setFishier(Fishier fishier) {
-        this.fishier = fishier;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Override
@@ -153,5 +152,4 @@ public class Motorcycle implements Serializable {
     public String toString() {
         return "entities.Motorcycle[id=" + id + "]";
     }
-
 }

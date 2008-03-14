@@ -28,8 +28,8 @@ import javax.persistence.Table;
 public class FishierElementBridge implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="generator", sequenceName="fishierselbridge_id_seq")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="generator")
+    @SequenceGenerator(name="fishierselementbridgegenerator", sequenceName="fishierselbridge_id_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="fishierselementbridgegenerator")
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "periodlength", nullable = false)
@@ -42,7 +42,7 @@ public class FishierElementBridge implements Serializable {
     private Fishier fishier;
     @JoinColumn(name = "fishierelement", referencedColumnName = "id")
     @ManyToOne
-    private FishiesrElement fishierelement;
+    private FishiersElement fishierelement;
 
     public FishierElementBridge() {
     }
@@ -88,11 +88,11 @@ public class FishierElementBridge implements Serializable {
         this.fishier = fishier;
     }
 
-    public FishiesrElement getFishierelement() {
+    public FishiersElement getFishierelement() {
         return fishierelement;
     }
 
-    public void setFishierelement(FishiesrElement fishierelement) {
+    public void setFishierelement(FishiersElement fishierelement) {
         this.fishierelement = fishierelement;
     }
 
