@@ -2,18 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,15 +27,14 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "users")
-@NamedQueries({@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"), @NamedQuery(name = "User.findBySurname", query = "SELECT u FROM User u WHERE u.surname = :surname"), @NamedQuery(name = "User.findByCity", query = "SELECT u FROM User u WHERE u.city = :city"), @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"), @NamedQuery(name = "User.findByBirthdate", query = "SELECT u FROM User u WHERE u.birthdate = :birthdate"), @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login")})
+@NamedQueries({@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"), @NamedQuery(name = "User.findBySurname", query = "SELECT u FROM User u WHERE u.surname = :surname"), @NamedQuery(name = "User.findByCity", query = "SELECT u FROM User u WHERE u.city = :city"), @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"), @NamedQuery(name = "User.findByBirthdate", query = "SELECT u FROM User u WHERE u.birthdate = :birthdate"), @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"), @NamedQuery(name = "User.findByLocale", query = "SELECT u FROM User u WHERE u.locale = :locale")})
 public class User implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname", nullable = false)
     private String surname;
-    @Column(name = "locale", nullable = false)
-    private String locale;
     @Column(name = "city", nullable = false)
     private String city;
     @Column(name = "gender", nullable = false)
@@ -44,6 +45,10 @@ public class User implements Serializable {
     @Id
     @Column(name = "login", nullable = false)
     private String login;
+    @Column(name = "locale", nullable = false)
+    private String locale;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "login")
+    private Collection<Motorcycle> motorcycleCollection;
     @JoinColumn(name = "login", referencedColumnName = "login", insertable = false, updatable = false)
     @OneToOne
     private LoginData loginData;
@@ -55,17 +60,14 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public User(String login, String name, String surname, String city, String gender, Date birthdate) {
+    public User(String login, String name, String surname, String city, String gender, Date birthdate, Locale locale) {
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.city = city;
-        if(gender.equals("male"))
-            this.gender = true;
-        else
-            this.gender = false;
         this.birthdate = birthdate;
-        this.locale = "pl_PL";
+        this.locale = locale.toString();
+        this.setGender(gender);
     }
 
     public String getName() {
@@ -122,12 +124,20 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public LoginData getLoginData() {
-        return loginData;
+    public Locale getLocale() {
+        return new Locale(locale.split("_")[0], locale.split("_")[1]);
     }
 
-    public void setLoginData(LoginData loginData) {
-        this.loginData = loginData;
+    public void setLocale(Locale locale) {
+        this.locale = locale.toString();
+    }
+
+    public Collection<Motorcycle> getMotorcycleCollection() {
+        return motorcycleCollection;
+    }
+
+    public void setMotorcycleCollection(Collection<Motorcycle> motorcycleCollection) {
+        this.motorcycleCollection = motorcycleCollection;
     }
 
     @Override
@@ -155,12 +165,11 @@ public class User implements Serializable {
         return "entities.User[login=" + login + "]";
     }
 
-    public Locale getLocale() {
-        return new Locale(this.locale.split("_")[0],this.locale.split("_")[1]);
+    public void setLoginData(LoginData loginData) {
+        this.loginData = loginData;
     }
 
-    public void setLocale(Locale locale) {
-        this.locale = locale.toString();
+    public LoginData getLoginData() {
+        return loginData;
     }
-
 }

@@ -24,30 +24,28 @@ import javax.persistence.Table;
  * @author kalosh
  */
 @Entity
-@Table(name = "fishiers")
-@NamedQueries({@NamedQuery(name = "Fishier.findById", query = "SELECT f FROM Fishier f WHERE f.id = :id"), @NamedQuery(name = "Fishier.findByDescription", query = "SELECT f FROM Fishier f WHERE f.description = :description")})
-public class Fishier implements Serializable {
+@Table(name = "fishierselements")
+@NamedQueries({@NamedQuery(name = "FishiersElement.findById", query = "SELECT f FROM FishiersElement f WHERE f.id = :id"), @NamedQuery(name = "FishiersElement.findByDescription", query = "SELECT f FROM FishiersElement f WHERE f.description = :description")})
+public class FishiersElement implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="fishiergenerator", sequenceName="fishiers_id_seq")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="fishiergenerator")
+    @SequenceGenerator(name="fishierselement_generator", sequenceName="fishierselements_id_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="fishierselement_generator")
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "description", nullable = false)
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fishier")
-    private Collection<Motorcycle> motorcycleCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fishier")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fishierelement")
     private Collection<FishierElementBridge> fishierElementBridgeCollection;
 
-    public Fishier() {
+    public FishiersElement() {
     }
 
-    public Fishier(Integer id) {
+    public FishiersElement(Integer id) {
         this.id = id;
     }
 
-    public Fishier(Integer id, String description) {
+    public FishiersElement(Integer id, String description) {
         this.id = id;
         this.description = description;
     }
@@ -68,14 +66,6 @@ public class Fishier implements Serializable {
         this.description = description;
     }
 
-    public Collection<Motorcycle> getMotorcycleCollection() {
-        return motorcycleCollection;
-    }
-
-    public void setMotorcycleCollection(Collection<Motorcycle> motorcycleCollection) {
-        this.motorcycleCollection = motorcycleCollection;
-    }
-
     public Collection<FishierElementBridge> getFishierElementBridgeCollection() {
         return fishierElementBridgeCollection;
     }
@@ -94,10 +84,10 @@ public class Fishier implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Fishier)) {
+        if (!(object instanceof FishiersElement)) {
             return false;
         }
-        Fishier other = (Fishier) object;
+        FishiersElement other = (FishiersElement) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -106,7 +96,7 @@ public class Fishier implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Fishier[id=" + id + "]";
+        return "entities.FishiersElement[id=" + id + "]";
     }
 
 }
