@@ -63,6 +63,18 @@
             <http-method>TRACE</http-method>
             <http-method>DELETE</http-method>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>bike pages</web-resource-name>
+            <description/>
+            <url-pattern>/bikes/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>HEAD</http-method>
+            <http-method>PUT</http-method>
+            <http-method>OPTIONS</http-method>
+            <http-method>TRACE</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
         <auth-constraint>
             <description>userConstraint</description>
             <role-name>admins</role-name>
@@ -148,4 +160,4 @@
         <local>facades.AvailableLangsFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#AvailableLangsFacade</ejb-link>
     </ejb-local-ref>
-    </web-app>
+    <ejb-local-ref><ejb-ref-name>MotorcycleFacade</ejb-ref-name><ejb-ref-type>Session</ejb-ref-type><local>facades.MotorcycleFacadeLocal</local><ejb-link>MotorcyclistsPortal-ejb.jar#MotorcycleFacade</ejb-link></ejb-local-ref></web-app>

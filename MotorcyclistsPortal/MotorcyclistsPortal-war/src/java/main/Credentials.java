@@ -27,6 +27,7 @@ public class Credentials {
             Locale defaultLocale = RequestContextUtils.getLocale(request);
             HashMap<String, Object> formInfo = new HashMap<String, Object>();
             LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+            formInfo.put("pageTitle", localeProvider.getMessage("pageTitle", null, defaultLocale));
             String key = request.getParameter("error");
             if (null != key) {
                 formInfo.put("message", localeProvider.getMessage(key, null, defaultLocale));

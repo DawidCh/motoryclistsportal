@@ -7,6 +7,7 @@ package utils;
 
 import facades.AvailableLangsFacadeLocal;
 import facades.LoginDataFacadeLocal;
+import facades.MotorcycleFacadeLocal;
 import facades.PrivilegesFacadeLocal;
 import facades.UserFacadeLocal;
 import javax.naming.Context;
@@ -94,6 +95,16 @@ public class BeanGetter {
             return (AvailableLangsFacadeLocal) c.lookup("java:comp/env/AvailableLangsFacade");
         } catch (NamingException ne) {
             MPLogger.severe("Exception while looking up AvailableLangs in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private MotorcycleFacadeLocal lookupMotorcycleFacade() {
+        try {
+            Context c = new InitialContext();
+            return (MotorcycleFacadeLocal) c.lookup("java:comp/env/MotorcycleFacade");
+        } catch (NamingException ne) {
+            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
