@@ -62,6 +62,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <property name="mappings">
                     <value>
                         /bikes/list.html=showList
+                        /bikes/index.html=showList
                         /bikes/new.html=addBike
                         /bikes/delete.html=deleteBike
                         /bikes/details.html=details

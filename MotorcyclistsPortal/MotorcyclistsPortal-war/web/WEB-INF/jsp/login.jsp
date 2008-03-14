@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 
-<fmt:message key="login.formTitle"/>
+<fmt:message key="loginpage.formTitle"/>
 <form method="POST" action="j_security_check">
     <table>
         <tr><td><fmt:message key="loginpage.login"/></td><td><input type="text" name="j_username" /></td></tr>

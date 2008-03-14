@@ -29,8 +29,8 @@ import javax.persistence.Table;
 public class FishiersElement implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="fishierselement_generator", sequenceName="fishierselements_id_seq")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="fishierselement_generator")
+    @SequenceGenerator(name="fishierselementgenerator", sequenceName="fishierselements_id_seq")
+    @GeneratedValue(generator="fishierselementgenerator", strategy=GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "description", nullable = false)

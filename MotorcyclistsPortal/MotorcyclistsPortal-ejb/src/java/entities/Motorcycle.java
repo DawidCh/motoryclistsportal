@@ -29,7 +29,7 @@ public class Motorcycle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="motorcyclegenerator", sequenceName="motorcycles_id_seq")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="motorcyclegenerator")
+    @GeneratedValue(generator="motorcyclegenerator", strategy=GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "model", nullable = false)
@@ -46,6 +46,12 @@ public class Motorcycle implements Serializable {
     private int torque;
     @Column(name = "nickname")
     private String nickname;
+    @JoinColumn(name = "fishier", referencedColumnName = "id")
+    @ManyToOne
+    private Fishier fishier;
+    @JoinColumn(name = "login", referencedColumnName = "login")
+    @ManyToOne
+    private User login;
 
     public Motorcycle() {
     }
@@ -128,6 +134,22 @@ public class Motorcycle implements Serializable {
         this.nickname = nickname;
     }
 
+    public Fishier getFishier() {
+        return fishier;
+    }
+
+    public void setFishier(Fishier fishier) {
+        this.fishier = fishier;
+    }
+
+    public User getLogin() {
+        return login;
+    }
+
+    public void setLogin(User login) {
+        this.login = login;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -152,4 +174,5 @@ public class Motorcycle implements Serializable {
     public String toString() {
         return "entities.Motorcycle[id=" + id + "]";
     }
+
 }

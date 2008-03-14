@@ -4,6 +4,10 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
+    <context-param>
+        <param-name>webAppRootKey</param-name> 
+        <param-value>mp.root</param-value> 
+    </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -47,7 +51,7 @@
         <error-code>500</error-code>
         <location>/error.html</location>
     </error-page>
-
+    
     <!--security-->
     <security-constraint>
         <display-name>pages for logged users</display-name>
@@ -135,7 +139,7 @@
         <local>services.UserLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#UserBean</ejb-link>
     </ejb-local-ref>
-
+    
     <ejb-local-ref>
         <ejb-ref-name>PrivilegesFacade</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
@@ -160,4 +164,5 @@
         <local>facades.AvailableLangsFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#AvailableLangsFacade</ejb-link>
     </ejb-local-ref>
-    <ejb-local-ref><ejb-ref-name>MotorcycleFacade</ejb-ref-name><ejb-ref-type>Session</ejb-ref-type><local>facades.MotorcycleFacadeLocal</local><ejb-link>MotorcyclistsPortal-ejb.jar#MotorcycleFacade</ejb-link></ejb-local-ref></web-app>
+    <ejb-local-ref><ejb-ref-name>MotorcycleFacade</ejb-ref-name><ejb-ref-type>Session</ejb-ref-type><local>facades.MotorcycleFacadeLocal</local><ejb-link>MotorcyclistsPortal-ejb.jar#MotorcycleFacade</ejb-link></ejb-local-ref>
+</web-app>
