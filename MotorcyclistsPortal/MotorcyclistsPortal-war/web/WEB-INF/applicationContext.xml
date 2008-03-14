@@ -21,7 +21,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/index.html">index</prop>
                 <prop key="/login.html">credentials</prop>
                 <prop key="/**/logout.html">credentials</prop>
-                <prop key="/error.html">error</prop>
+                <prop key="/**/error.html">error</prop>
                 <prop key="/register.html">register</prop>
                 <!--secured pages-->
                 <prop key="/secured/index.html">main</prop>
@@ -47,7 +47,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         </property>
     </bean>
     
-    <!-- my mappings-->
+    <!-- controllers -->
     <bean id="index" class="main.IndexController"/>
     <bean id="main" class="user.Main"/>
     <bean id="profile" class="user.Profile"/>
@@ -77,4 +77,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     </bean>
     
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+    
+    <!-- error configuration
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <ref bean="error"/>
+        </property>
+    </bean>	-->
+    
 </beans>

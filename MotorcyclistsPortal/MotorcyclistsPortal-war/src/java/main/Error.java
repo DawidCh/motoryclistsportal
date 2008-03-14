@@ -27,6 +27,8 @@ public class Error implements Controller {
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         formInfo.put("pageTitle", localeProvider.getMessage("error.pageTitle", null, defaultLocale));
         // </editor-fold>
+        //TODO: retrieve error message from request
+        formInfo.put("errorMessage", new String("sampleMessage"));
         return new ModelAndView("unsecured/error", formInfo);
     }
 }
