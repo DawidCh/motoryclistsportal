@@ -8,7 +8,6 @@ package entities;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -44,7 +43,8 @@ public class LoginData implements Serializable {
     @JoinColumn(name = "privileges", referencedColumnName = "description")
     @ManyToOne
     private Privileges privileges;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "loginData")
+    @JoinColumn(name = "login", referencedColumnName = "login", insertable = false, updatable = false)
+    @OneToOne
     private User user;
 
     public LoginData() {

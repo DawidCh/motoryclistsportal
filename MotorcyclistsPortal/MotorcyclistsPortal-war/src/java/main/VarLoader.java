@@ -37,13 +37,12 @@ public class VarLoader extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object, ModelAndView map) throws Exception {
-        map.addObject("failColor", DefaultValues.getFailColor());
-        map.addObject("succColor", DefaultValues.getSuccColor());
-        map.addObject("currentLocale", RequestContextUtils.getLocale(request).toString());
-
         try {
-            map.addObject("login", request.getUserPrincipal().getName());
             map.addObject("favouriteLocale", BeanGetter.getUserSession(request).getFavouriteLoc().toString());
+            map.addObject("currentLocale", RequestContextUtils.getLocale(request).toString());
+            map.addObject("failColor", DefaultValues.getFailColor());
+            map.addObject("succColor", DefaultValues.getSuccColor());
+            map.addObject("login", request.getUserPrincipal().getName());
         } catch (NullPointerException nullPointerException) {
             MPLogger.severe("User is not in the session in VarLoader");
         }

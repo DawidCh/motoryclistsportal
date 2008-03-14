@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package entities;
 
 import java.io.Serializable;
@@ -12,7 +13,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -29,7 +29,6 @@ import javax.persistence.TemporalType;
 @Table(name = "users")
 @NamedQueries({@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"), @NamedQuery(name = "User.findBySurname", query = "SELECT u FROM User u WHERE u.surname = :surname"), @NamedQuery(name = "User.findByCity", query = "SELECT u FROM User u WHERE u.city = :city"), @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"), @NamedQuery(name = "User.findByBirthdate", query = "SELECT u FROM User u WHERE u.birthdate = :birthdate"), @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"), @NamedQuery(name = "User.findByLocale", query = "SELECT u FROM User u WHERE u.locale = :locale")})
 public class User implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Column(name = "name", nullable = false)
     private String name;
@@ -49,8 +48,7 @@ public class User implements Serializable {
     private String locale;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "login")
     private Collection<Motorcycle> motorcycleCollection;
-    @JoinColumn(name = "login", referencedColumnName = "login", insertable = false, updatable = false)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private LoginData loginData;
 
     public User() {
@@ -140,6 +138,14 @@ public class User implements Serializable {
         this.motorcycleCollection = motorcycleCollection;
     }
 
+    public LoginData getLoginData() {
+        return loginData;
+    }
+
+    public void setLoginData(LoginData loginData) {
+        this.loginData = loginData;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -165,11 +171,4 @@ public class User implements Serializable {
         return "entities.User[login=" + login + "]";
     }
 
-    public void setLoginData(LoginData loginData) {
-        this.loginData = loginData;
-    }
-
-    public LoginData getLoginData() {
-        return loginData;
-    }
 }

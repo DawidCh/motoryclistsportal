@@ -99,12 +99,12 @@ public class BeanGetter {
         }
     }
 
-    private MotorcycleFacadeLocal lookupMotorcycleFacade() {
+    public static MotorcycleFacadeLocal lookupMotorcycleFacade() {
         try {
             Context c = new InitialContext();
             return (MotorcycleFacadeLocal) c.lookup("java:comp/env/MotorcycleFacade");
         } catch (NamingException ne) {
-            java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, "exception caught", ne);
+            MPLogger.severe("Exception while looking up MotorcycleFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
     }

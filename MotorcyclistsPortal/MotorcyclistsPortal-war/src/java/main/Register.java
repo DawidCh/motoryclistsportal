@@ -92,7 +92,8 @@ public class Register implements Controller {
 
             Privileges choosenPriv = BeanGetter.lookupPrivilegesFacade().findByDesc("userusers");
             User user = new User((String)formInfo.get("newLogin"), (String)formInfo.get("name"),
-                    (String)formInfo.get("surname"), (String)formInfo.get("city"), (String)formInfo.get("gender"), birthdate);
+                    (String)formInfo.get("surname"), (String)formInfo.get("city"),
+                    (String)formInfo.get("gender"), birthdate,defaultLocale);
             LoginData loginData = null;
             try {
                 loginData = new LoginData((String)formInfo.get("newLogin"), this.computeSha((String)formInfo.get("password")));
