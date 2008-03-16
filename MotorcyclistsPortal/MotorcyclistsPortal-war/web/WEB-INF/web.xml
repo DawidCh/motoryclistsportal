@@ -2,11 +2,9 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
-    </context-param>
-    <context-param>
-        <param-name>webAppRootKey</param-name> 
-        <param-value>mp.root</param-value> 
+        <param-value>/WEB-INF/applicationContext.xml
+            /WEB-INF/acegi-config.xml
+        </param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -44,93 +42,9 @@
     
     <!--error pages-->
     <error-page>
-        <error-code>404</error-code>
+        <exception-type>java.util.Exception</exception-type>
         <location>/error.html</location>
     </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/error.html</location>
-    </error-page>
-    
-    <!--security-->
-    <security-constraint>
-        <display-name>pages for logged users</display-name>
-        <web-resource-collection>
-            <web-resource-name>secured pages</web-resource-name>
-            <description/>
-            <url-pattern>/secured/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            <http-method>HEAD</http-method>
-            <http-method>PUT</http-method>
-            <http-method>OPTIONS</http-method>
-            <http-method>TRACE</http-method>
-            <http-method>DELETE</http-method>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>bike pages</web-resource-name>
-            <description/>
-            <url-pattern>/bikes/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            <http-method>HEAD</http-method>
-            <http-method>PUT</http-method>
-            <http-method>OPTIONS</http-method>
-            <http-method>TRACE</http-method>
-            <http-method>DELETE</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <description>userConstraint</description>
-            <role-name>admins</role-name>
-            <role-name>users</role-name>
-            <role-name>moders</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <description>confidential constraint</description>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
-    
-    <security-constraint>
-        <display-name>login page for secure sended info</display-name>
-        <web-resource-collection>
-            <web-resource-name>login page</web-resource-name>
-            <description/>
-            <url-pattern>/login.html</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            <http-method>HEAD</http-method>
-            <http-method>PUT</http-method>
-            <http-method>OPTIONS</http-method>
-            <http-method>TRACE</http-method>
-            <http-method>DELETE</http-method>
-        </web-resource-collection>
-        <user-data-constraint>
-            <description>confidential constraint</description>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
-    
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <realm-name>motorealm</realm-name>
-        <form-login-config>
-            <form-login-page>/login.html</form-login-page>
-            <form-error-page>/login.html?error=loginpage.invalidpass</form-error-page>
-        </form-login-config>
-    </login-config>
-    <security-role>
-        <description>Portal admins</description>
-        <role-name>admins</role-name>
-    </security-role>
-    <security-role>
-        <description>Portal moderators</description>
-        <role-name>moders</role-name>
-    </security-role>
-    <security-role>
-        <description>Portal users</description>
-        <role-name>users</role-name>
-    </security-role>
     
     <!-- beans-->
     <ejb-local-ref>
@@ -164,5 +78,36 @@
         <local>facades.AvailableLangsFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#AvailableLangsFacade</ejb-link>
     </ejb-local-ref>
-    <ejb-local-ref><ejb-ref-name>MotorcycleFacade</ejb-ref-name><ejb-ref-type>Session</ejb-ref-type><local>facades.MotorcycleFacadeLocal</local><ejb-link>MotorcyclistsPortal-ejb.jar#MotorcycleFacade</ejb-link></ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>MotorcycleFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.MotorcycleFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#MotorcycleFacade</ejb-link>
+    </ejb-local-ref>
+    
+    <!--acegi security-->
+    <filter>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/authz</taglib-uri>
+            <taglib-location>/WEB-INF/authz.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/spring</taglib-uri>
+            <taglib-location>/WEB-INF/spring.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 </web-app>

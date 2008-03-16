@@ -49,6 +49,7 @@ public class Register implements Controller {
             formInfo.put("birthdate", request.getParameter("birthdate"));
             formInfo.put("gender", request.getParameter("gender"));
             formInfo.put("form", request.getParameter("form"));
+            formInfo.put("mileageType", request.getParameter("mileageType"));
 
             String[] keyList = formInfo.keySet().toArray(new String[formInfo.keySet().size()]);
             for (int i = 0; i < keyList.length; i++) {
@@ -90,13 +91,13 @@ public class Register implements Controller {
             //end of verification
 
 
-            Privileges choosenPriv = BeanGetter.lookupPrivilegesFacade().findByDesc("userusers");
+            Privileges choosenPriv = BeanGetter.lookupPrivilegesFacade().findByDesc("ROLE_USER");
             User user = new User((String)formInfo.get("newLogin"), (String)formInfo.get("name"),
                     (String)formInfo.get("surname"), (String)formInfo.get("city"),
-                    (String)formInfo.get("gender"), birthdate,defaultLocale);
+                    (String)formInfo.get("gender"), birthdate,defaultLocale, (String)formInfo.get("mileageType"));
             LoginData loginData = null;
             try {
-                loginData = new LoginData((String)formInfo.get("newLogin"), this.computeSha((String)formInfo.get("password")));
+                loginData = new LoginData((String)formInfo.get("newLogin"), (String)formInfo.get("password"));
             } catch (Exception exception) {
                 MPLogger.severe("Error while creating LoginData object");
                 formInfo.put("message", localeProvider.getMessage("register.shaerror", null, defaultLocale));
@@ -106,11 +107,12 @@ public class Register implements Controller {
 
             user.setLoginData(loginData);
             user.setLocale(defaultLocale);
+            MPLogger.severe("register: "+defaultLocale.toString()+RequestContextUtils.getLocale(request));
             loginData.setUser(user);
             loginData.setPrivileges(choosenPriv);
 
             try {
-                BeanGetter.lookupUserBean().createUser(user, loginData);
+                BeanGetter.lookupUserBean().createUser(user);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
                 MPLogger.severe("Error while adding to database in Register: " + excMess);

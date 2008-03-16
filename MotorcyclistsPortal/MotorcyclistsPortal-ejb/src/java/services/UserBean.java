@@ -16,6 +16,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import utils.MPException;
+import utils.MPLogger;
 
 /**
  *
@@ -30,17 +31,17 @@ public class UserBean implements UserLocal {
 
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void createUser(User user, LoginData loginData) throws MPException
+    public void createUser(User user) throws MPException
     {
-        this.loginDataFacade.create(loginData);
+        //this.loginDataFacade.create(user.getLoginData());
         this.userFacade.create(user);
     }
  
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    @RolesAllowed({"admins", "moders", "users"})
-    public void editUser(User user, LoginData loginData) throws MPException
+    public void editUser(User user) throws MPException
     {
-        this.loginDataFacade.edit(loginData);
+        //this.loginDataFacade.edit(user.getLoginData());
         this.userFacade.edit(user);
+        MPLogger.severe(user.getLoginData().getPassword());
     }
 }

@@ -18,14 +18,25 @@
         <tr><td<c:if test='${(city == null || city=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
             <fmt:message key="register.city"/></td><td><input name="city" type="text" value="<c:out value="${city}"/>"/></td></tr>
         <tr>
+            <td<c:if test='${(mileageType == null || mileageType=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
+                <fmt:message key="measures.lengthUnit"/></td>
+            <td><radiogroup>
+                <fmt:message key="measures.km"/>: <input type="radio" name="mileageType" value="km"
+                                                             <c:if test='${mileageType == "km"}'> checked</c:if>/>
+                                                             <fmt:message key="measures.mil"/>: <input type="radio" name="mileageType" value="mil"
+                                                             <c:if test='${mileageType == "mil"}'> checked</c:if>/>
+                                                             </radiogroup>
+            </td>
+        </tr>
+        <tr>
             <td<c:if test='${(gender == null || gender=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
                 <fmt:message key="register.gender"/></td>
             <td><radiogroup>
-                    <fmt:message key="register.female"/>: <input type="radio" name="gender" value="female"
-                    <c:if test='${gender == "female"}'> checked</c:if>/>
-                    <fmt:message key="register.male"/>: <input type="radio" name="gender" value="male"
-                    <c:if test='${gender == "male"}'> checked</c:if>/>
-                </radiogroup>
+                <fmt:message key="register.female"/>: <input type="radio" name="gender" value="female"
+                                                             <c:if test='${gender == "female"}'> checked</c:if>/>
+                                                             <fmt:message key="register.male"/>: <input type="radio" name="gender" value="male"
+                                                             <c:if test='${gender == "male"}'> checked</c:if>/>
+                                                             </radiogroup>
             </td>
         </tr>
         <tr><td<c:if test='${(birthdate == null || birthdate=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*

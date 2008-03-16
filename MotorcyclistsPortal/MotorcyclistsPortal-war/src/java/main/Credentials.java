@@ -10,6 +10,8 @@ import utils.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.acegisecurity.AuthenticationException;
+import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
@@ -32,6 +34,10 @@ public class Credentials {
             if (null != key) {
                 formInfo.put("message", localeProvider.getMessage(key, null, defaultLocale));
                 formInfo.put("messColor", DefaultValues.getFailColor());
+                AuthenticationException aex = (AuthenticationException) request.
+                        getSession(false).getAttribute(AbstractProcessingFilter.
+                        ACEGI_SECURITY_LAST_EXCEPTION_KEY);
+                MPLogger.severe(aex.getMessage());
                 return new ModelAndView("login", formInfo);
             }
             return new ModelAndView("login", formInfo);
@@ -39,7 +45,7 @@ public class Credentials {
             return new ModelAndView("redirect:/secured/main.html");
         }
     }
-
+    
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
         session.invalidate();
         return new ModelAndView("redirect:/index.html");

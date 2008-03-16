@@ -8,11 +8,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.acegisecurity.AuthenticationException;
+import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.LocaleProvider;
+import utils.MPLogger;
 
 /**
  *
@@ -27,8 +30,19 @@ public class Error implements Controller {
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         formInfo.put("pageTitle", localeProvider.getMessage("error.pageTitle", null, defaultLocale));
         // </editor-fold>
-        //TODO: retrieve error message from request
-        formInfo.put("errorMessage", new String("sampleMessage"));
+        AuthenticationException aex = (AuthenticationException) request.getSession(false).getAttribute(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY);
+        try {
+            MPLogger.severe(aex.getMessage());
+            formInfo.put("errorMessage", aex.getMessage());
+
+        } catch (NullPointerException nullPointerException) {
+            String errorMessage = request.getParameter("errorMessage");
+            if(null != errorMessage)
+                formInfo.put("errorMessage", errorMessage);
+            else
+                formInfo.put("errorMessage", localeProvider.getMessage("error.otherError", null, defaultLocale));
+        }
+
         return new ModelAndView("unsecured/error", formInfo);
     }
 }
