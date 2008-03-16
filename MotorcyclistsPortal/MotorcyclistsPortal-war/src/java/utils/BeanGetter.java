@@ -14,10 +14,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import services.UserLocal;
-import user.UserSession;
+import user.DetailedUserInformation;
 
 /**
  *
@@ -25,15 +26,20 @@ import user.UserSession;
  */
 public class BeanGetter {
 
-    public static UserSession getUserSession(HttpServletRequest request){
+    /*public static UserSession getUserSession(HttpServletRequest request){
         return (UserSession) BeanGetter.getScopedBean("userSession", request);
+    }*/
+    
+    public static DetailedUserInformation getUserInfo()
+    {
+        return (DetailedUserInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
     
     public static LocaleProvider getLocaleProvider(HttpServletRequest request){
         return (LocaleProvider) BeanGetter.getScopedBean("localeProvider", request);
     }
     
-    public static SessionLocaleResolver getLocaleResolver(HttpServletRequest request){
+    public static SessionLocaleResolver getSessionLocaleResolver(HttpServletRequest request){
         return (SessionLocaleResolver) BeanGetter.getScopedBean("localeResolver", request);
     }
     

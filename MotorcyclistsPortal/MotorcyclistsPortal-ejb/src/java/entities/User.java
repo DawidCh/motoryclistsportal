@@ -36,6 +36,8 @@ public class User implements Serializable {
     private String surname;
     @Column(name = "city", nullable = false)
     private String city;
+    @Column(name = "mileageType", nullable = false)
+    private String mileageType;
     @Column(name = "gender", nullable = false)
     private boolean gender;
     @Column(name = "birthdate", nullable = false)
@@ -58,7 +60,8 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public User(String login, String name, String surname, String city, String gender, Date birthdate, Locale locale) {
+    public User(String login, String name, String surname, String city,
+            String gender, Date birthdate, Locale locale, String mileageType) {
         this.login = login;
         this.name = name;
         this.surname = surname;
@@ -66,6 +69,7 @@ public class User implements Serializable {
         this.birthdate = birthdate;
         this.locale = locale.toString();
         this.setGender(gender);
+        this.mileageType = mileageType;
     }
 
     public String getName() {
@@ -169,6 +173,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "entities.User[login=" + login + "]";
+    }
+
+    public String getMileageType() {
+        return mileageType;
+    }
+
+    public void setMileageType(String mileageType) {
+        this.mileageType = mileageType;
     }
 
 }

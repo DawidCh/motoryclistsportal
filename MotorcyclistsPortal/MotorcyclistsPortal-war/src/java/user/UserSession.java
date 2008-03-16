@@ -22,35 +22,34 @@ import utils.MPLogger;
  */
 public class UserSession {
     
-    private Locale favouriteLoc;
-    private String login;
     private User user;
     private LoginData loginData;
 
     public UserSession() {
     }
+
+    public User getUser() {
+        return user;
+    }
     
-    public void setValues(HttpServletRequest request, HttpServletResponse response)
+    public void setSessionValues(HttpServletRequest request, HttpServletResponse response)
     {
-        this.login = request.getUserPrincipal().getName();
-        this.user = BeanGetter.lookupUserFacade().find(this.login);
-        this.loginData = BeanGetter.lookupLoginDataFacade().find(this.login);
-        this.favouriteLoc = this.user.getLocale();
-        SessionLocaleResolver slr = BeanGetter.getLocaleResolver(request);
-        slr.setLocale(request, response, this.favouriteLoc);
+        this.user = BeanGetter.lookupUserFacade().find(request.getUserPrincipal().getName());
+        this.loginData = BeanGetter.lookupLoginDataFacade().find(this.user.getLogin());
+        SessionLocaleResolver slr = BeanGetter.getSessionLocaleResolver(request);
+        slr.setLocale(request, response, this.user.getLocale());
     }
     
     public void refreshUserFromDB()
     {
-        this.user = BeanGetter.lookupUserFacade().find(this.login);
-        this.loginData = BeanGetter.lookupLoginDataFacade().find(this.login);
-        this.favouriteLoc = this.user.getLocale();
+        this.user = BeanGetter.lookupUserFacade().find(this.user.getLogin());
+        this.loginData = BeanGetter.lookupLoginDataFacade().find(this.user.getLogin());
     }
     public void setLanguageInDB(HttpServletRequest request, Locale locale) throws MPException
     {
         try {
             this.user.setLocale(locale);
-            BeanGetter.lookupUserBean().editUser(this.user, this.loginData);
+            BeanGetter.lookupUserBean().editUser(this.user);
         } catch (MPException ex) {
             MPLogger.severe("Error while persisting language at UserSession");
             LocaleProvider loc = BeanGetter.getLocaleProvider(request);
@@ -59,23 +58,5 @@ public class UserSession {
         {
             MPLogger.severe("Error while persisting language at UserSession because user is not in the session");
         }
-    }
-
-    public String getLogin() {
-        return login;
-    }
-    
-    public String getName()
-    {
-        return this.user.getName();
-    }
-    
-    public String getSurname()
-    {
-        return this.user.getSurname();
-    }
-
-    public Locale getFavouriteLoc() {
-        return favouriteLoc;
     }
 }

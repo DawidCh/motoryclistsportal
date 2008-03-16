@@ -6,11 +6,13 @@
 package user;
 
 import entities.Motorcycle;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
@@ -28,7 +30,8 @@ public class Bikes {
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         // </editor-fold>
-        List<Motorcycle> bikes = BeanGetter.lookupMotorcycleFacade().findAll();
+        DetailedUserInformation userInfo = BeanGetter.getUserInfo();
+        List<Motorcycle> bikes = new ArrayList<Motorcycle>(userInfo.getMotorcycleCollection());
         formInfo.put("bikes", bikes);
         formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
         return new ModelAndView("bikes/list", formInfo);

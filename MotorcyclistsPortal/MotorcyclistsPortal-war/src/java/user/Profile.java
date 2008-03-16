@@ -30,7 +30,6 @@ public class Profile extends AbstractController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        this.setRequireSession(true);
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -55,6 +54,7 @@ public class Profile extends AbstractController {
         formInfo.put("surname", user.getSurname());
         formInfo.put("city", user.getCity());
         formInfo.put("gender", user.getGender());
+        formInfo.put("mileageType", user.getMileageType());
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
         formInfo.put("birthdate", sdf.format(user.getBirthdate()));
         // </editor-fold>
@@ -70,6 +70,7 @@ public class Profile extends AbstractController {
             formInfo.put("birthdate", request.getParameter("birthdate"));
             formInfo.put("gender", request.getParameter("gender"));
             formInfo.put("form", request.getParameter("form"));
+            formInfo.put("mileageType", request.getParameter("mileageType"));
 
 
             String[] keyList = formInfo.keySet().toArray(new String[formInfo.keySet().size()]);
@@ -112,6 +113,9 @@ public class Profile extends AbstractController {
             if (!user.getName().equals((String)formInfo.get("name"))) {
                 user.setName((String)formInfo.get("name"));
             }
+            if (!user.getMileageType().equals((String)formInfo.get("mileageType"))) {
+                user.setName((String)formInfo.get("mileageType"));
+            }
             if (!user.getName().equals((String)formInfo.get("surname"))) {
                 user.setSurname((String)formInfo.get("surname"));
             }
@@ -124,13 +128,17 @@ public class Profile extends AbstractController {
             if (!user.getName().equals((String)formInfo.get("gender"))) {
                 user.setGender((String)formInfo.get("gender"));
             }
-            if (!this.computeSha(password).equals(loginData.getPassword()) &&
+            /*if (!this.computeSha(password).equals(loginData.getPassword()) &&
                     !password.equals(new String(""))) {
                 loginData.setPassword(this.computeSha(password));
+            }*/
+            if (!password.equals(loginData.getPassword()) &&
+                    !password.equals(new String(""))) {
+                loginData.setPassword(password);
             }
 
             try {
-                BeanGetter.lookupUserBean().editUser(user, loginData);
+                BeanGetter.lookupUserBean().editUser(user);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
                 MPLogger.severe("Error while setting data to database in Profile: " + excMess);

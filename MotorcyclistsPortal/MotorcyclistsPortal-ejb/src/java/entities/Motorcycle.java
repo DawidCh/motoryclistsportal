@@ -44,6 +44,8 @@ public class Motorcycle implements Serializable {
     private int power;
     @Column(name = "torque", nullable = false)
     private int torque;
+    @Column(name = "mileage", nullable = false)
+    private int mileage;
     @Column(name = "nickname")
     private String nickname;
     @JoinColumn(name = "fishier", referencedColumnName = "id")
@@ -127,7 +129,9 @@ public class Motorcycle implements Serializable {
     }
 
     public String getNickname() {
-        return nickname;
+        if(null == this.nickname)
+            return "------";
+        return this.nickname;
     }
 
     public void setNickname(String nickname) {
@@ -173,6 +177,14 @@ public class Motorcycle implements Serializable {
     @Override
     public String toString() {
         return "entities.Motorcycle[id=" + id + "]";
+    }
+
+    public int getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
 }

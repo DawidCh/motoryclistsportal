@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entities;
 
 import java.io.Serializable;
@@ -28,6 +27,7 @@ import javax.persistence.TemporalType;
 @Table(name = "logindata")
 @NamedQueries({@NamedQuery(name = "LoginData.findByPassword", query = "SELECT l FROM LoginData l WHERE l.password = :password"), @NamedQuery(name = "LoginData.findByLastlogindate", query = "SELECT l FROM LoginData l WHERE l.lastlogindate = :lastlogindate"), @NamedQuery(name = "LoginData.findByCurrentlogindate", query = "SELECT l FROM LoginData l WHERE l.currentlogindate = :currentlogindate"), @NamedQuery(name = "LoginData.findByLogin", query = "SELECT l FROM LoginData l WHERE l.login = :login")})
 public class LoginData implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Column(name = "password", nullable = false)
     private String password;
@@ -40,6 +40,8 @@ public class LoginData implements Serializable {
     @Id
     @Column(name = "login", nullable = false)
     private String login;
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
     @JoinColumn(name = "privileges", referencedColumnName = "description")
     @ManyToOne
     private Privileges privileges;
@@ -134,4 +136,11 @@ public class LoginData implements Serializable {
         return "entities.LoginData[login=" + login + "]";
     }
 
+    public boolean getEnable() {
+        return enabled;
+    }
+
+    public void setEnable(boolean enabled) {
+        this.enabled = enabled;
+    }
 }

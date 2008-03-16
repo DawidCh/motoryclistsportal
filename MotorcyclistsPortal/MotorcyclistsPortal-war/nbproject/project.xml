@@ -8,6 +8,11 @@
             <web-module-libraries>
                 <library files="1">
                     <file>${reference.MotorcyclistsPortal-ejb.dist}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library files="1">
+                    <file>${file.reference.acegi-security-1.0.6.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library files="25">
                     <file>${libs.spring-framework-2.5.classpath}</file>
