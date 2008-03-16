@@ -61,6 +61,7 @@ public class LoginData implements Serializable {
         this.password = password;
         this.lastlogindate = Calendar.getInstance().getTime();
         this.currentlogindate = Calendar.getInstance().getTime();
+        this.enabled = true;
     }
 
     public String getPassword() {
@@ -141,6 +142,14 @@ public class LoginData implements Serializable {
     }
 
     public void setEnable(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 }
