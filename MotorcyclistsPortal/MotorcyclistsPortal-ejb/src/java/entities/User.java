@@ -127,7 +127,11 @@ public class User implements Serializable {
     }
 
     public Locale getLocale() {
-        return new Locale(locale.split("_")[0], locale.split("_")[1]);
+        String[] locales = locale.split("_");
+        if(locales.length == 2)
+            return new Locale(locales[0], locales[1]);
+        else
+            return new Locale(locales[0]);
     }
 
     public void setLocale(Locale locale) {

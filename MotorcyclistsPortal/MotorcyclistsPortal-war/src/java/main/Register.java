@@ -107,7 +107,6 @@ public class Register implements Controller {
 
             user.setLoginData(loginData);
             user.setLocale(defaultLocale);
-            MPLogger.severe("register: "+defaultLocale.toString()+RequestContextUtils.getLocale(request));
             loginData.setUser(user);
             loginData.setPrivileges(choosenPriv);
 

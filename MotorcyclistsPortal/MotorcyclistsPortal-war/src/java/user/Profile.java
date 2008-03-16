@@ -37,8 +37,8 @@ public class Profile extends AbstractController {
         LoginData loginData;
         User user;
         try {
-            loginData = BeanGetter.lookupLoginDataFacade().find(request.getUserPrincipal().getName());
-            user = BeanGetter.lookupUserFacade().find(request.getUserPrincipal().getName());
+            loginData = BeanGetter.getUserInfo().getUser().getLoginData();
+            user = BeanGetter.getUserInfo().getUser();
 
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage("profile.errorRecivingData", null, defaultLocale));
@@ -114,7 +114,7 @@ public class Profile extends AbstractController {
                 user.setName((String)formInfo.get("name"));
             }
             if (!user.getMileageType().equals((String)formInfo.get("mileageType"))) {
-                user.setName((String)formInfo.get("mileageType"));
+                user.setMileageType((String)formInfo.get("mileageType"));
             }
             if (!user.getName().equals((String)formInfo.get("surname"))) {
                 user.setSurname((String)formInfo.get("surname"));

@@ -5,18 +5,15 @@
 
 package services;
 
-import entities.LoginData;
 import entities.User;
 import facades.LoginDataFacadeLocal;
 import facades.UserFacadeLocal;
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import utils.MPException;
-import utils.MPLogger;
 
 /**
  *
@@ -33,15 +30,12 @@ public class UserBean implements UserLocal {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createUser(User user) throws MPException
     {
-        //this.loginDataFacade.create(user.getLoginData());
         this.userFacade.create(user);
     }
  
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void editUser(User user) throws MPException
     {
-        //this.loginDataFacade.edit(user.getLoginData());
         this.userFacade.edit(user);
-        MPLogger.severe(user.getLoginData().getPassword());
     }
 }
