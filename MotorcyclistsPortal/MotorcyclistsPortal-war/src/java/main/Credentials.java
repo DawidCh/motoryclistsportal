@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
@@ -22,9 +23,9 @@ import utils.LocaleProvider;
  *
  * @author kalosh
  */
-public class Credentials {
+public class Credentials implements Controller{
 
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (null == request.getUserPrincipal()) {
             Locale defaultLocale = RequestContextUtils.getLocale(request);
             HashMap<String, Object> formInfo = new HashMap<String, Object>();
@@ -44,10 +45,5 @@ public class Credentials {
         } else {
             return new ModelAndView("redirect:/secured/main.html");
         }
-    }
-    
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-        session.invalidate();
-        return new ModelAndView("redirect:/index.html");
     }
 }

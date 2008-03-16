@@ -6,7 +6,7 @@
             <value><![CDATA[
             CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
             PATTERN_TYPE_APACHE_ANT
-            /**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,exceptionTranslationFilter,filterInvocationInterceptor
+            /**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,exceptionTranslationFilter,filterInvocationInterceptor,logoutFilter
             ]]></value>
         </property>
     </bean>
@@ -20,6 +20,7 @@
                 <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
             </list>
         </constructor-arg>
+        <property name="filterProcessesUrl" value="/j_acegi_logout"/>
     </bean>
     
     <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">

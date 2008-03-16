@@ -13,7 +13,7 @@
     <tr>
         <c:choose>
             <c:when test="${user != null}">
-                <td><a href="<c:url value="/logout.html"/>"><fmt:message key="header.logout"/>, <c:out value="${user.username}"/></a></td>
+                <td><a href="<c:url value="/j_acegi_logout"/>"><fmt:message key="header.logout"/>, <c:out value="${user.username}"/></a></td>
                 <td><a href="<c:url value="/secured/profile.html"/>"><fmt:message key="header.profile"/></a></td>
                 <td><a href="<c:url value="/secured/index.html"/>"><fmt:message key="header.main"/></a></td>
                 <td><a href="<c:url value="/bikes/index.html"/>"><fmt:message key="header.mybikes"/></a></td>
