@@ -20,7 +20,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <!--public pages-->
                 <prop key="/index.html">index</prop>
                 <prop key="/login.html">credentials</prop>
-                <prop key="/**/logout.html">credentials</prop>
                 <prop key="/**/error.html">error</prop>
                 <prop key="/register.html">register</prop>
                 <!--secured pages-->
@@ -40,21 +39,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="register" class="main.Register"/>
     
     <!--multicontrollers-->
-    <bean id="credentials" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
-        <property name="methodNameResolver">
-            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
-                <property name="mappings">
-                    <value>
-                        /login.html=login
-                        /**/logout.html=logout
-                    </value>
-                </property>
-            </bean>
-        </property>
-        <property name="delegate">
-            <bean class="main.Credentials"/>
-        </property>
-    </bean>
+    <bean id="credentials" class="main.Credentials"/>
     
     <bean id="bikes" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
         <property name="methodNameResolver">
@@ -79,7 +64,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="varLoaderInterceptor" class="main.VarLoader"/>
     
     <!-- scoped beans-->
-    <bean id="userSession" class="user.UserSession" scope="session"/>
     <bean id="settings" class="utils.ApplicationSettings" scope="singleton"/>
     
     <!-- locales configuration -->
