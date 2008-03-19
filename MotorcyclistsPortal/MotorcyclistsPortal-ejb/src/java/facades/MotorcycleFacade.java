@@ -6,6 +6,7 @@
 package facades;
 
 import entities.Motorcycle;
+import entities.User;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,6 +35,10 @@ public class MotorcycleFacade implements MotorcycleFacadeLocal {
 
     public Motorcycle find(Object id) {
         return em.find(entities.Motorcycle.class, id);
+    }
+    
+    public List<Motorcycle> findByLogin(User user){
+        return em.createQuery("select object(o) from Motorcycle as o where o.login.login='"+user.getLogin()+"'").getResultList();
     }
 
     public List<Motorcycle> findAll() {

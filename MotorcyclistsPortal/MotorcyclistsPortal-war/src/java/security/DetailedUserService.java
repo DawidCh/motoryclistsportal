@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package user;
+package security;
 
 import entities.User;
 import org.acegisecurity.userdetails.UserDetailsService;

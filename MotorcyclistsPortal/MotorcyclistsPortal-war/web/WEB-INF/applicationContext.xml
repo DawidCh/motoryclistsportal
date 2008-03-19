@@ -37,10 +37,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="profile" class="user.Profile"/>
     <bean id="error" class="main.Error"/>
     <bean id="register" class="main.Register"/>
-    
-    <!--multicontrollers-->
     <bean id="credentials" class="main.Credentials"/>
     
+    <!--multicontrollers-->
     <bean id="bikes" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
         <property name="methodNameResolver">
             <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">

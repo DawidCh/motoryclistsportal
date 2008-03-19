@@ -18,7 +18,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import services.UserLocal;
-import user.DetailedUserInformation;
+import security.DetailedUserInformation;
 
 /**
  *

@@ -3,9 +3,11 @@
  * and open the template in the editor.
  */
 
-package user;
+package security;
 
 import entities.LoginData;
+import entities.Motorcycle;
+import facades.UserFacadeLocal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.Locale;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.User;
+import utils.BeanGetter;
+import utils.MPLogger;
 
 /**
  *
@@ -28,9 +32,16 @@ public class DetailedUserInformation extends User{
                     new GrantedAuthorityImpl(user.getLoginData().getPrivileges().getDescription())});
         this.user = user;
     }
-
     public entities.User getUser() {
         return user;
+    }
+
+    public List<Motorcycle> getMotorcycleCollection(){
+        return new ArrayList<Motorcycle>(this.user.getMotorcycleCollection());
+    }
+
+    public void refreshMotorcycleCollection() {
+        this.user.setMotorcycleCollection(BeanGetter.lookupMotorcycleFacade().findByLogin(this.user));
     }
 
     public void setBirthdate(Date birthdate) {
@@ -47,6 +58,10 @@ public class DetailedUserInformation extends User{
 
     public void setMileageType(String mileageType) {
         this.user.setMileageType(mileageType);
+    }
+    
+    public String getMileageType(){
+        return this.user.getMileageType();
     }
 
     public void setSurname(String surname) {
@@ -65,16 +80,8 @@ public class DetailedUserInformation extends User{
         return this.user.getName();
     }
 
-    public List getMotorcycleCollection() {
-        return new ArrayList(this.user.getMotorcycleCollection());
-    }
-
     public LoginData getLoginData() {
         return this.user.getLoginData();
-    }
-
-    public String getMileageType() {
-        return this.user.getMileageType();
     }
 
     public Locale getLocale() {

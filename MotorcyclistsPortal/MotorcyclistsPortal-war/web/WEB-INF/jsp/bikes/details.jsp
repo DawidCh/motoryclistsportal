@@ -13,38 +13,18 @@
     <tr><td><fmt:message key="bikes.torque"/></td><td><c:out value="${bike.torque}"/></td></tr>
     <tr><td><fmt:message key="bikes.power"/></td><td><c:out value="${bike.power}"/></td></tr>
     <tr><td><fmt:message key="bikes.displacement"/></td><td><c:out value="${bike.enginecapacity}"/></td></tr>    
-    <tr><td>
-            <form name="deletebike" method="post" action="/bikes/delete.html">
-                <input type="hidden" name="bike" value="<c:out value="${bike.id}"/>"/>
-                <a href="javascript:document.deletebike.submit()"><fmt:message key="bikes.deletebike"/></a>
-            </form>
-        </td>
-        <td>
-            <form name="editbike" method="post" action="/bikes/edit.html">
-                <input type="hidden" name="bike" value="<c:out value="${bike.id}"/>"/>
-                <a href="javascript:document.editbike.submit()"><fmt:message key="bikes.editbike"/></a>
-            </form>
-        </td>
+    <tr><td><a href="<c:url value="/bikes/delete.html?bike=${bike.id}"/>"><fmt:message key="bikes.deletebike"/></a></td>
+        <td><a href="<c:url value="/bikes/edit.html?bike=${bike.id}"/>"><fmt:message key="bikes.editbike"/></a></td>
     </tr>
     <tr><td colspan="2"><fmt:message key="bikes.fishier"/></td></tr>
     <tr>
         <c:choose>
             <c:when test="${bike.fishier != null}">
-                <td>
-                    <form name="showfishier" method="post" action="/fishiers/show.html">
-                        <input type="hidden" name="fisher" value="<c:out value="${bike.fishier.id}"/>"/>
-                        <a href="javascript:document.showfishier.submit()"><c:out value="${bike.fishier.description}"/></a>
-                    </form>
-                </td>
-                <td>
-                    <form name="deletefishier" method="post" action="/fishiers/delete.html">
-                        <input type="hidden" name="fishier" value="<c:out value="${bike.fishier.id}"/>"/>
-                        <a href="javascript:document.deletefishier.submit()"><fmt:message key="bikes.deletefishier"/></a>
-                    </form>
-                </td>
+                <td><a href="<c:url value="/fishiers/show.html?fishier=${bike.fishier.id}"/>"><c:out value="${bike.fishier.description}"/></a></td>
+                <td><a href="<c:url value="/fishiers/delete.html?fishier=${bike.fishier.id}"/>"><fmt:message key="fishiers.deleteFishier"/></a></td>
             </c:when>
             <c:otherwise>
-                <td colspan="2"><a href="/fishiers/addfishier.html"><fmt:message key="bikes.newFishier"/></a></td>
+                <td colspan="2"><a href="/fishiers/addfishier.html"><fmt:message key="fishiers.newFishier"/></a></td>
             </c:otherwise>
         </c:choose>
     </tr>

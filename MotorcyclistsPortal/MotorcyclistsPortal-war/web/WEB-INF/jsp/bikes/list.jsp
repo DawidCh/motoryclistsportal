@@ -13,21 +13,18 @@
     </tr>
     <c:forEach var="bike" items="${bikes}">
         <tr>
-            <td><a href="/bikes/details.html?bike=<c:out value="${bike.id}"/>"><c:out value="${bike.nickname}"/></a></td>
+            <td><a href="<c:url value="/bikes/details.html?bike=${bike.id}"/>"><c:out value="${bike.nickname}"/></a></td>
             <td><c:out value="${bike.manufacturer}"/></td>
             <td><c:out value="${bike.model}"/></td>
             <td><c:out value="${bike.year}"/></td>
             <td><c:out value="${bike.mileage}"/> <c:out value="${user.mileageType}"/></td>
             <c:choose>
                 <c:when test="${bike.fishier != null}">
-                    <td><form name="showfishier" method="post" action="/fishiers/showfishier.html">
-                        <input type="hidden" name="fisher" value="<c:out value="${bike.fishier.id}"/>"/>
-                        <a href="javascript:document.showfishier.submit()"><c:out value="${bike.fishier.description}"/></a>
-                        </form>
+                    <td><a href="<c:url value="/fishiers/showfishier.html?fisier=${bike.fishier.id}"/>"><c:out value="${bike.fishier.description}"/></a>
                     </td>
                 </c:when>
                 <c:otherwise>
-                    <td><a href="/fishiers/addfishier.html"><fmt:message key="bikes.newFishier"/></a></td>
+                    <td><a href="<c:url value="/fishiers/addfishier.html"/>"><fmt:message key="fishiers.newFishier"/></a></td>
                 </c:otherwise>
             </c:choose>
         </tr>
