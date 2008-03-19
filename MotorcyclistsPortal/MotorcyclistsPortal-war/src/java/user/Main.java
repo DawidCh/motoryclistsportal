@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.LocaleProvider;
 
@@ -23,7 +24,7 @@ public class Main extends AbstractController {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         HashMap<String, Object> info = new HashMap<String, Object>();
-        info.put("pageTitle", localeProvider.getMessage("main.pageTitle", null, request.getLocale()));
+        info.put("pageTitle", localeProvider.getMessage("main.pageTitle", null, RequestContextUtils.getLocale(request)));
         // </editor-fold>
         return new ModelAndView("secured/main", info);
     }

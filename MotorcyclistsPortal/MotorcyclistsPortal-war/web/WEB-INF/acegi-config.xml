@@ -36,7 +36,7 @@
     </bean>
     
     <!--login screen-->
-    <bean id="authenticationProcessingFilter" class="user.MPAuthenticationProcessingFilter">
+    <bean id="authenticationProcessingFilter" class="security.MPAuthenticationProcessingFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="authenticationFailureUrl" value="/login.html?error=loginpage.invalidpass"/>
         <property name="defaultTargetUrl" value="/"/>
@@ -125,7 +125,7 @@
         <property name="dataSource"><ref bean="dataSourceJndi"/></property>
     </bean> -->
     
-    <bean id="mpJdbcDaoImpl" class="user.DetailedUserService"/>
+    <bean id="mpJdbcDaoImpl" class="security.DetailedUserService"/>
         
     
     <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">

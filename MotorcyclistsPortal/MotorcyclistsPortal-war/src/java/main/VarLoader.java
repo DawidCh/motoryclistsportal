@@ -8,10 +8,11 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.context.SecurityContextImpl;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import user.DetailedUserInformation;
+import security.DetailedUserInformation;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
@@ -50,6 +51,11 @@ public class VarLoader extends HandlerInterceptorAdapter {
             map.addObject("succColor", DefaultValues.getSuccColor());
         } catch (Exception ex) {
             MPLogger.severe("User is not in the session in VarLoader.postHandle");
+        }
+        if(request.getContextPath().contains("logout")){
+            MPLogger.severe("pupusia");
+            SecurityContextHolder.setContext(new SecurityContextImpl());
+            request.getSession(false).invalidate();
         }
     }
 
