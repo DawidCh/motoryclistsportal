@@ -45,7 +45,7 @@ public class Motorcycle implements Serializable {
     @Column(name = "torque", nullable = false)
     private int torque;
     @Column(name = "mileage", nullable = false)
-    private int mileage;
+    private double mileage;
     @Column(name = "nickname")
     private String nickname;
     @JoinColumn(name = "fishier", referencedColumnName = "id")
@@ -70,6 +70,18 @@ public class Motorcycle implements Serializable {
         this.enginecapacity = enginecapacity;
         this.power = power;
         this.torque = torque;
+    }
+
+    public Motorcycle(String manufacturer, String model, Integer year, Integer torque, Integer power, Double mileage, Integer displacement, String nickname, User user) {
+        this.enginecapacity = displacement;
+        this.login = user;
+        this.manufacturer = manufacturer;
+        this.mileage = mileage;
+        this.torque = torque;
+        this.power = power;
+        this.nickname = nickname;
+        this.year = year;
+        this.model = model;
     }
 
     public Integer getId() {
@@ -179,11 +191,11 @@ public class Motorcycle implements Serializable {
         return "entities.Motorcycle[id=" + id + "]";
     }
 
-    public int getMileage() {
+    public double getMileage() {
         return mileage;
     }
 
-    public void setMileage(int mileage) {
+    public void setMileage(double mileage) {
         this.mileage = mileage;
     }
 

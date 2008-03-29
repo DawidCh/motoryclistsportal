@@ -37,11 +37,7 @@ public class DetailedUserInformation extends User{
     }
 
     public List<Motorcycle> getMotorcycleCollection(){
-        return new ArrayList<Motorcycle>(this.user.getMotorcycleCollection());
-    }
-
-    public void refreshMotorcycleCollection() {
-        this.user.setMotorcycleCollection(BeanGetter.lookupMotorcycleFacade().findByLogin(this.user));
+        return BeanGetter.lookupMotorcycleFacade().findByLogin(this.getUsername());
     }
 
     public void setBirthdate(Date birthdate) {

@@ -26,6 +26,6 @@ public interface MotorcycleFacadeLocal {
 
     List<Motorcycle> findAll();
 
-    public java.util.List<entities.Motorcycle> findByLogin(entities.User user);
+    public java.util.List<entities.Motorcycle> findByLogin(String login);
 
 }

@@ -3,13 +3,14 @@
 
 <table>
     <th><fmt:message key="bikes.formTitle.list"/></th>
-    <tr style="border:solid;">
+    <tr style="border-style:solid;">
         <td><fmt:message key="bikes.nickname"/></td>
         <td><fmt:message key="bikes.manufacturer"/></td>
         <td><fmt:message key="bikes.model"/></td>
         <td><fmt:message key="bikes.year"/></td>
         <td><fmt:message key="bikes.mileage"/></td>
         <td><fmt:message key="bikes.fishier"/></td>
+        <td><fmt:message key="action"/></td>
     </tr>
     <c:forEach var="bike" items="${bikes}">
         <tr>
@@ -27,6 +28,10 @@
                     <td><a href="<c:url value="/fishiers/addfishier.html"/>"><fmt:message key="fishiers.newFishier"/></a></td>
                 </c:otherwise>
             </c:choose>
+            <td>
+                <a href="<c:url value="/bikes/delete.html?bike=${bike.id}"/>"><fmt:message key="bikes.deletebike"/></a>
+                <a href="<c:url value="/bikes/edit.html?bike=${bike.id}"/>"><fmt:message key="bikes.editbike"/></a>
+            </td>
         </tr>
     </c:forEach>
 </table>

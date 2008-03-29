@@ -37,8 +37,8 @@ public class MotorcycleFacade implements MotorcycleFacadeLocal {
         return em.find(entities.Motorcycle.class, id);
     }
     
-    public List<Motorcycle> findByLogin(User user){
-        return em.createQuery("select object(o) from Motorcycle as o where o.login.login='"+user.getLogin()+"'").getResultList();
+    public List<Motorcycle> findByLogin(String login){
+        return em.createQuery("select object(o) from Motorcycle as o where o.login.login='"+login+"'").getResultList();
     }
 
     public List<Motorcycle> findAll() {
