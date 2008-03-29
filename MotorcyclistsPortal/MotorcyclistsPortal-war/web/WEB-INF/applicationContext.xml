@@ -27,6 +27,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/secured/profile.html">profile</prop>
                 <!--bike pages-->
                 <prop key="/bikes/*.html">bikes</prop>
+                <!--trip pages-->
+                <prop key="/trips/*.html">trips</prop>
             </props>
         </property>
     </bean>
@@ -40,6 +42,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="credentials" class="main.Credentials"/>
     
     <!--multicontrollers-->
+    <!--motorcycle-->
     <bean id="bikes" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
         <property name="methodNameResolver">
             <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
@@ -57,6 +60,26 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         </property>
         <property name="delegate">
             <bean class="user.Bikes"/>
+        </property>
+    </bean>
+    <!--trips-->
+    <bean id="trips" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <value>
+                        /trips/list.html=showList
+                        /trips/index.html=showList
+                        /trips/new.html=addTrip
+                        /trips/edit.html=editTrip
+                        /trips/delete.html=deleteTrip
+                        /trips/details.html=details
+                    </value>
+                </property>
+            </bean>
+        </property>
+        <property name="delegate">
+            <bean class="user.Trips"/>
         </property>
     </bean>
     
