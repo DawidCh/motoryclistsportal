@@ -64,13 +64,11 @@ public class VarLoader extends HandlerInterceptorAdapter {
         try {
             DetailedUserInformation userInfo = BeanGetter.getUserInfo();
             userInfo.setLocale(localeToSet);
-            BeanGetter.lookupUserBean().editUser(userInfo.getUser());
-        } catch (MPException ex) {
-            MPLogger.severe("Error while persisting language at UserSession because user is not in the session");
+            BeanGetter.lookupUserFacade().edit(userInfo.getUser());
+        } catch (Exception ex) {
+            MPLogger.severe("Error while persisting language at UserSession");
             LocaleProvider loc = BeanGetter.getLocaleProvider(request);
             throw new MPException(loc.getMessage("session.errorWhilePersist", null, localeToSet));
-        } catch (Exception ex) {
-            MPLogger.severe("Error while persisting language at UserSession because of other error");
         }
     }
 }

@@ -111,7 +111,7 @@ public class Register implements Controller {
             loginData.setPrivileges(choosenPriv);
 
             try {
-                BeanGetter.lookupUserBean().createUser(user);
+                BeanGetter.lookupUserFacade().create(user);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
                 MPLogger.severe("Error while adding to database in Register: " + excMess);

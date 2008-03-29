@@ -138,7 +138,7 @@ public class Profile extends AbstractController {
             }
 
             try {
-                BeanGetter.lookupUserBean().editUser(user);
+                BeanGetter.lookupUserFacade().edit(user);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
                 MPLogger.severe("Error while setting data to database in Profile: " + excMess);

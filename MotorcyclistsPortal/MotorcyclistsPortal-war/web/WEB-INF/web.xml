@@ -47,12 +47,6 @@
     </error-page>
     
     <!-- beans-->
-    <ejb-local-ref>
-        <ejb-ref-name>UserBean</ejb-ref-name>
-        <ejb-ref-type>Session</ejb-ref-type>
-        <local>services.UserLocal</local>
-        <ejb-link>MotorcyclistsPortal-ejb.jar#UserBean</ejb-link>
-    </ejb-local-ref>
     
     <ejb-local-ref>
         <ejb-ref-name>PrivilegesFacade</ejb-ref-name>
