@@ -54,7 +54,7 @@ public class Register implements Controller {
             String[] keyList = formInfo.keySet().toArray(new String[formInfo.keySet().size()]);
             for (int i = 0; i < keyList.length; i++) {
                 if (null == formInfo.get(keyList[i]) || formInfo.get(keyList[i]).equals(new String(""))) {
-                    message = localeProvider.getMessage("register.notAllFilled", null, defaultLocale);
+                    message = localeProvider.getMessage("notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColor());
                     return new ModelAndView("unsecured/register", formInfo);
