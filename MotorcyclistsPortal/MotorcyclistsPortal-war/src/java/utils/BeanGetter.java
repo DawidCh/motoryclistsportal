@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import services.UserLocal;
 import security.DetailedUserInformation;
 
 /**
@@ -53,16 +52,6 @@ public class BeanGetter {
            WebApplicationContextUtils.getRequiredWebApplicationContext(
                                request.getSession().getServletContext());
          return ac.getBean(beanId);
-    }
-
-    public static UserLocal lookupUserBean() {
-        try {
-            Context c = new InitialContext();
-            return (UserLocal) c.lookup("java:comp/env/UserBean");
-        } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking up UserBean in BeanGetter");
-            throw new RuntimeException(ne);
-        }
     }
 
     public static PrivilegesFacadeLocal lookupPrivilegesFacade() {
