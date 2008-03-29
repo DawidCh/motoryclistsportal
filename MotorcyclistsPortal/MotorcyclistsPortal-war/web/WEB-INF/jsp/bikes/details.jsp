@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
+<%@ include file="/WEB-INF/jspf/subheaders/motorcycles.jspf" %>
 
 <table>
     <th><fmt:message key="bikes.formTitle.details">

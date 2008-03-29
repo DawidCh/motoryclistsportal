@@ -17,6 +17,7 @@
                 <td><a href="<c:url value="/secured/profile.html"/>"><fmt:message key="header.profile"/></a></td>
                 <td><a href="<c:url value="/secured/index.html"/>"><fmt:message key="header.main"/></a></td>
                 <td><a href="<c:url value="/bikes/index.html"/>"><fmt:message key="header.mybikes"/></a></td>
+                <td><a href="<c:url value="/trips/index.html"/>"><fmt:message key="header.mytrips"/></a></td>
                 <c:if test="${user.locale != currentLocale}">
                     <td><a href="<c:url value="?saveLocale=true"/>"><fmt:message key="header.saveLang"/></a></td>
                 </c:if>

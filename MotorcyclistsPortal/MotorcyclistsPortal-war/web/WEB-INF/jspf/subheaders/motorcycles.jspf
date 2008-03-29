@@ -1,0 +1,6 @@
+<table>
+    <tr>
+        <td><a href="<c:url value="/bikes/new.html"/>"><fmt:message key="header.newbike"/></a></td>
+        <td><a href="<c:url value="/bikes/list.html"/>"><fmt:message key="header.mybikes"/></a></td>
+    </tr>
+</table>
