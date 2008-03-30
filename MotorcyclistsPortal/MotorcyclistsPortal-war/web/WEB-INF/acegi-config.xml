@@ -6,7 +6,7 @@
             <value><![CDATA[
             CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
             PATTERN_TYPE_APACHE_ANT
-            /**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,exceptionTranslationFilter,filterInvocationInterceptor,logoutFilter
+            /**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,channelProcessingFilter,securityContextHolderAwareRequestFilter,exceptionTranslationFilter,filterInvocationInterceptor,logoutFilter
             ]]></value>
         </property>
     </bean>
@@ -27,10 +27,6 @@
         <property name="providers">
             <list>
                 <ref bean="daoAuthenticationProvider"/>
-                <!--<ref local="digestProcessingFilter"/>
-                <bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
-                    <property name="key" value="changeThis"/>
-                </bean>-->
             </list>
         </property>
     </bean>
@@ -48,11 +44,6 @@
     <bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="rememberMeServices" ref="rememberMeServices"/>
-    </bean>
-    
-    <bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
-        <property name="key" value="changeThis"/>
-        <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
     </bean>
     
     <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
@@ -88,6 +79,8 @@
                     PATTERN_TYPE_APACHE_ANT
                     /secured/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
                     /bikes/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
+                    /trips/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
+                    /fishiers/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
             ]]></value>
         </property>
     </bean>
@@ -126,7 +119,7 @@
     </bean> -->
     
     <bean id="mpJdbcDaoImpl" class="security.DetailedUserService"/>
-        
+    
     
     <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
         <property name="userDetailsService" ref="mpJdbcDaoImpl"/>
@@ -134,4 +127,32 @@
     
     <!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
     <bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
+    
+    <!--https and http config-->
+    <bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
+        <property name="channelDecisionManager"><ref bean="channelDecisionManager"/></property>
+        <property name="filterInvocationDefinitionSource">
+            <value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                PATTERN_TYPE_APACHE_ANT
+                /secured/*=REQUIRES_SECURE_CHANNEL
+                /bikes/*=REQUIRES_SECURE_CHANNEL
+                /trips/*=REQUIRES_SECURE_CHANNEL
+                /login.html=REQUIRES_SECURE_CHANNEL
+                /*=REQUIRES_INSECURE_CHANNEL
+            </value>
+        </property>
+    </bean>
+    
+    <bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+        <property name="channelProcessors">
+            <list>
+                <ref bean="secureChannelProcessor"/>
+                <ref bean="insecureChannelProcessor"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor"/>
+    <bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>
 </beans>
