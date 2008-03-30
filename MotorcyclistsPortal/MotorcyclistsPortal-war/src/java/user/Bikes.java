@@ -103,6 +103,7 @@ public class Bikes {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
+                MPLogger.severe("Error wihle persisting in db at Bikes.add: "+exception.getMessage());
                 return new ModelAndView("bikes/add", formInfo);
             }
             message = localeProvider.getMessage("success", null, defaultLocale);
@@ -140,10 +141,10 @@ public class Bikes {
 
         } catch (Exception exception) {
             MPLogger.severe("Bike not found at bikes edit: " + bikeId);
-            Map map = this.showList(request, response).getModel();
+            HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("message", localeProvider.getMessage("bikes.bikeNotFound", null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColor());
-            return new ModelAndView("bikes/list", map);
+            return new ModelAndView(this.showList(request, response).getView(), map);
         }
         //<editor-fold default-state="collapsed" desc="Obtaining info from request">
         String nickname = bike.getNickname();

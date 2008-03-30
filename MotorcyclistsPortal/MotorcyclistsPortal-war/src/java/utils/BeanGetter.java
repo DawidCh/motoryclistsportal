@@ -6,6 +6,7 @@
 package utils;
 
 import facades.AvailableLangsFacadeLocal;
+import facades.FishierFacadeLocal;
 import facades.LoginDataFacadeLocal;
 import facades.MotorcycleFacadeLocal;
 import facades.PrivilegesFacadeLocal;
@@ -100,6 +101,16 @@ public class BeanGetter {
             return (MotorcycleFacadeLocal) c.lookup("java:comp/env/MotorcycleFacade");
         } catch (NamingException ne) {
             MPLogger.severe("Exception while looking up MotorcycleFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static FishierFacadeLocal lookupFishierFacade() {
+        try {
+            Context c = new InitialContext();
+            return (FishierFacadeLocal) c.lookup("java:comp/env/FishierFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up FishierFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
     }

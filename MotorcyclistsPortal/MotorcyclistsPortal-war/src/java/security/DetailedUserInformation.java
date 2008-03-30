@@ -7,8 +7,6 @@ package security;
 
 import entities.LoginData;
 import entities.Motorcycle;
-import facades.UserFacadeLocal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -16,7 +14,6 @@ import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.User;
 import utils.BeanGetter;
-import utils.MPLogger;
 
 /**
  *

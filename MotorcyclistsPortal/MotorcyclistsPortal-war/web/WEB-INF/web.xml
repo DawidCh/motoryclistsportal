@@ -46,8 +46,48 @@
         <location>/error.html</location>
     </error-page>
     
-    <!-- beans-->
+    <!--acegi security-->
+    <filter>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+        </init-param>
+    </filter>
     
+    <filter-mapping>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>Acegi Channel Processing Filter</filter-name>
+        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.securechannel.ChannelProcessingFilter</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>Acegi Channel Processing Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/authz</taglib-uri>
+            <taglib-location>/WEB-INF/authz.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/spring</taglib-uri>
+            <taglib-location>/WEB-INF/spring.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+    
+    <!-- beans-->
     <ejb-local-ref>
         <ejb-ref-name>PrivilegesFacade</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
@@ -78,30 +118,12 @@
         <local>facades.MotorcycleFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#MotorcycleFacade</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>FishierFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.FishierFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#FishierFacade</ejb-link>
+    </ejb-local-ref>
     
-    <!--acegi security-->
-    <filter>
-        <filter-name>Acegi Filter Chain Proxy</filter-name>
-        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
-        <init-param>
-            <param-name>targetClass</param-name>
-            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
-        </init-param>
-    </filter>
     
-    <filter-mapping>
-        <filter-name>Acegi Filter Chain Proxy</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    
-    <jsp-config>
-        <taglib>
-            <taglib-uri>/authz</taglib-uri>
-            <taglib-location>/WEB-INF/authz.tld</taglib-location>
-        </taglib>
-        <taglib>
-            <taglib-uri>/spring</taglib-uri>
-            <taglib-location>/WEB-INF/spring.tld</taglib-location>
-        </taglib>
-    </jsp-config>
 </web-app>

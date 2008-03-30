@@ -10,6 +10,7 @@ import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 import utils.BeanGetter;
+import utils.MPLogger;
 
 /**
  *
@@ -20,6 +21,10 @@ public class DetailedUserService implements UserDetailsService {
     public DetailedUserInformation loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException {
         DetailedUserInformation userInfo;
         User user = BeanGetter.lookupUserFacade().find(login);
+        if(user == null){
+            MPLogger.severe("login: "+login);
+            throw new UsernameNotFoundException(login);
+        }
         userInfo = new DetailedUserInformation(user);
         return userInfo;
     }

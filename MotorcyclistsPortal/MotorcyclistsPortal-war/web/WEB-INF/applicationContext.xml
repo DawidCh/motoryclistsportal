@@ -29,6 +29,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/bikes/*.html">bikes</prop>
                 <!--trip pages-->
                 <prop key="/trips/*.html">trips</prop>
+                <!-- pages-->
+                <prop key="/fishiers/*.html">fishiers</prop>
             </props>
         </property>
     </bean>
@@ -42,6 +44,26 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="credentials" class="main.Credentials"/>
     
     <!--multicontrollers-->
+    <!--motorcycle-->
+    <bean id="fishiers" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <value>
+                        /fishiers/list.html=showList
+                        /fishiers/index.html=showList
+                        /fishiers/new.html=addFishier
+                        /fishiers/edit.html=editFishier
+                        /fishiers/delete.html=deleteFishier
+                        /fishiers/details.html=details
+                    </value>
+                </property>
+            </bean>
+        </property>
+        <property name="delegate">
+            <bean class="user.Fishiers"/>
+        </property>
+    </bean>
     <!--motorcycle-->
     <bean id="bikes" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
         <property name="methodNameResolver">
