@@ -144,6 +144,7 @@ public class Bikes {
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("message", localeProvider.getMessage("bikes.bikeNotFound", null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColor());
+            exception.printStackTrace();
             return new ModelAndView(this.showList(request, response).getView(), map);
         }
         //<editor-fold default-state="collapsed" desc="Obtaining info from request">
@@ -249,7 +250,6 @@ public class Bikes {
             formInfo.put("errorMessage", localeProvider.getMessage("error.otherError", null, defaultLocale));
             return new ModelAndView("unsecured/error", formInfo);
         }
-        DetailedUserInformation user = BeanGetter.getUserInfo();
         Map map = null;
         Motorcycle bikeToDel = null;
         try {
@@ -260,6 +260,7 @@ public class Bikes {
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("error.errorWhileDeleting", null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColor());
+            mPException.printStackTrace();
             return new ModelAndView("/bikes/list", map);
         }
         map.put("message", localeProvider.getMessage("success", null, defaultLocale));
@@ -285,6 +286,7 @@ public class Bikes {
         } catch (Exception ex) {
             MPLogger.severe("Bike not found");
             formInfo.put("errorMessage", localeProvider.getMessage("bikes.bikeNotFound", null, defaultLocale));
+            ex.printStackTrace();
             return new ModelAndView("unsecured/error", formInfo);
         }
         return new ModelAndView("bikes/details", formInfo);
