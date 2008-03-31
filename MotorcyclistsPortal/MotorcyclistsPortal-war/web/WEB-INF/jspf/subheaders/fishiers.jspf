@@ -1,0 +1,6 @@
+<table>
+    <tr>
+        <td><a href="<c:url value="/fishiers/new.html"/>"><fmt:message key="header.newfishier"/></a></td>
+        <td><a href="<c:url value="/fishiers/list.html"/>"><fmt:message key="header.myfishiers"/></a></td>
+    </tr>
+</table>
