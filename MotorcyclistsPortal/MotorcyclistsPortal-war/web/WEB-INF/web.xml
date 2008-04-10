@@ -124,6 +124,4 @@
         <local>facades.FishierFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#FishierFacade</ejb-link>
     </ejb-local-ref>
-    
-    
 </web-app>

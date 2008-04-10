@@ -22,11 +22,13 @@
             <td><c:out value="${bike.mileage}"/> <c:out value="${user.mileageType}"/></td>
             <c:choose>
                 <c:when test="${bike.fishier != null}">
-                    <td><a href="<c:url value="/fishiers/showfishier.html?fisier=${bike.fishier.id}"/>"><c:out value="${bike.fishier.description}"/></a>
+                    <td><a href="<c:url value="/fishiers/details.html?fishier=${bike.fishier.id}"/>"><c:out value="${bike.fishier.description}"/></a>
                     </td>
                 </c:when>
                 <c:otherwise>
-                    <td><a href="<c:url value="/fishiers/addfishier.html"/>"><fmt:message key="fishiers.newFishier"/></a></td>
+                    <td><a href="<c:url value="/fishiers/new.html"/>"><fmt:message key="fishiers.newFishier"/></a>
+                        <a href="<c:url value="/bikes/assignFishier.html?bike=${bike.id}"/>"><fmt:message key="bikes.assignFishier"/></a>
+                    </td>
                 </c:otherwise>
             </c:choose>
             <td>

@@ -25,7 +25,7 @@
                 <td><a href="<c:url value="/fishiers/delete.html?fishier=${bike.fishier.id}&bike=${bike.id}"/>"><fmt:message key="fishiers.deletefishier"/></a></td>
             </c:when>
             <c:otherwise>
-                <td colspan="2"><a href="/fishiers/new.html"><fmt:message key="fishiers.newFishier"/></a></td>
+                <td colspan="2"><a href="<c:url value="/fishiers/new.html"/>"><fmt:message key="fishiers.newFishier"/></a></td>
             </c:otherwise>
         </c:choose>
     </tr>
