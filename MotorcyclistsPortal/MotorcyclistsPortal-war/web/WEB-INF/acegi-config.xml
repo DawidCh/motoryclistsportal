@@ -89,17 +89,6 @@
         <property name="userDetailsService" ref="mpJdbcDaoImpl"/>
         <property name="key" value="changeThis"/>
     </bean>
-    <!--
-    <bean id="digestProcessingFilter" class="org.acegisecurity.ui.digestauth.DigestProcessingFilter">
-        <property name="userDetailsService"><ref local="jdbcDaoImpl"/></property>
-        <property name="authenticationEntryPoint"><ref local="digestProcessingFilterEntryPoint"/></property>
-    </bean>
-    
-    <bean id="digestProcessingFilterEntryPoint" class="org.acegisecurity.ui.digestauth.DigestProcessingFilterEntryPoint">
-        <property name="realmName"><value>motorealm</value></property>
-        <property name="key"><value>acegi</value></property>
-        <property name="nonceValiditySeconds"><value>10</value></property>
-    </bean>-->
     
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName"><value>org.postgresql.Driver</value></property>
@@ -111,12 +100,6 @@
     <bean id="dataSourceJndi" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName"><value>jdbc/motobase-user</value></property>
     </bean>
-    <!--
-    <bean id="jdbcDaoImpl" class="org.acegisecurity.userdetails.jdbc.JdbcDaoImpl">
-        <property name="authoritiesByUsernameQuery"><value>SELECT login as username,privileges as authority FROM logindata WHERE login = ?</value></property>
-        <property name="usersByUsernameQuery"><value>SELECT login as username, password, enabled FROM logindata WHERE login = ?</value></property>
-        <property name="dataSource"><ref bean="dataSourceJndi"/></property>
-    </bean> -->
     
     <bean id="mpJdbcDaoImpl" class="security.DetailedUserService"/>
     

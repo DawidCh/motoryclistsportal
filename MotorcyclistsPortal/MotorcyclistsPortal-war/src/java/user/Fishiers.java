@@ -5,7 +5,9 @@
 package user;
 
 import entities.Fishier;
+import entities.Motorcycle;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
@@ -152,6 +154,7 @@ public class Fishiers {
         String message;
 
         try {
+            MPLogger.severe("Poprawić zeby wyszukiwało tylko użytkownika fiszki.");
             fishier = BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: ");
@@ -167,6 +170,12 @@ public class Fishiers {
             }
         }
         try {
+            List<Motorcycle> bikes = BeanGetter.lookupMotorcycleFacade().findByFishier(fishier);
+            for (Iterator<Motorcycle> it = bikes.iterator(); it.hasNext();) {
+                Motorcycle motorcycle = it.next();
+                motorcycle.setFishier(null);
+                BeanGetter.lookupMotorcycleFacade().edit(motorcycle);
+            }
             BeanGetter.lookupFishierFacade().remove(fishier);
         } catch (Exception exception) {
             message = localeProvider.getMessage("error.errorWhileDeleting", null, defaultLocale);
@@ -205,6 +214,7 @@ public class Fishiers {
 
         try {
             fishier = BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
+            System.out.println(fishier.getDescription());
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
             ex.printStackTrace();

@@ -25,11 +25,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <!--secured pages-->
                 <prop key="/secured/index.html">main</prop>
                 <prop key="/secured/profile.html">profile</prop>
-                <!--bike pages-->
+                <!--bike secured pages-->
                 <prop key="/bikes/*.html">bikes</prop>
-                <!--trip pages-->
+                <!--trip secured pages-->
                 <prop key="/trips/*.html">trips</prop>
-                <!-- pages-->
+                <!--fishiers secured pages-->
                 <prop key="/fishiers/*.html">fishiers</prop>
             </props>
         </property>
@@ -44,7 +44,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="credentials" class="main.Credentials"/>
     
     <!--multicontrollers-->
-    <!--motorcycle-->
+    <!--fishiers-->
     <bean id="fishiers" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
         <property name="methodNameResolver">
             <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
@@ -76,6 +76,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                         /bikes/edit.html=editBike
                         /bikes/delete.html=deleteBike
                         /bikes/details.html=details
+                        /bikes/assignFishier.html=assignFishier
                     </value>
                 </property>
             </bean>

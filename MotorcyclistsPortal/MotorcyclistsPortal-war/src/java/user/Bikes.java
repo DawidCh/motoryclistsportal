@@ -4,6 +4,7 @@
  */
 package user;
 
+import entities.Fishier;
 import security.DetailedUserInformation;
 import entities.Motorcycle;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class Bikes {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
-                MPLogger.severe("Error wihle persisting in db at Bikes.add: "+exception.getMessage());
+                MPLogger.severe("Error wihle persisting in db at Bikes.add: " + exception.getMessage());
                 return new ModelAndView("bikes/add", formInfo);
             }
             message = localeProvider.getMessage("success", null, defaultLocale);
@@ -290,6 +291,52 @@ public class Bikes {
             return new ModelAndView("unsecured/error", formInfo);
         }
         return new ModelAndView("bikes/details", formInfo);
+    }
+
+    public ModelAndView assignFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+        Locale defaultLocale = RequestContextUtils.getLocale(request);
+        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        // </editor-fold>
+        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
+        String form = request.getParameter("form");
+        String message = new String();
+        String bike = request.getParameter("bike");
+        formInfo.put("bike", bike);
+        if (form != null) {
+            try {
+                String fishier = request.getParameter("fishier");
+                formInfo.put("fishier", fishier);
+                if (bike == null || bike.equals("") || fishier == null || fishier.equals(""))
+                    throw new Exception();
+                Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bike));
+                Fishier fish = BeanGetter.lookupFishierFacade().find(Integer.parseInt(fishier));
+                bikeObject.setFishier(fish);
+                BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
+                message = localeProvider.getMessage("success", null, defaultLocale);
+                formInfo.put("message", message);
+                formInfo.put("messColor", DefaultValues.getSuccColor());
+                formInfo.putAll(this.showList(request, response).getModel());
+                return new ModelAndView("bikes/list", formInfo);
+            } catch (Exception ex) {
+                MPLogger.severe("Error while assigning fishier to bike in Bikes.assignFishier");
+                message = localeProvider.getMessage("error.otherError", null, defaultLocale);
+                formInfo.put("message", message);
+                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.putAll(this.showList(request, response).getModel());
+                return new ModelAndView("bikes/list", formInfo);
+            }
+        } else {
+            List<Fishier> fishiers = this.findFishiers();
+            formInfo.put("fishiers", fishiers);
+        }
+        return new ModelAndView("bikes/selectFishier", formInfo);
+    }
+
+    private List<Fishier> findFishiers() {
+        List<Fishier> fishiers = BeanGetter.lookupFishierFacade().findAll();
+        return fishiers;
     }
 
     private Motorcycle findBike(String bikeId) throws MPException {
