@@ -127,6 +127,43 @@ public class Bikes {
         formInfo.put("action", "new.html");
         return new ModelAndView("bikes/add", formInfo);
     }
+    
+    public ModelAndView reassignFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+        Locale defaultLocale = RequestContextUtils.getLocale(request);
+        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        // </editor-fold>
+        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
+        String message = new String();
+        String bikeId = request.getParameter("bike");
+        try {
+            String fishier = request.getParameter("fishier");
+            formInfo.put("fishier", fishier);
+            if (bikeId == null || bikeId.equals("") || fishier == null || fishier.equals(""))
+                throw new Exception();
+            Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bikeId));
+            formInfo.put("bike", bikeObject);
+            Fishier fish = this.findFishier(fishier);
+            if(fish == null || !fish.getId().equals(new Integer(fishier)))
+                throw new Exception("Fishier not found at Bikes.reaasignFishier");
+            bikeObject.setFishier(null);
+            BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
+            message = localeProvider.getMessage("success", null, defaultLocale);
+            formInfo.put("message", message);
+            formInfo.put("messColor", DefaultValues.getSuccColor());
+            formInfo.putAll(this.showList(request, response).getModel());
+            return new ModelAndView("bikes/details", formInfo);
+        } catch (Exception ex) {
+            MPLogger.severe("Error while reassigning fishier to bike in Bikes.reassignFishier");
+            message = localeProvider.getMessage("error.otherError", null, defaultLocale);
+            formInfo.put("message", message);
+            formInfo.put("messColor", DefaultValues.getFailColor());
+            formInfo.putAll(this.showList(request, response).getModel());
+            ex.printStackTrace();
+            return new ModelAndView("bikes/details", formInfo);
+        }
+    }
 
     public ModelAndView editBike(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
@@ -311,7 +348,7 @@ public class Bikes {
                 if (bike == null || bike.equals("") || fishier == null || fishier.equals(""))
                     throw new Exception();
                 Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bike));
-                Fishier fish = BeanGetter.lookupFishierFacade().find(Integer.parseInt(fishier));
+                Fishier fish = this.findFishier(fishier);
                 bikeObject.setFishier(fish);
                 BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
                 message = localeProvider.getMessage("success", null, defaultLocale);
@@ -346,5 +383,10 @@ public class Bikes {
             }
         }
         throw new MPException("Bike not found at findBike");
+    }
+    
+    private Fishier findFishier(String fishierId) {
+        MPLogger.severe("Poprawić zeby wyszukiwało tylko użytkownika fiszki.");
+        return BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
     }
 }

@@ -22,10 +22,12 @@
         <c:choose>
             <c:when test="${bike.fishier != null}">
                 <td><a href="<c:url value="/fishiers/details.html?fishier=${bike.fishier.id}"/>"><c:out value="${bike.fishier.description}"/></a></td>
-                <td><a href="<c:url value="/fishiers/delete.html?fishier=${bike.fishier.id}&bike=${bike.id}"/>"><fmt:message key="fishiers.deletefishier"/></a></td>
+                <td><a href="<c:url value="/bikes/reassign.html?fishier=${bike.fishier.id}&bike=${bike.id}"/>"><fmt:message key="fishiers.deletefishier"/></a></td>
             </c:when>
             <c:otherwise>
-                <td colspan="2"><a href="<c:url value="/fishiers/new.html"/>"><fmt:message key="fishiers.newFishier"/></a></td>
+                <td colspan="2"><a href="<c:url value="/fishiers/new.html"/>"><fmt:message key="fishiers.newFishier"/></a>
+                <a href="<c:url value="/bikes/assignFishier.html?bike=${bike.id}"/>"><fmt:message key="bikes.assignFishier"/></a>
+                </td>
             </c:otherwise>
         </c:choose>
     </tr>
