@@ -97,7 +97,7 @@ public class Fishiers {
         String message;
 
         try {
-            fishier = BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
+            fishier = this.findFishier(fishierId);
             formInfo.put("fishier", fishier);
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
@@ -154,8 +154,7 @@ public class Fishiers {
         String message;
 
         try {
-            MPLogger.severe("Poprawić zeby wyszukiwało tylko użytkownika fiszki.");
-            fishier = BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
+            fishier = this.findFishier(fishierId);
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: ");
             formInfo.put("message", localeProvider.getMessage("fishiers.fishierNotFound", null, defaultLocale));
@@ -213,7 +212,7 @@ public class Fishiers {
         Fishier fishier;
 
         try {
-            fishier = BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
+            fishier = this.findFishier(fishierId);
             System.out.println(fishier.getDescription());
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
@@ -225,6 +224,11 @@ public class Fishiers {
 
         formInfo.put("fishier", fishier);
         return new ModelAndView("fishiers/details", formInfo);
+    }
+
+    private Fishier findFishier(String fishierId) {
+        MPLogger.severe("Poprawić zeby wyszukiwało tylko użytkownika fiszki.");
+        return BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
     }
 
     private List<Fishier> findFishiers() {
