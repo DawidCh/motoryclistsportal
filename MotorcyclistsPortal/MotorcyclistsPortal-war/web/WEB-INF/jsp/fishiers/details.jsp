@@ -21,11 +21,12 @@
             <td><fmt:message key="parts.${fishierElement.fishierelement.description}"/></td>
             <td><fmt:message key="fishiers.every"/> ${fishierElement.periodlength}</td>
             <td><fmt:message key="parts.${fishierElement.activityperiod.description}"/></td>
+            <td><fmt:message key="activity.${fishierElement.action.description}"/></td>
             <td>
                 <form action="<c:url value="/fishier_elements/delete.html"/>" method="post">
                     <input type="hidden" name="element" value="${fishierElement.id}"/>
                     <input type="hidden" name="fishier" value="${fishier.id}"/>
-                    <input type="submit" value="<fmt:message key="submit"/>"/>
+                    <input type="submit" value="<fmt:message key="fishiers.deleteelement"/>"/>
                 </form>
             </td>
         </tr>
@@ -45,6 +46,13 @@
                 <select name="activityPeriod">
                     <c:forEach var="period" items="${periods}">
                         <option value="${period.description}"><fmt:message key="parts.${period.description}"/></option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>
+                <select name="action">
+                    <c:forEach var="action" items="${actions}">
+                        <option value="${action.description}"><fmt:message key="activity.${action.description}"/></option>
                     </c:forEach>
                 </select>
             </td>
