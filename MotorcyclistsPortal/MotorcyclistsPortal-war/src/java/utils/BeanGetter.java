@@ -5,6 +5,7 @@
 
 package utils;
 
+import facades.ActionFacadeLocal;
 import facades.ActivityPeriodFacadeLocal;
 import facades.AvailableLangsFacadeLocal;
 import facades.FishierElementBridgeFacadeLocal;
@@ -144,6 +145,16 @@ public class BeanGetter {
             return (FishierElementBridgeFacadeLocal) c.lookup("java:comp/env/FishierElementBridgeFacade");
         } catch (NamingException ne) {
             MPLogger.severe("Exception while looking up FishierElementBridgeFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static ActionFacadeLocal lookupActionFacade() {
+        try {
+            Context c = new InitialContext();
+            return (ActionFacadeLocal) c.lookup("java:comp/env/ActionFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up ActionFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
     }

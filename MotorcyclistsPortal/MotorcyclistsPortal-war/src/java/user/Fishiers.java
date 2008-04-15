@@ -4,6 +4,7 @@
  */
 package user;
 
+import entities.Action;
 import entities.ActivityPeriod;
 import entities.Fishier;
 import entities.FishierElementBridge;
@@ -20,7 +21,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
-import utils.MPException;
 import utils.MPLogger;
 
 /**
@@ -244,6 +244,7 @@ public class Fishiers {
         String fishierElement = request.getParameter("fishierElement");
         String periodLength = request.getParameter("periodLength");
         String activityPeriod = request.getParameter("activityPeriod");
+        String action = request.getParameter("action");
 
         try {
             FishiersElement fishEl = BeanGetter.lookupFishiersElementFacade().find(new Integer(fishierElement));
@@ -261,6 +262,7 @@ public class Fishiers {
             element.setFishierelement(fishEl);
             element.setPeriodlength(Integer.parseInt(periodLength));
             element.setActivityperiod(activityPeriod);
+            element.setAction(action);
 
             BeanGetter.lookupFishierElementBridgeFacade().create(element);
 
@@ -293,11 +295,13 @@ public class Fishiers {
         Fishier fishier;
         List<ActivityPeriod> periods = BeanGetter.lookupActivityPeriodFacade().findAll();
         List<FishiersElement> elements = this.getElements();
+        List<Action> actions = BeanGetter.lookupActionFacade().findAll();
         List<FishierElementBridge> fishierElements;
 
         MPLogger.severe("Zrobić lokalizację Fishiers.details");
         formInfo.put("periods", periods);
         formInfo.put("elements", elements);
+        formInfo.put("actions", actions);
 
         try {
             fishier = this.findFishier(fishierId);

@@ -137,4 +137,10 @@
         <local>facades.FishierElementBridgeFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#FishierElementBridgeFacade</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ActionFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.ActionFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#ActionFacade</ejb-link>
+    </ejb-local-ref>
     </web-app>

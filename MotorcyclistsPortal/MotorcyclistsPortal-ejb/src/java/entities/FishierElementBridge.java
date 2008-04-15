@@ -37,6 +37,9 @@ public class FishierElementBridge implements Serializable {
     @JoinColumn(name = "activityperiod", referencedColumnName = "description")
     @ManyToOne
     private ActivityPeriod activityperiod;
+    @JoinColumn(name = "action", referencedColumnName = "description")
+    @ManyToOne
+    private Action action;
     @JoinColumn(name = "fishier", referencedColumnName = "id")
     @ManyToOne
     private Fishier fishier;
@@ -54,6 +57,18 @@ public class FishierElementBridge implements Serializable {
     public FishierElementBridge(Integer id, int periodlength) {
         this.id = id;
         this.periodlength = periodlength;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+    
+    public void setAction(String action){
+        this.action = new Action(action);
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
     }
 
     public Integer getId() {
