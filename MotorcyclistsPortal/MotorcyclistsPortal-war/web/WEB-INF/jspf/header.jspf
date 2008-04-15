@@ -6,14 +6,14 @@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <!--<link rel="stylesheet" href="style/style.css" type="text/css" media="screen,projection" />-->
-    <title><c:out value="${pageTitle}"/></title>
+    <title>${pageTitle}</title>
 </head>
 <body>
 <table>
     <tr>
         <c:choose>
             <c:when test="${user != null}">
-                <td><a href="<c:url value="/j_acegi_logout"/>"><fmt:message key="header.logout"/>, <c:out value="${user.username}"/></a></td>
+                <td><a href="<c:url value="/j_acegi_logout"/>"><fmt:message key="header.logout"/>, ${user.username}</a></td>
                 <td><a href="<c:url value="/secured/profile.html"/>"><fmt:message key="header.profile"/></a></td>
                 <td><a href="<c:url value="/secured/index.html"/>"><fmt:message key="header.main"/></a></td>
                 <td><a href="<c:url value="/bikes/index.html"/>"><fmt:message key="header.mybikes"/></a></td>
@@ -37,4 +37,4 @@
         </td>
     </tr>
 </table>
-<p style="color:<c:out value="${messColor}"/>"><c:out value="${message}"/></p>
+<p style="color:${messColor}">${message}</p>

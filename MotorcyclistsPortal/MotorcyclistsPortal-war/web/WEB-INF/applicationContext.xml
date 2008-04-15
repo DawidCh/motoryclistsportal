@@ -31,6 +31,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/trips/*.html">trips</prop>
                 <!--fishiers secured pages-->
                 <prop key="/fishiers/*.html">fishiers</prop>
+                <prop key="/fishier_elements/*.html">fishiers</prop>
             </props>
         </property>
     </bean>
@@ -56,6 +57,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                         /fishiers/edit.html=editFishier
                         /fishiers/delete.html=deleteFishier
                         /fishiers/details.html=details
+                        /fishier_elements/add.html=addElement
+                        /fishier_elements/delete.html=deleteElement
                     </value>
                 </property>
             </bean>

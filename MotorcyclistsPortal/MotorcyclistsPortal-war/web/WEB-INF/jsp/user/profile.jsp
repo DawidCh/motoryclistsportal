@@ -7,20 +7,20 @@
     <table>
         <tr>
             <td><fmt:message key="profile.login"/></td>
-            <td><c:out value="${login}"/></td>
+            <td>${login}</td>
         </tr>
         <tr><td>*
-        <fmt:message key="profile.password"/></td><td><input name="password" type="password" value="<c:out value="${password}"/>"/></td></tr>
+        <fmt:message key="profile.password"/></td><td><input name="password" type="password" value="${password}"/></td></tr>
         <tr><td>*
-        <fmt:message key="profile.passwordagain"/></td><td><input name="passwordAgain" type="password" value="<c:out value="${passwordAgain}"/>"/></td></tr>
-        <tr><td<c:if test='${(name == null || name=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
-            <fmt:message key="profile.name"/></td><td><input name="name" type="text" value="<c:out value="${name}"/>"/></td></tr>
-        <tr><td<c:if test='${(surname == null || surname=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
-            <fmt:message key="profile.surname"/></td><td><input name="surname" type="text" value="<c:out value="${surname}"/>"/></td></tr>
-        <tr><td<c:if test='${(city == null || city=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
-            <fmt:message key="profile.city"/></td><td><input name="city" type="text" value="<c:out value="${city}"/>"/></td></tr>
+        <fmt:message key="profile.passwordagain"/></td><td><input name="passwordAgain" type="password" value="${passwordAgain}"/></td></tr>
+        <tr><td<c:if test='${(name == null || name=="") && form != null}'> style="color: ${failColor}"</c:if>>*
+            <fmt:message key="profile.name"/></td><td><input name="name" type="text" value="${name}"/></td></tr>
+        <tr><td<c:if test='${(surname == null || surname=="") && form != null}'> style="color: ${failColor}"</c:if>>*
+            <fmt:message key="profile.surname"/></td><td><input name="surname" type="text" value="${surname}"/></td></tr>
+        <tr><td<c:if test='${(city == null || city=="") && form != null}'> style="color: ${failColor}"</c:if>>*
+            <fmt:message key="profile.city"/></td><td><input name="city" type="text" value="${city}"/></td></tr>
         <tr>
-            <td<c:if test='${(mileageType == null || mileageType=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
+            <td<c:if test='${(mileageType == null || mileageType=="") && form != null}'> style="color: ${failColor}"</c:if>>*
                 <fmt:message key="measures.lengthUnit"/></td>
             <td><radiogroup>
                 <fmt:message key="measures.mil"/>:
@@ -32,7 +32,7 @@
             </td>
         </tr>
         <tr>
-            <td<c:if test='${(gender == null || gender=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
+            <td<c:if test='${(gender == null || gender=="") && form != null}'> style="color: ${failColor}"</c:if>>*
                 <fmt:message key="profile.gender"/></td>
             <td><radiogroup>
                 <fmt:message key="profile.female"/>:
@@ -43,8 +43,8 @@
                        </radiogroup>
             </td>
         </tr>
-        <tr><td<c:if test='${(birthdate == null || birthdate=="") && form != null}'> style="color: <c:out value="${failColor}"/>"</c:if>>*
-            <fmt:message key="profile.birthdate"/></td><td><input name="birthdate" type="text" value="<c:out value="${birthdate}"/>"/></td></tr>
+        <tr><td<c:if test='${(birthdate == null || birthdate=="") && form != null}'> style="color: ${failColor}"</c:if>>*
+            <fmt:message key="profile.birthdate"/></td><td><input name="birthdate" type="text" value="${birthdate}"/></td></tr>
         <tr><td colspan="2"><input type="submit" value="<fmt:message key="submit"/>"/></td></tr>
     </table>
 </form>
