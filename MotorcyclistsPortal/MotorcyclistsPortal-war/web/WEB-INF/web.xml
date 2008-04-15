@@ -124,4 +124,17 @@
         <local>facades.FishierFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#FishierFacade</ejb-link>
     </ejb-local-ref>
-</web-app>
+    <ejb-local-ref>
+        <ejb-ref-name>ActivityPeriodFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.ActivityPeriodFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#ActivityPeriodFacade</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref><ejb-ref-name>FishiersElementFacade</ejb-ref-name><ejb-ref-type>Session</ejb-ref-type><local>facades.FishiersElementFacadeLocal</local><ejb-link>MotorcyclistsPortal-ejb.jar#FishiersElementFacade</ejb-link></ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>FishierElementBridgeFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.FishierElementBridgeFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#FishierElementBridgeFacade</ejb-link>
+    </ejb-local-ref>
+    </web-app>

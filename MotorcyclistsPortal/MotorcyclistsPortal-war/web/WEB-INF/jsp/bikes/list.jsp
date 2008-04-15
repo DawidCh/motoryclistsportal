@@ -15,14 +15,14 @@
     </tr>
     <c:forEach var="bike" items="${bikes}">
         <tr>
-            <td><a href="<c:url value="/bikes/details.html?bike=${bike.id}"/>"><c:out value="${bike.nickname}"/></a></td>
-            <td><c:out value="${bike.manufacturer}"/></td>
-            <td><c:out value="${bike.model}"/></td>
-            <td><c:out value="${bike.year}"/></td>
-            <td><c:out value="${bike.mileage}"/> <c:out value="${user.mileageType}"/></td>
+            <td><a href="<c:url value="/bikes/details.html?bike=${bike.id}"/>">${bike.nickname}</a></td>
+            <td>${bike.manufacturer}</td>
+            <td>${bike.model}</td>
+            <td>${bike.year}</td>
+            <td>${bike.mileage} ${user.mileageType}</td>
             <c:choose>
                 <c:when test="${bike.fishier != null}">
-                    <td><a href="<c:url value="/fishiers/details.html?fishier=${bike.fishier.id}"/>"><c:out value="${bike.fishier.description}"/></a>
+                    <td><a href="<c:url value="/fishiers/details.html?fishier=${bike.fishier.id}"/>">${bike.fishier.description}</a>
                     </td>
                 </c:when>
                 <c:otherwise>

@@ -5,8 +5,11 @@
 
 package utils;
 
+import facades.ActivityPeriodFacadeLocal;
 import facades.AvailableLangsFacadeLocal;
+import facades.FishierElementBridgeFacadeLocal;
 import facades.FishierFacadeLocal;
+import facades.FishiersElementFacadeLocal;
 import facades.LoginDataFacadeLocal;
 import facades.MotorcycleFacadeLocal;
 import facades.PrivilegesFacadeLocal;
@@ -111,6 +114,36 @@ public class BeanGetter {
             return (FishierFacadeLocal) c.lookup("java:comp/env/FishierFacade");
         } catch (NamingException ne) {
             MPLogger.severe("Exception while looking up FishierFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static ActivityPeriodFacadeLocal lookupActivityPeriodFacade() {
+        try {
+            Context c = new InitialContext();
+            return (ActivityPeriodFacadeLocal) c.lookup("java:comp/env/ActivityPeriodFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up ActivityPeriodFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static FishiersElementFacadeLocal lookupFishiersElementFacade() {
+        try {
+            Context c = new InitialContext();
+            return (FishiersElementFacadeLocal) c.lookup("java:comp/env/FishiersElementFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up FishiersElementFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static FishierElementBridgeFacadeLocal lookupFishierElementBridgeFacade() {
+        try {
+            Context c = new InitialContext();
+            return (FishierElementBridgeFacadeLocal) c.lookup("java:comp/env/FishierElementBridgeFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up FishierElementBridgeFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
     }

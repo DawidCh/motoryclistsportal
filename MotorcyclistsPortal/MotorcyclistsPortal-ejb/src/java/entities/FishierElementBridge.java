@@ -79,6 +79,10 @@ public class FishierElementBridge implements Serializable {
     public void setActivityperiod(ActivityPeriod activityperiod) {
         this.activityperiod = activityperiod;
     }
+    
+    public void setActivityperiod(String activityPeriod){
+        this.activityperiod = new ActivityPeriod(activityPeriod);
+    }
 
     public Fishier getFishier() {
         return fishier;
