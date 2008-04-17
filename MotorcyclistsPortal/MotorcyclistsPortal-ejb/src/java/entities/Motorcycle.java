@@ -6,6 +6,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,7 +27,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "motorcycles")
-@NamedQueries({@NamedQuery(name = "Motorcycle.findById", query = "SELECT m FROM Motorcycle m WHERE m.id = :id"), @NamedQuery(name = "Motorcycle.findByModel", query = "SELECT m FROM Motorcycle m WHERE m.model = :model"), @NamedQuery(name = "Motorcycle.findByManufacturer", query = "SELECT m FROM Motorcycle m WHERE m.manufacturer = :manufacturer"), @NamedQuery(name = "Motorcycle.findByYear", query = "SELECT m FROM Motorcycle m WHERE m.year = :year"), @NamedQuery(name = "Motorcycle.findByEnginecapacity", query = "SELECT m FROM Motorcycle m WHERE m.enginecapacity = :enginecapacity"), @NamedQuery(name = "Motorcycle.findByPower", query = "SELECT m FROM Motorcycle m WHERE m.power = :power"), @NamedQuery(name = "Motorcycle.findByTorque", query = "SELECT m FROM Motorcycle m WHERE m.torque = :torque"), @NamedQuery(name = "Motorcycle.findByNickname", query = "SELECT m FROM Motorcycle m WHERE m.nickname = :nickname")})
+@NamedQueries({@NamedQuery(name = "Motorcycle.findById", query = "SELECT m FROM Motorcycle m WHERE m.id = :id"), @NamedQuery(name = "Motorcycle.findByModel", query = "SELECT m FROM Motorcycle m WHERE m.model = :model"), @NamedQuery(name = "Motorcycle.findByManufacturer", query = "SELECT m FROM Motorcycle m WHERE m.manufacturer = :manufacturer"), @NamedQuery(name = "Motorcycle.findByYear", query = "SELECT m FROM Motorcycle m WHERE m.year = :year"), @NamedQuery(name = "Motorcycle.findByEnginecapacity", query = "SELECT m FROM Motorcycle m WHERE m.enginecapacity = :enginecapacity"), @NamedQuery(name = "Motorcycle.findByPower", query = "SELECT m FROM Motorcycle m WHERE m.power = :power"), @NamedQuery(name = "Motorcycle.findByTorque", query = "SELECT m FROM Motorcycle m WHERE m.torque = :torque"), @NamedQuery(name = "Motorcycle.findByNickname", query = "SELECT m FROM Motorcycle m WHERE m.nickname = :nickname"), @NamedQuery(name = "Motorcycle.findByMileage", query = "SELECT m FROM Motorcycle m WHERE m.mileage = :mileage")})
 public class Motorcycle implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,16 +47,18 @@ public class Motorcycle implements Serializable {
     private int power;
     @Column(name = "torque", nullable = false)
     private int torque;
-    @Column(name = "mileage", nullable = false)
-    private double mileage;
     @Column(name = "nickname")
     private String nickname;
+    @Column(name = "mileage")
+    private Double mileage;
     @JoinColumn(name = "fishier", referencedColumnName = "id")
     @ManyToOne
     private Fishier fishier;
     @JoinColumn(name = "login", referencedColumnName = "login")
     @ManyToOne
     private User login;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bike")
+    private Collection<Trip> tripCollection;
 
     public Motorcycle() {
     }
@@ -72,16 +77,13 @@ public class Motorcycle implements Serializable {
         this.torque = torque;
     }
 
-    public Motorcycle(String manufacturer, String model, Integer year, Integer torque, Integer power, Double mileage, Integer displacement, String nickname, User user) {
-        this.enginecapacity = displacement;
-        this.login = user;
-        this.manufacturer = manufacturer;
-        this.mileage = mileage;
-        this.torque = torque;
-        this.power = power;
-        this.nickname = nickname;
-        this.year = year;
+    public Motorcycle(String manufacturer, String model, Integer year, Integer torque, Integer power, Double mileage, Integer enginecapacity, String nickname, User user) {
         this.model = model;
+        this.manufacturer = manufacturer;
+        this.year = year;
+        this.enginecapacity = enginecapacity;
+        this.power = power;
+        this.torque = torque;
     }
 
     public Integer getId() {
@@ -141,13 +143,19 @@ public class Motorcycle implements Serializable {
     }
 
     public String getNickname() {
-        if(null == this.nickname)
-            return "------";
-        return this.nickname;
+        return nickname;
     }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public Double getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(Double mileage) {
+        this.mileage = mileage;
     }
 
     public Fishier getFishier() {
@@ -164,6 +172,14 @@ public class Motorcycle implements Serializable {
 
     public void setLogin(User login) {
         this.login = login;
+    }
+
+    public Collection<Trip> getTripCollection() {
+        return tripCollection;
+    }
+
+    public void setTripCollection(Collection<Trip> tripCollection) {
+        this.tripCollection = tripCollection;
     }
 
     @Override
@@ -189,14 +205,6 @@ public class Motorcycle implements Serializable {
     @Override
     public String toString() {
         return "entities.Motorcycle[id=" + id + "]";
-    }
-
-    public double getMileage() {
-        return mileage;
-    }
-
-    public void setMileage(double mileage) {
-        this.mileage = mileage;
     }
 
 }

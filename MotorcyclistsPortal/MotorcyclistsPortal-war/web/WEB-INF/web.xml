@@ -143,4 +143,16 @@
         <local>facades.ActionFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#ActionFacade</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>TripFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.TripFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#TripFacade</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>TripTypeFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.TripTypeFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#TripTypeFacade</ejb-link>
+    </ejb-local-ref>
     </web-app>

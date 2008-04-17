@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package entities;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,9 +25,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "logindata")
-@NamedQueries({@NamedQuery(name = "LoginData.findByPassword", query = "SELECT l FROM LoginData l WHERE l.password = :password"), @NamedQuery(name = "LoginData.findByLastlogindate", query = "SELECT l FROM LoginData l WHERE l.lastlogindate = :lastlogindate"), @NamedQuery(name = "LoginData.findByCurrentlogindate", query = "SELECT l FROM LoginData l WHERE l.currentlogindate = :currentlogindate"), @NamedQuery(name = "LoginData.findByLogin", query = "SELECT l FROM LoginData l WHERE l.login = :login")})
+@NamedQueries({@NamedQuery(name = "LoginData.findByPassword", query = "SELECT l FROM LoginData l WHERE l.password = :password"), @NamedQuery(name = "LoginData.findByLastlogindate", query = "SELECT l FROM LoginData l WHERE l.lastlogindate = :lastlogindate"), @NamedQuery(name = "LoginData.findByCurrentlogindate", query = "SELECT l FROM LoginData l WHERE l.currentlogindate = :currentlogindate"), @NamedQuery(name = "LoginData.findByLogin", query = "SELECT l FROM LoginData l WHERE l.login = :login"), @NamedQuery(name = "LoginData.findByEnabled", query = "SELECT l FROM LoginData l WHERE l.enabled = :enabled")})
 public class LoginData implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Column(name = "password", nullable = false)
     private String password;
@@ -59,9 +58,14 @@ public class LoginData implements Serializable {
     public LoginData(String login, String password) {
         this.login = login;
         this.password = password;
-        this.lastlogindate = Calendar.getInstance().getTime();
-        this.currentlogindate = Calendar.getInstance().getTime();
-        this.enabled = true;
+    }
+
+    public LoginData(String login, String password, Date lastlogindate, Date currentlogindate, boolean enabled) {
+        this.login = login;
+        this.password = password;
+        this.lastlogindate = lastlogindate;
+        this.currentlogindate = currentlogindate;
+        this.enabled = enabled;
     }
 
     public String getPassword() {
@@ -94,6 +98,14 @@ public class LoginData implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Privileges getPrivileges() {
@@ -137,19 +149,4 @@ public class LoginData implements Serializable {
         return "entities.LoginData[login=" + login + "]";
     }
 
-    public boolean getEnable() {
-        return enabled;
-    }
-
-    public void setEnable(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 }

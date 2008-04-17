@@ -14,6 +14,8 @@ import facades.FishiersElementFacadeLocal;
 import facades.LoginDataFacadeLocal;
 import facades.MotorcycleFacadeLocal;
 import facades.PrivilegesFacadeLocal;
+import facades.TripFacadeLocal;
+import facades.TripTypeFacadeLocal;
 import facades.UserFacadeLocal;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -155,6 +157,26 @@ public class BeanGetter {
             return (ActionFacadeLocal) c.lookup("java:comp/env/ActionFacade");
         } catch (NamingException ne) {
             MPLogger.severe("Exception while looking up ActionFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static TripFacadeLocal lookupTripFacade() {
+        try {
+            Context c = new InitialContext();
+            return (TripFacadeLocal) c.lookup("java:comp/env/TripFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up TripFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static TripTypeFacadeLocal lookupTripTypeFacade() {
+        try {
+            Context c = new InitialContext();
+            return (TripTypeFacadeLocal) c.lookup("java:comp/env/TripTypeFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up TripTypeFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
     }

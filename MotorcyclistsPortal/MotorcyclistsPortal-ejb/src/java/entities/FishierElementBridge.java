@@ -34,12 +34,12 @@ public class FishierElementBridge implements Serializable {
     private Integer id;
     @Column(name = "periodlength", nullable = false)
     private int periodlength;
-    @JoinColumn(name = "activityperiod", referencedColumnName = "description")
-    @ManyToOne
-    private ActivityPeriod activityperiod;
     @JoinColumn(name = "action", referencedColumnName = "description")
     @ManyToOne
     private Action action;
+    @JoinColumn(name = "activityperiod", referencedColumnName = "description")
+    @ManyToOne
+    private ActivityPeriod activityperiod;
     @JoinColumn(name = "fishier", referencedColumnName = "id")
     @ManyToOne
     private Fishier fishier;
@@ -59,18 +59,6 @@ public class FishierElementBridge implements Serializable {
         this.periodlength = periodlength;
     }
 
-    public Action getAction() {
-        return action;
-    }
-    
-    public void setAction(String action){
-        this.action = new Action(action);
-    }
-
-    public void setAction(Action action) {
-        this.action = action;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -87,16 +75,20 @@ public class FishierElementBridge implements Serializable {
         this.periodlength = periodlength;
     }
 
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = new Action(action);
+    }
+
     public ActivityPeriod getActivityperiod() {
         return activityperiod;
     }
 
-    public void setActivityperiod(ActivityPeriod activityperiod) {
-        this.activityperiod = activityperiod;
-    }
-    
-    public void setActivityperiod(String activityPeriod){
-        this.activityperiod = new ActivityPeriod(activityPeriod);
+    public void setActivityperiod(String activityperiod) {
+        this.activityperiod = new ActivityPeriod(activityperiod);
     }
 
     public Fishier getFishier() {
