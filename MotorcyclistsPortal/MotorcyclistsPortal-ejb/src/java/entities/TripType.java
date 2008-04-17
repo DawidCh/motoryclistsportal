@@ -21,20 +21,20 @@ import javax.persistence.Table;
  * @author kalosh
  */
 @Entity
-@Table(name = "actions")
-@NamedQueries({@NamedQuery(name = "Action.findByDescription", query = "SELECT a FROM Action a WHERE a.description = :description")})
-public class Action implements Serializable {
+@Table(name = "triptype")
+@NamedQueries({@NamedQuery(name = "TripType.findByDescription", query = "SELECT t FROM TripType t WHERE t.description = :description")})
+public class TripType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "description", nullable = false)
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "action")
-    private Collection<FishierElementBridge> fishierElementBridgeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "type")
+    private Collection<Trip> tripCollection;
 
-    public Action() {
+    public TripType() {
     }
 
-    public Action(String description) {
+    public TripType(String description) {
         this.description = description;
     }
 
@@ -46,12 +46,12 @@ public class Action implements Serializable {
         this.description = description;
     }
 
-    public Collection<FishierElementBridge> getFishierElementBridgeCollection() {
-        return fishierElementBridgeCollection;
+    public Collection<Trip> getTripCollection() {
+        return tripCollection;
     }
 
-    public void setFishierElementBridgeCollection(Collection<FishierElementBridge> fishierElementBridgeCollection) {
-        this.fishierElementBridgeCollection = fishierElementBridgeCollection;
+    public void setTripCollection(Collection<Trip> tripCollection) {
+        this.tripCollection = tripCollection;
     }
 
     @Override
@@ -64,10 +64,10 @@ public class Action implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Action)) {
+        if (!(object instanceof TripType)) {
             return false;
         }
-        Action other = (Action) object;
+        TripType other = (TripType) object;
         if ((this.description == null && other.description != null) || (this.description != null && !this.description.equals(other.description))) {
             return false;
         }
@@ -76,7 +76,7 @@ public class Action implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Action[description=" + description + "]";
+        return "entities.TripType[description=" + description + "]";
     }
 
 }

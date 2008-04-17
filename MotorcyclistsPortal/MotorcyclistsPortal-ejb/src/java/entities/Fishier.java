@@ -6,6 +6,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,6 +35,10 @@ public class Fishier implements Serializable {
     private Integer id;
     @Column(name = "description", nullable = false)
     private String description;
+    @OneToMany(mappedBy = "fishier")
+    private Collection<Motorcycle> motorcycleCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fishier")
+    private Collection<FishierElementBridge> fishierElementBridgeCollection;
 
     public Fishier() {
     }
@@ -59,6 +66,22 @@ public class Fishier implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Collection<Motorcycle> getMotorcycleCollection() {
+        return motorcycleCollection;
+    }
+
+    public void setMotorcycleCollection(Collection<Motorcycle> motorcycleCollection) {
+        this.motorcycleCollection = motorcycleCollection;
+    }
+
+    public Collection<FishierElementBridge> getFishierElementBridgeCollection() {
+        return fishierElementBridgeCollection;
+    }
+
+    public void setFishierElementBridgeCollection(Collection<FishierElementBridge> fishierElementBridgeCollection) {
+        this.fishierElementBridgeCollection = fishierElementBridgeCollection;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class DetailedUserInformation extends User{
 
     public DetailedUserInformation(entities.User user){
         super(user.getLoginData().getLogin(), user.getLoginData().getPassword(),
-                user.getLoginData().getEnable(), new GrantedAuthority[]{
+                user.getLoginData().getEnabled(), new GrantedAuthority[]{
                     new GrantedAuthorityImpl(user.getLoginData().getPrivileges().getDescription())});
         this.user = user;
     }

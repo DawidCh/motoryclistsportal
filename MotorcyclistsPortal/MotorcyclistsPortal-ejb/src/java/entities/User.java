@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "users")
-@NamedQueries({@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"), @NamedQuery(name = "User.findBySurname", query = "SELECT u FROM User u WHERE u.surname = :surname"), @NamedQuery(name = "User.findByCity", query = "SELECT u FROM User u WHERE u.city = :city"), @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"), @NamedQuery(name = "User.findByBirthdate", query = "SELECT u FROM User u WHERE u.birthdate = :birthdate"), @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"), @NamedQuery(name = "User.findByLocale", query = "SELECT u FROM User u WHERE u.locale = :locale")})
+@NamedQueries({@NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"), @NamedQuery(name = "User.findBySurname", query = "SELECT u FROM User u WHERE u.surname = :surname"), @NamedQuery(name = "User.findByCity", query = "SELECT u FROM User u WHERE u.city = :city"), @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"), @NamedQuery(name = "User.findByBirthdate", query = "SELECT u FROM User u WHERE u.birthdate = :birthdate"), @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"), @NamedQuery(name = "User.findByLocale", query = "SELECT u FROM User u WHERE u.locale = :locale"), @NamedQuery(name = "User.findByMileagetype", query = "SELECT u FROM User u WHERE u.mileagetype = :mileagetype")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "name", nullable = false)
@@ -36,8 +36,6 @@ public class User implements Serializable {
     private String surname;
     @Column(name = "city", nullable = false)
     private String city;
-    @Column(name = "mileageType", nullable = false)
-    private String mileageType;
     @Column(name = "gender", nullable = false)
     private boolean gender;
     @Column(name = "birthdate", nullable = false)
@@ -48,10 +46,14 @@ public class User implements Serializable {
     private String login;
     @Column(name = "locale", nullable = false)
     private String locale;
+    @Column(name = "mileagetype", nullable = false)
+    private String mileagetype;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "login")
     private Collection<Motorcycle> motorcycleCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private LoginData loginData;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<Trip> tripCollection;
 
     public User() {
     }
@@ -60,16 +62,26 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public User(String login, String name, String surname, String city,
-            String gender, Date birthdate, Locale locale, String mileageType) {
+    public User(String login, String name, String surname, String city, boolean gender, Date birthdate, String locale, String mileagetype) {
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.city = city;
+        this.gender = gender;
         this.birthdate = birthdate;
-        this.locale = locale.toString();
+        this.locale = locale;
+        this.mileagetype = mileagetype;
+    }
+
+    public User(String login, String name, String surname, String city, String gender, Date birthdate, Locale locale, String mileageType){
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.city = city;
         this.setGender(gender);
-        this.mileageType = mileageType;
+        this.birthdate = birthdate;
+        this.setLocale(locale);
+        this.mileagetype = mileageType;
     }
 
     public String getName() {
@@ -138,6 +150,14 @@ public class User implements Serializable {
         this.locale = locale.toString();
     }
 
+    public String getMileageType() {
+        return mileagetype;
+    }
+
+    public void setMileageType(String mileagetype) {
+        this.mileagetype = mileagetype;
+    }
+
     public Collection<Motorcycle> getMotorcycleCollection() {
         return motorcycleCollection;
     }
@@ -152,6 +172,14 @@ public class User implements Serializable {
 
     public void setLoginData(LoginData loginData) {
         this.loginData = loginData;
+    }
+
+    public Collection<Trip> getTripCollection() {
+        return tripCollection;
+    }
+
+    public void setTripCollection(Collection<Trip> tripCollection) {
+        this.tripCollection = tripCollection;
     }
 
     @Override
@@ -177,14 +205,6 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "entities.User[login=" + login + "]";
-    }
-
-    public String getMileageType() {
-        return mileageType;
-    }
-
-    public void setMileageType(String mileageType) {
-        this.mileageType = mileageType;
     }
 
 }
