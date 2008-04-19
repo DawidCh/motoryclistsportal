@@ -84,6 +84,9 @@ public class Motorcycle implements Serializable {
         this.enginecapacity = enginecapacity;
         this.power = power;
         this.torque = torque;
+        this.nickname = nickname;
+        this.mileage = mileage;
+        this.login = user;
     }
 
     public Integer getId() {

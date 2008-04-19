@@ -22,10 +22,10 @@
                 <fmt:message key="measures.lengthUnit"/></td>
             <td><radiogroup>
                 <fmt:message key="measures.km"/>: <input type="radio" name="mileageType" value="km"
-                                                             <c:if test='${mileageType == "km"}'> checked</c:if>/>
-                                                             <fmt:message key="measures.mil"/>: <input type="radio" name="mileageType" value="mil"
-                                                             <c:if test='${mileageType == "mil"}'> checked</c:if>/>
-                                                             </radiogroup>
+                 <c:if test='${mileageType == "km"}'> checked</c:if>/>
+                 <fmt:message key="measures.mil"/>: <input type="radio" name="mileageType" value="mil"
+                 <c:if test='${mileageType == "mil"}'> checked</c:if>/>
+             </radiogroup>
             </td>
         </tr>
         <tr>

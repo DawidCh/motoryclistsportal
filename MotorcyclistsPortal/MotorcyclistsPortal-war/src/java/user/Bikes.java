@@ -83,7 +83,7 @@ public class Bikes {
                     continue;
                 }
                 if (request.getParameter(currentKey) == null ||
-                        request.getParameter(currentKey).equals(new String(""))) {
+                        request.getParameter(currentKey).isEmpty()) {
                     MPLogger.severe("Not all fields filled in new bike: " + currentKey);
                     message = localeProvider.getMessage("notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
@@ -140,7 +140,7 @@ public class Bikes {
         try {
             String fishier = request.getParameter("fishier");
             formInfo.put("fishier", fishier);
-            if (bikeId == null || bikeId.equals("") || fishier == null || fishier.equals(""))
+            if (bikeId == null || bikeId.isEmpty() || fishier == null || fishier.isEmpty())
                 throw new Exception();
             Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bikeId));
             formInfo.put("bike", bikeObject);
@@ -179,11 +179,11 @@ public class Bikes {
 
         } catch (Exception exception) {
             MPLogger.severe("Bike not found at bikes edit: " + bikeId);
-            HashMap<String, Object> map = new HashMap<String, Object>();
+            Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("bikes.bikeNotFound", null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColor());
             exception.printStackTrace();
-            return new ModelAndView(this.showList(request, response).getView(), map);
+            return new ModelAndView("bikes/list", map);
         }
         //<editor-fold default-state="collapsed" desc="Obtaining info from request">
         String nickname = bike.getNickname();
@@ -214,7 +214,7 @@ public class Bikes {
                     continue;
                 }
                 if (request.getParameter(currentKey) == null ||
-                        request.getParameter(currentKey).equals(new String(""))) {
+                        request.getParameter(currentKey).isEmpty()) {
                     MPLogger.severe("Not all fields filled in edit bike: " + currentKey);
                     message = localeProvider.getMessage("notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
@@ -252,10 +252,11 @@ public class Bikes {
                 BeanGetter.lookupMotorcycleFacade().edit(bike);
 
             } catch (Exception exception) {
-                MPLogger.severe("Error while persisting bikee");
+                MPLogger.severe("Error while persisting bike");
                 message = localeProvider.getMessage("error.errorWhileAdding", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
+                exception.printStackTrace();
             }
             message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
@@ -345,7 +346,7 @@ public class Bikes {
             try {
                 String fishier = request.getParameter("fishier");
                 formInfo.put("fishier", fishier);
-                if (bike == null || bike.equals("") || fishier == null || fishier.equals(""))
+                if (bike == null || bike.isEmpty() || fishier == null || fishier.isEmpty())
                     throw new Exception();
                 Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bike));
                 Fishier fish = this.findFishier(fishier);
