@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +30,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "trips")
-@NamedQueries({@NamedQuery(name = "Trip.findById", query = "SELECT t FROM Trip t WHERE t.id = :id"), @NamedQuery(name = "Trip.findByDate", query = "SELECT t FROM Trip t WHERE t.date = :date"), @NamedQuery(name = "Trip.findByDescription", query = "SELECT t FROM Trip t WHERE t.description = :description"), @NamedQuery(name = "Trip.findByDistance", query = "SELECT t FROM Trip t WHERE t.distance = :distance")})
+@NamedQueries({@NamedQuery(name = "Trip.findById", query = "SELECT t FROM Trip t WHERE t.id = :id"), @NamedQuery(name = "Trip.findByDate", query = "SELECT t FROM Trip t WHERE t.date = :date"), @NamedQuery(name = "Trip.findByDescription", query = "SELECT t FROM Trip t WHERE t.description = :description"), @NamedQuery(name = "Trip.findByDistance", query = "SELECT t FROM Trip t WHERE t.distance = :distance"), @NamedQuery(name = "Trip.findByTitle", query = "SELECT t FROM Trip t WHERE t.title = :title")})
 public class Trip implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,7 +51,7 @@ public class Trip implements Serializable {
     @JoinColumn(name = "type", referencedColumnName = "description")
     @ManyToOne
     private TripType type;
-    @JoinColumn(name = "user", referencedColumnName = "login")
+    @JoinColumn(name = "login", referencedColumnName = "login")
     @ManyToOne
     private User user;
     @Column(name = "title", nullable = false)
@@ -65,11 +64,14 @@ public class Trip implements Serializable {
         this.id = id;
     }
 
-    public Trip(Integer id, Date date, String description, double distance) {
-        this.id = id;
+    public Trip(Date date, String description, double distance, String title, String type, Motorcycle bike, User user) {
         this.date = date;
         this.description = description;
         this.distance = distance;
+        this.title = title;
+        this.user = user;
+        this.bike = bike;
+        this.setType(type);
     }
 
     public Integer getId() {
@@ -81,7 +83,7 @@ public class Trip implements Serializable {
     }
 
     public String getDate() throws ParseException {
-        DateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         return sdf.format(this.date);
     }
 
@@ -105,12 +107,12 @@ public class Trip implements Serializable {
         this.distance = distance;
     }
 
-    public Motorcycle getBike() {
-        return bike;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBike(Motorcycle bike) {
-        this.bike = bike;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public TripType getType() {
@@ -127,6 +129,14 @@ public class Trip implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setBike(Motorcycle bike) {
+        this.bike = bike;
+    }
+
+    public Motorcycle getBike() {
+        return bike;
     }
 
     @Override
@@ -154,12 +164,8 @@ public class Trip implements Serializable {
         return "entities.Trip[id=" + id + "]";
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    private void setType(String type) {
+        this.type = new TripType(type);
     }
 
 }

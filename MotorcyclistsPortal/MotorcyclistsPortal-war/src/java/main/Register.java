@@ -65,7 +65,7 @@ public class Register implements Controller {
             try {
                 birthdate = new SimpleDateFormat("d M y").parse((String)formInfo.get("birthdate"));
             } catch (ParseException ex) {
-                message = localeProvider.getMessage("register.wrongDate", null, defaultLocale);
+                message = localeProvider.getMessage("error.wrongDate", null, defaultLocale);
                 formInfo.put("message", message);
                 MPLogger.severe("Wrong date format in Register from " + formInfo.get("birthdate"));
                 formInfo.put("messColor", DefaultValues.getFailColor());

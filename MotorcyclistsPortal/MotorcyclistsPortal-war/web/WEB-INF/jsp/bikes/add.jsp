@@ -9,7 +9,7 @@
     <th>${formTitle}</th>
     <tr><td<c:if test='${(nickname == null || nickname=="") && form != null}'>
             style="color: ${failColor}"</c:if>>*<fmt:message key="bikes.nickname"/></td>
-            <td><input name="nickname" value="${nickname}"</td>
+            <td><input name="nickname" value="${nickname}"/></td>
     </tr>
     <tr><td<c:if test='${(manufacturer == null || manufacturer=="") && form != null}'>
             style="color: ${failColor}"</c:if>>*<fmt:message key="bikes.manufacturer"/></td>
