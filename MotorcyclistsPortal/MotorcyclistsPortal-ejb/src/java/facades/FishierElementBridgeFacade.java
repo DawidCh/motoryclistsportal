@@ -35,6 +35,11 @@ public class FishierElementBridgeFacade implements FishierElementBridgeFacadeLoc
     public FishierElementBridge find(Object id) {
         return em.find(entities.FishierElementBridge.class, id);
     }
+    
+    public List<FishierElementBridge> findAllByFishier(String fishierId) {
+        return em.createQuery("select object(o) from FishierElementBridge as o where " +
+                "o.fishier.id='"+fishierId+"'").getResultList();
+    }
 
     public List<FishierElementBridge> findAll() {
         return em.createQuery("select object(o) from FishierElementBridge as o").getResultList();

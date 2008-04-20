@@ -26,4 +26,6 @@ public interface FishiersElementFacadeLocal {
 
     List<FishiersElement> findAll();
 
+    public java.util.List<entities.FishiersElement> findAllNotConnWithFishier(java.lang.String fishierId);
+
 }

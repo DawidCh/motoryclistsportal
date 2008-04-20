@@ -26,4 +26,6 @@ public interface TripFacadeLocal {
 
     List<Trip> findAll();
 
+    public java.util.List<entities.Trip> findByLogin(java.lang.String login);
+
 }

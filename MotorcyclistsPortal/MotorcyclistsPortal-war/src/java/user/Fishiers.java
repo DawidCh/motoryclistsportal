@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
+import utils.MPException;
 import utils.MPLogger;
 
 /**
@@ -35,7 +36,7 @@ public class Fishiers {
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         // </editor-fold>
-        List<Fishier> fishiers = findAllFishiers();
+        List<Fishier> fishiers = findFishiers();
         formInfo.put("pageTitle", localeProvider.getMessage("fishiers.pageTitle", null, defaultLocale));
         formInfo.put("fishiers", fishiers);
         return new ModelAndView("fishiers/list", formInfo);
@@ -168,7 +169,7 @@ public class Fishiers {
                 formInfo.put("bike", bikeId);
                 return new ModelAndView("redirect:/bikes/details.html", formInfo);
             } else {
-                formInfo.put("fishiers", this.findAllFishiers());
+                formInfo.put("fishiers", this.findFishiers());
                 return new ModelAndView(this.details(request, response).getView(), formInfo);
             }
         }
@@ -189,7 +190,7 @@ public class Fishiers {
                 formInfo.put("bike", bikeId);
                 return new ModelAndView("redirect:/bikes/details.html", formInfo);
             } else {
-                formInfo.put("fishiers", this.findAllFishiers());
+                formInfo.put("fishiers", this.findFishiers());
                 return new ModelAndView("fishiers/list", formInfo);
             }
         }
@@ -199,7 +200,7 @@ public class Fishiers {
             formInfo.put("bike", bikeId);
             return new ModelAndView("redirect:/bikes/details.html", formInfo);
         } else {
-            formInfo.put("fishiers", this.findAllFishiers());
+            formInfo.put("fishiers", this.findFishiers());
             return new ModelAndView("fishiers/list", formInfo);
         }
     }
@@ -213,15 +214,17 @@ public class Fishiers {
         // </editor-fold>
         formInfo = (HashMap<String, Object>) this.details(request, response).getModel();
         String elementId = request.getParameter("element");
+        String fishierId = request.getParameter("fishier");
         FishierElementBridge elementToDel = this.findFishierElementBridge(elementId);
         try {
             if (elementToDel == null) {
                 throw new Exception();
             }
             BeanGetter.lookupFishierElementBridgeFacade().remove(elementToDel);
+            formInfo.put("elements", this.findElements(fishierId));
             formInfo.put("message", localeProvider.getMessage("success", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getSuccColor());
-            formInfo.put("fishierElements", this.getFishierElements());
+            formInfo.put("fishierElements", this.findFishierElementBridges());
         } catch (Exception exception) {
             MPLogger.severe("Error while deleting fishier element at Fishiers.deleteElement: " + elementId);
             exception.printStackTrace();
@@ -266,9 +269,10 @@ public class Fishiers {
 
             BeanGetter.lookupFishierElementBridgeFacade().create(element);
 
+            formInfo.put("elements", this.findElements(fishier.getId().toString()));
             formInfo.put("message", localeProvider.getMessage("success", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getSuccColor());
-            formInfo.put("fishierElements", this.getFishierElements());
+            formInfo.put("fishierElements", this.findFishierElementBridges());
         } catch (NumberFormatException nfe) {
             formInfo.put("message", localeProvider.getMessage("error.parsingError", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
@@ -294,18 +298,18 @@ public class Fishiers {
         String fishierId = request.getParameter("fishier");
         Fishier fishier;
         List<ActivityPeriod> periods = BeanGetter.lookupActivityPeriodFacade().findAll();
-        List<FishiersElement> elements = this.getElements();
+        List<FishiersElement> elements;
         List<Action> actions = BeanGetter.lookupActionFacade().findAll();
         List<FishierElementBridge> fishierElements;
 
-        MPLogger.severe("Zrobić lokalizację Fishiers.details");
         formInfo.put("periods", periods);
-        formInfo.put("elements", elements);
         formInfo.put("actions", actions);
 
         try {
+            elements = this.findElements(fishierId);
+            formInfo.put("elements", elements);
             fishier = this.findFishier(fishierId);
-            fishierElements = this.getFishierElements();
+            fishierElements = this.findFishierElementBridgeByFishier(fishierId);
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
             ex.printStackTrace();
@@ -318,28 +322,32 @@ public class Fishiers {
         return new ModelAndView("fishiers/details", formInfo);
     }
 
-    private Fishier findFishier(String fishierId) {
-        MPLogger.severe("Poprawić zeby wyszukiwało tylko użytkownika fiszki.");
-        return BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
+    private Fishier findFishier(String fishierId) throws MPException {
+        for (Fishier fishier : BeanGetter.getUserInfo().getFishiers()) {
+            if (fishier.getId().toString().equals(fishierId)) {
+                return fishier;
+            }
+        }
+        throw new MPException("Fishier not found at Fishier.findFishier");
     }
 
-    private List<Fishier> findAllFishiers() {
-        MPLogger.severe("Poprawić zeby wyszukiwało tylko użytkownika fiszki.");
-        List<Fishier> fishiers = BeanGetter.lookupFishierFacade().findAll();
-        return fishiers;
+    private List<Fishier> findFishiers() {
+        return BeanGetter.getUserInfo().getFishiers();
     }
 
     private FishierElementBridge findFishierElementBridge(String elementId) {
         return BeanGetter.lookupFishierElementBridgeFacade().find(Integer.parseInt(elementId));
     }
 
-    private List<FishiersElement> getElements() {
-        MPLogger.severe("Poprawić zeby wyszukiwało tylko elementy nie związane z fiszką.");
-        return BeanGetter.lookupFishiersElementFacade().findAll();
+    private List<FishiersElement> findElements(String fishierId) {
+        return BeanGetter.lookupFishiersElementFacade().findAllNotConnWithFishier(fishierId);
     }
 
-    private List<FishierElementBridge> getFishierElements() {
-        MPLogger.severe("Poprawić zeby wyszukiwało tylko elementy związane z fiszką.");
+    private List<FishierElementBridge> findFishierElementBridges() {
         return BeanGetter.lookupFishierElementBridgeFacade().findAll();
+    }
+    
+    private List<FishierElementBridge> findFishierElementBridgeByFishier(String fishierId) {
+        return BeanGetter.lookupFishierElementBridgeFacade().findAllByFishier(fishierId);
     }
 }

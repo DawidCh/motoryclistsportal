@@ -5,8 +5,10 @@
 
 package security;
 
+import entities.Fishier;
 import entities.LoginData;
 import entities.Motorcycle;
+import entities.Trip;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +37,14 @@ public class DetailedUserInformation extends User{
 
     public List<Motorcycle> getMotorcycleCollection(){
         return BeanGetter.lookupMotorcycleFacade().findByLogin(this.getUsername());
+    }
+    
+    public List<Trip> getTripCollection(){
+        return BeanGetter.lookupTripFacade().findByLogin(this.getUsername());
+    }
+    
+    public List<Fishier> getFishiers(){
+        return BeanGetter.lookupFishierFacade().findByLogin(this.getUsername());
     }
 
     public void setBirthdate(Date birthdate) {

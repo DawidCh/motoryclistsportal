@@ -36,6 +36,11 @@ public class FishiersElementFacade implements FishiersElementFacadeLocal {
         return em.find(entities.FishiersElement.class, id);
     }
 
+    public List<FishiersElement> findAllNotConnWithFishier(String fishierId) {
+        return em.createQuery("select object(o) from FishiersElement as o where o.id NOT IN" +
+                "(select m.fishierelement.id from FishierElementBridge as m where m.fishier.id='"+fishierId+"')").getResultList();
+    }
+
     public List<FishiersElement> findAll() {
         return em.createQuery("select object(o) from FishiersElement as o").getResultList();
     }

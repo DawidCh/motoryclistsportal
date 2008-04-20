@@ -31,6 +31,7 @@
             </td>
         </tr>
     </c:forEach>
+    <c:if test="${!empty elements}">
     <form action="<c:url value="/fishier_elements/add.html"/>" method="post">
         <input type="hidden" name="fishier" value="${fishier.id}"/>
         <tr>
@@ -59,5 +60,6 @@
             <td><input type="submit" value="<fmt:message key="submit"/>"/></td>
         </tr>
     </form>
+    </c:if>
 </table>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
