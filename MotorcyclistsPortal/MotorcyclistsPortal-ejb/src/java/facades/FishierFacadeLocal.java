@@ -26,4 +26,6 @@ public interface FishierFacadeLocal {
 
     List<Fishier> findAll();
 
+    public java.util.List<entities.Fishier> findByLogin(java.lang.String login);
+
 }

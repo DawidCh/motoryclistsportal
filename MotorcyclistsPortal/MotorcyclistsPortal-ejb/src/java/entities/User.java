@@ -207,4 +207,12 @@ public class User implements Serializable {
         return "entities.User[login=" + login + "]";
     }
 
+    public String getMileagetype() {
+        return mileagetype;
+    }
+
+    public void setMileagetype(String mileagetype) {
+        this.mileagetype = mileagetype;
+    }
+
 }

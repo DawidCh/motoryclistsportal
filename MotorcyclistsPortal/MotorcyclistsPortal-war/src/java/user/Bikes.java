@@ -373,8 +373,7 @@ public class Bikes {
     }
 
     private List<Fishier> findFishiers() {
-        List<Fishier> fishiers = BeanGetter.lookupFishierFacade().findAll();
-        return fishiers;
+        return BeanGetter.getUserInfo().getFishiers();
     }
 
     private Motorcycle findBike(String bikeId) throws MPException {
@@ -386,8 +385,12 @@ public class Bikes {
         throw new MPException("Bike not found at findBike");
     }
     
-    private Fishier findFishier(String fishierId) {
-        MPLogger.severe("Poprawić zeby wyszukiwało tylko użytkownika fiszki.");
-        return BeanGetter.lookupFishierFacade().find(new Integer(fishierId));
+    private Fishier findFishier(String fishierId) throws MPException {
+        for (Fishier fishier : BeanGetter.getUserInfo().getFishiers()) {
+            if (fishier.getId().toString().equals(fishierId)) {
+                return fishier;
+            }
+        }
+        throw new MPException("Fishier not found at Bikes.findFishier");
     }
 }

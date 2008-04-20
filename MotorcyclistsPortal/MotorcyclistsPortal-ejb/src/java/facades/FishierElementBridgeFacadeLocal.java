@@ -26,4 +26,6 @@ public interface FishierElementBridgeFacadeLocal {
 
     List<FishierElementBridge> findAll();
 
+    public java.util.List<entities.FishierElementBridge> findAllByFishier(java.lang.String fishierId);
+
 }
