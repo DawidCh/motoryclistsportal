@@ -25,6 +25,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <!--secured pages-->
                 <prop key="/secured/index.html">main</prop>
                 <prop key="/secured/profile.html">profile</prop>
+                <!--report secured pages-->
+                <prop key="/report/generate.html">report</prop>
                 <!--bike secured pages-->
                 <prop key="/bikes/*.html">bikes</prop>
                 <!--trip secured pages-->
@@ -43,6 +45,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="error" class="main.Error"/>
     <bean id="register" class="main.Register"/>
     <bean id="credentials" class="main.Credentials"/>
+    <bean id="report" class="user.Report"/>
     
     <!--multicontrollers-->
     <!--fishiers-->

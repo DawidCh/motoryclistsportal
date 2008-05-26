@@ -35,7 +35,7 @@
         </tr>
         <tr><td<c:if test='${(description == null || description=="") && form != null}'>
                 style="color: ${failColor}"</c:if>>*<fmt:message key="trips.description"/></td>
-            <td><input name="description" value="${description}"/></td>
+            <td><textarea name="description" rows="10" cols="50">${description}</textarea></td>
         </tr>
         <tr><td colspan="2"><input type="submit" value="<fmt:message key="submit"/>"/></td></tr>
     </table>

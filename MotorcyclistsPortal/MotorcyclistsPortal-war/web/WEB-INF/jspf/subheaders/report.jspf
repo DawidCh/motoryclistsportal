@@ -1,0 +1,15 @@
+<form action="<c:url value="/report/generate.html"/>" method="post" name="generateForm">
+<input type="hidden" name="form" value="submitted"/>
+<table>
+    <tr>
+        <td><fmt:message key="header.bike"/>
+        <select name="bike">
+            <c:forEach var="loopBike" items="${bikes}">
+                <option value="${loopBike.id}"
+                    <c:if test="${loopBike.id == bike.id}">selected="selected"</c:if>>${loopBike.nickname}</option>
+            </c:forEach>
+        </select></td>
+        <td><a href="javascript:document.generateForm.submit()"><fmt:message key="header.generate"/></a></td>
+    </tr>
+</table>
+</form>
