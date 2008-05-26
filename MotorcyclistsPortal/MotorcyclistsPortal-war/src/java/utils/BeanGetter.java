@@ -35,7 +35,7 @@ public class BeanGetter {
     /*public static UserSession getUserSession(HttpServletRequest request){
         return (UserSession) BeanGetter.getScopedBean("userSession", request);
     }*/
-    
+    //todo: make to throw new exception when user is not logged in
     public static DetailedUserInformation getUserInfo()
     {
         return (DetailedUserInformation)SecurityContextHolder.getContext().getAuthentication().getPrincipal();

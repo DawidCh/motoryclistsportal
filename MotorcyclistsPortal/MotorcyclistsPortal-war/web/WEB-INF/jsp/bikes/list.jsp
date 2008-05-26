@@ -34,6 +34,9 @@
             <td>
                 <a href="<c:url value="/bikes/delete.html?bike=${bike.id}"/>"><fmt:message key="bikes.deletebike"/></a>
                 <a href="<c:url value="/bikes/edit.html?bike=${bike.id}"/>"><fmt:message key="bikes.editbike"/></a>
+                <c:if test="${bike.fishier != null}">
+                    <a href="<c:url value="/report/generate.html?bike=${bike.id}"/>"><fmt:message key="bikes.generate"/></a>
+                </c:if>
             </td>
         </tr>
     </c:forEach>

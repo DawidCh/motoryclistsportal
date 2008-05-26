@@ -81,6 +81,7 @@
                     /bikes/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
                     /trips/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
                     /fishiers/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
+                    /report/*=ROLE_ADMIN, ROLE_MODER, ROLE_USER
             ]]></value>
         </property>
     </bean>
@@ -121,6 +122,7 @@
                 /secured/*=REQUIRES_SECURE_CHANNEL
                 /bikes/*=REQUIRES_SECURE_CHANNEL
                 /trips/*=REQUIRES_SECURE_CHANNEL
+                /report/*=REQUIRES_SECURE_CHANNEL
                 /login.html=REQUIRES_SECURE_CHANNEL
                 /*=REQUIRES_INSECURE_CHANNEL
             </value>
