@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +17,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -24,16 +26,22 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "fishierselbridge")
-@NamedQueries({@NamedQuery(name = "FishierElementBridge.findById", query = "SELECT f FROM FishierElementBridge f WHERE f.id = :id"), @NamedQuery(name = "FishierElementBridge.findByPeriodlength", query = "SELECT f FROM FishierElementBridge f WHERE f.periodlength = :periodlength")})
+@NamedQueries({@NamedQuery(name = "FishierElementBridge.findById", query = "SELECT f FROM FishierElementBridge f WHERE f.id = :id"), @NamedQuery(name = "FishierElementBridge.findByPeriodlength", query = "SELECT f FROM FishierElementBridge f WHERE f.periodlength = :periodlength"), @NamedQuery(name = "FishierElementBridge.findByChangedate", query = "SELECT f FROM FishierElementBridge f WHERE f.changedate = :changedate"), @NamedQuery(name = "FishierElementBridge.findByChangemileage", query = "SELECT f FROM FishierElementBridge f WHERE f.changemileage = :changemileage")})
 public class FishierElementBridge implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name="fishierelementbrdggenerator", sequenceName="fishierselbridge_id_seq")
-    @GeneratedValue(generator="fishierelementbrdggenerator", strategy=GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "fishierelementbrdggenerator", sequenceName = "fishierselbridge_id_seq")
+    @GeneratedValue(generator = "fishierelementbrdggenerator", strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Integer id;
     @Column(name = "periodlength", nullable = false)
     private int periodlength;
+    @Column(name = "changedate", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date changedate;
+    @Column(name = "changemileage", nullable = false)
+    private int changemileage;
     @JoinColumn(name = "action", referencedColumnName = "description")
     @ManyToOne
     private Action action;
@@ -59,6 +67,13 @@ public class FishierElementBridge implements Serializable {
         this.periodlength = periodlength;
     }
 
+    public FishierElementBridge(Integer id, int periodlength, Date changedate, int changemileage) {
+        this.id = id;
+        this.periodlength = periodlength;
+        this.changedate = changedate;
+        this.changemileage = changemileage;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -73,6 +88,22 @@ public class FishierElementBridge implements Serializable {
 
     public void setPeriodlength(int periodlength) {
         this.periodlength = periodlength;
+    }
+
+    public Date getChangedate() {
+        return changedate;
+    }
+
+    public void setChangedate(Date changedate) {
+        this.changedate = changedate;
+    }
+
+    public int getChangemileage() {
+        return changemileage;
+    }
+
+    public void setChangemileage(int changemileage) {
+        this.changemileage = changemileage;
     }
 
     public Action getAction() {
@@ -131,5 +162,4 @@ public class FishierElementBridge implements Serializable {
     public String toString() {
         return "entities.FishierElementBridge[id=" + id + "]";
     }
-
 }
