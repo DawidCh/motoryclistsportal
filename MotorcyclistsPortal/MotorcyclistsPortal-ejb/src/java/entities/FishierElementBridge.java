@@ -5,6 +5,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -90,8 +92,9 @@ public class FishierElementBridge implements Serializable {
         this.periodlength = periodlength;
     }
 
-    public Date getChangedate() {
-        return changedate;
+    public String getChangedate() {
+        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        return sdf.format(this.changedate);
     }
 
     public void setChangedate(Date changedate) {

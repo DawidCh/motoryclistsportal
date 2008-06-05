@@ -6,7 +6,6 @@
 package facades;
 
 import entities.TripType;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -24,6 +23,8 @@ public interface TripTypeFacadeLocal {
 
     TripType find(Object id);
 
-    List<TripType> findAll();
+    public java.util.List<entities.TripType> findAll();
+
+    public entities.TripType toTripType(java.lang.String trip) throws utils.MPException;
 
 }

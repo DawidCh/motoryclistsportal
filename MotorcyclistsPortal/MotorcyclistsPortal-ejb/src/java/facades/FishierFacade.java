@@ -37,8 +37,7 @@ public class FishierFacade implements FishierFacadeLocal {
     }
     
     public List<Fishier> findByLogin(String login){
-        return em.createQuery("select object(o) from Fishier as o where o.id IN " +
-                "(select m.fishier.id from Motorcycle as m where m.login.login='"+login+"')").getResultList();
+        return em.createQuery("select object(o) from Fishier as o where o.login.login='"+login+"'").getResultList();
     }
 
     public List<Fishier> findAll() {
