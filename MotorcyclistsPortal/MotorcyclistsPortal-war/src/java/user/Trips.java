@@ -258,7 +258,7 @@ public class Trips {
                     trip.setTitle(title);
                 }
                 if (!trip.getType().getDescription().equals(type)) {
-                    trip.setTitle(title);
+                    trip.setType(BeanGetter.lookupTripTypeFacade().toTripType(type));
                 }
                 BeanGetter.lookupTripFacade().edit(trip);
                 formInfo.put("title", title);

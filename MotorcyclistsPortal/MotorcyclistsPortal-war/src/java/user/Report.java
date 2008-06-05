@@ -5,6 +5,7 @@
 
 package user;
 
+import ai.FuzzyDriver;
 import entities.FishierElementBridge;
 import entities.FishierElementBridge;
 import entities.Motorcycle;
@@ -40,20 +41,15 @@ public class Report implements Controller{
         String fishierid = bike.getFishier().getId().toString();
         List<Motorcycle> bikes = this.findBikesWFishiers();
         
-        //TODO:invent some class for transfering data into ui
         List<FishierElementBridge> fishierElements = this.findFishierElementBridgeByFishier(fishierid);
+        List<String> fuzzyResult = FuzzyDriver.getInstance().generateResult(fishierElements);
         
         formInfo.put("bikes", bikes);
+        formInfo.put("fuzzyResult", fuzzyResult);
         formInfo.put("bike", bike);
         formInfo.put("fishierElements", fishierElements);
         formInfo.put("pageTitle", localeProvider.getMessage("report.pageTitle", null, defaultLocale));
         return new ModelAndView("secured/report", formInfo);
-    }
-    
-    private List<String> generate(String bikeid, String fishierid){
-        List<String> result = new ArrayList<String>();
-        List<FishierElementBridge> fishierElements = this.findFishierElementBridgeByFishier(fishierid);
-        return result;
     }
 
     private List<FishierElementBridge> findFishierElementBridgeByFishier(String fishierId) {
