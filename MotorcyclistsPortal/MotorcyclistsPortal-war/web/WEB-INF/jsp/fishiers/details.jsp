@@ -7,6 +7,7 @@
         </fmt:message>
     </th>
     <tr><td><fmt:message key="id"/></td><td>${fishier.id}</td></tr>
+    <tr><td><fmt:message key="fishiers.bike"/></td><td>${fishier.motorcycle.nickname}</td></tr>
     <tr><td><fmt:message key="fishiers.description"/></td><td>${fishier.description}</td></tr>
     <tr>
         <td><a href="<c:url value="/fishiers/delete.html?fishier=${fishier.id}"/>"><fmt:message key="fishiers.deletefishier"/></a></td>
@@ -16,12 +17,22 @@
 
 <table>
     <th><fmt:message key="fishiers.fishierelements"/></th>
+    <tr>
+        <td><fmt:message key="fishiers.description"/></td>
+        <td><fmt:message key="fishiers.every"/></td>
+        <td><fmt:message key="fishiers.period"/></td>
+        <td><fmt:message key="activity"/></td>
+        <td><fmt:message key="report.lastChange"/></td>
+        <td><fmt:message key="report.mileageChange"/></td>
+        <td><fmt:message key="action"/></td></tr>
     <c:forEach var="fishierElement" items="${fishierElements}">
         <tr>
             <td><fmt:message key="parts.${fishierElement.fishierelement.description}"/></td>
             <td><fmt:message key="fishiers.every"/> ${fishierElement.periodlength}</td>
             <td><fmt:message key="parts.${fishierElement.activityperiod.description}"/></td>
             <td><fmt:message key="activity.${fishierElement.action.description}"/></td>
+            <td>${fishierElement.changedate}</td>
+            <td>${fishierElement.changemileage}</td>
             <td>
                 <form action="<c:url value="/fishier_elements/delete.html"/>" method="post">
                     <input type="hidden" name="element" value="${fishierElement.id}"/>
@@ -57,6 +68,8 @@
                     </c:forEach>
                 </select>
             </td>
+            <td><input name="changeDate" value="${changeDate}"/></td>
+            <td><input name="changeMileage" value="${changeMileage}"/></td>
             <td><input type="submit" value="<fmt:message key="submit"/>"/></td>
         </tr>
     </form>

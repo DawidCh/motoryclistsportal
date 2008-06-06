@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.LocaleProvider;
-import utils.MPException;
+import utils.MPUtilities;
 
 /**
  *
@@ -37,7 +37,7 @@ public class Report implements Controller{
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         // </editor-fold>
         String bikeid = request.getParameter("bike");
-        Motorcycle bike = this.findBike(bikeid);
+        Motorcycle bike = MPUtilities.findBike(bikeid);
         String fishierid = bike.getFishier().getId().toString();
         List<Motorcycle> bikes = this.findBikesWFishiers();
         
@@ -54,15 +54,6 @@ public class Report implements Controller{
 
     private List<FishierElementBridge> findFishierElementBridgeByFishier(String fishierId) {
         return BeanGetter.lookupFishierElementBridgeFacade().findAllByFishier(fishierId);
-    }
-    
-    private Motorcycle findBike(String bikeId) throws MPException {
-        for (Motorcycle bike : BeanGetter.getUserInfo().getMotorcycleCollection()) {
-            if (bike.getId().toString().equals(bikeId)) {
-                return bike;
-            }
-        }
-        throw new MPException("Bike not found at findBike");
     }
     
     private List<Motorcycle> findBikesWFishiers(){

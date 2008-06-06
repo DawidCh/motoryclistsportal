@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -44,8 +45,16 @@ public class Fishier implements Serializable {
     @JoinColumn(name = "login", referencedColumnName = "login")
     @ManyToOne
     private User login;
+    @JoinColumn(name = "motorcycle", referencedColumnName = "id")
+    @OneToOne
+    private Motorcycle motorcycle;
 
     public Fishier() {
+    }
+
+    public Fishier(Fishier fish) {
+        this.description = fish.description;
+        this.login = fish.login;
     }
 
     public Fishier(Integer id) {
@@ -58,6 +67,14 @@ public class Fishier implements Serializable {
 
     public User getLogin() {
         return login;
+    }
+
+    public void setMotorcycle(Motorcycle motorcycle) {
+        this.motorcycle = motorcycle;
+    }
+
+    public Motorcycle getMotorcycle() {
+        return motorcycle;
     }
 
     public Fishier(Integer id, String description) {

@@ -5,6 +5,7 @@
 package user;
 
 import entities.Fishier;
+import entities.FishierElementBridge;
 import security.DetailedUserInformation;
 import entities.Motorcycle;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import utils.DefaultValues;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPLogger;
+import utils.MPUtilities;
 
 /**
  *
@@ -292,7 +294,7 @@ public class Bikes {
         Map map = null;
         Motorcycle bikeToDel = null;
         try {
-            bikeToDel = this.findBike(bikeId);
+            bikeToDel = MPUtilities.findBike(bikeId);
             BeanGetter.lookupMotorcycleFacade().remove(bikeToDel);
             map = this.showList(request, response).getModel();
         } catch (Exception mPException) {
@@ -317,7 +319,7 @@ public class Bikes {
         String bikeId = request.getParameter("bike");
         Motorcycle bike = null;
         try {
-            bike = this.findBike(bikeId);
+            bike = MPUtilities.findBike(bikeId);
             if (bike == null) {
                 throw new Exception("Bike not found at details");
             }
@@ -350,8 +352,21 @@ public class Bikes {
                     throw new Exception();
                 Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bike));
                 Fishier fish = this.findFishier(fishier);
-                bikeObject.setFishier(fish);
+                Fishier newFishier = new Fishier(fish);
+                newFishier.setMotorcycle(bikeObject);
+                //TODO: zrobić tak żeby przekopiowało fishierelementbridges
+                
+                List<FishierElementBridge> fishElBridgeColl = new ArrayList<FishierElementBridge>();
+                for (Iterator it = fish.getFishierElementBridgeCollection().iterator(); it.hasNext();) {
+                    FishierElementBridge fishElBr = (FishierElementBridge) it.next();
+                    fishElBridgeColl.add(fishElBr);
+                }
+                
+                newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
+                BeanGetter.lookupFishierFacade().create(newFishier);
+                bikeObject.setFishier(newFishier);
                 BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
+                
                 message = localeProvider.getMessage("success", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getSuccColor());
@@ -374,15 +389,6 @@ public class Bikes {
 
     private List<Fishier> findFishiers() {
         return BeanGetter.getUserInfo().getFishiers();
-    }
-
-    private Motorcycle findBike(String bikeId) throws MPException {
-        for (Motorcycle bike : BeanGetter.getUserInfo().getMotorcycleCollection()) {
-            if (bike.getId().toString().equals(bikeId)) {
-                return bike;
-            }
-        }
-        throw new MPException("Bike not found at findBike");
     }
     
     private Fishier findFishier(String fishierId) throws MPException {

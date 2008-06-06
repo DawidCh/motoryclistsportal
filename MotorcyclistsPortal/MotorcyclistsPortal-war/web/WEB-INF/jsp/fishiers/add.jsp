@@ -10,6 +10,13 @@
     <tr><td><fmt:message key="id"/></td>
             <td>${fishier.id}</td>
     </tr>
+    <tr><td><fmt:message key="fishiers.bike"/></td><td><select name="bike">
+            <c:forEach var="loopBike" items="${bikes}">
+                <option value="${loopBike.id}"
+                    <c:if test="${loopBike.id == bike.id}">selected="selected"</c:if>>${loopBike.nickname}</option>
+            </c:forEach>
+        </select>
+    </td></tr>
     <tr><td<c:if test='${(fishier.description == null || fishier.description=="") && form != null}'>
             style="color: <c:out value='${failColor}'/>"</c:if>>*<fmt:message key="fishiers.description"/></td>
             <td><input name="description" value="${fishier.description}"/></td>

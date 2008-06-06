@@ -17,7 +17,7 @@
                 <fmt:message key="parts.${fishierElement.activityperiod.description}"/></td>
             <td>${fishierElement.changemileage}</td>
             <td>${fishierElement.changedate}</td>
-            <td>${fuzzyResult[status.count-1]}</td>
+            <td><fmt:message key="usage.${fuzzyResult[status.count-1]}"/></td>
         </tr>
     </c:forEach>
 </table>
