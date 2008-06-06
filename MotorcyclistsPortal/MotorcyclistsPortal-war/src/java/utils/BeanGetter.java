@@ -5,7 +5,6 @@
 
 package utils;
 
-import entities.TripType;
 import facades.ActionFacadeLocal;
 import facades.ActivityPeriodFacadeLocal;
 import facades.AvailableLangsFacadeLocal;
@@ -18,7 +17,6 @@ import facades.PrivilegesFacadeLocal;
 import facades.TripFacadeLocal;
 import facades.TripTypeFacadeLocal;
 import facades.UserFacadeLocal;
-import java.util.List;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -162,7 +160,7 @@ public class BeanGetter {
             throw new RuntimeException(ne);
         }
     }
-
+    
     public static TripFacadeLocal lookupTripFacade() {
         try {
             Context c = new InitialContext();

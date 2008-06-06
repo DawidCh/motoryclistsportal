@@ -24,6 +24,7 @@ import utils.DefaultValues;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPLogger;
+import utils.MPUtilities;
 
 /**
  *
@@ -95,7 +96,7 @@ public class Trips {
                     return new ModelAndView("trips/add", formInfo);
                 }
             }
-            Motorcycle bike = this.findBike(bikeId);
+            Motorcycle bike = MPUtilities.findBike(bikeId);
             if (bike == null) {
                 MPLogger.severe("Bike not found at Trips add: " + bikeId);
                 message = localeProvider.getMessage("trips.bikeNotFound", null, defaultLocale);
@@ -232,7 +233,7 @@ public class Trips {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 Date newDate = sdf.parse(date);
 
-                Motorcycle bike = this.findBike(bikeId);
+                Motorcycle bike = MPUtilities.findBike(bikeId);
                 if (bike == null) {
                     MPLogger.severe("Bike not found at Trips add: " + bikeId);
                     message = localeProvider.getMessage("trips.bikeNotFound", null, defaultLocale);
@@ -355,15 +356,6 @@ public class Trips {
             return new ModelAndView(this.showList(request, response).getView(), formInfo);
         }
         return new ModelAndView("trips/details", formInfo);
-    }
-
-    private Motorcycle findBike(String bikeId) throws MPException {
-        for (Motorcycle bike : BeanGetter.getUserInfo().getMotorcycleCollection()) {
-            if (bike.getId().toString().equals(bikeId)) {
-                return bike;
-            }
-        }
-        throw new MPException("Trip not found at Trips.findBike");
     }
 
     private Trip findTrip(String tripId) throws MPException {

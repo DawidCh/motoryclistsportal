@@ -10,6 +10,9 @@ import entities.Fishier;
 import entities.FishierElementBridge;
 import entities.FishiersElement;
 import entities.Motorcycle;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +26,7 @@ import utils.DefaultValues;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPLogger;
+import utils.MPUtilities;
 
 /**
  *
@@ -50,7 +54,20 @@ public class Fishiers {
         // </editor-fold>
         formInfo.put("pageTitle", localeProvider.getMessage("fishiers.pageTitle", null, defaultLocale));
         formInfo.put("formTitle", localeProvider.getMessage("fishiers.formTitle.add", null, defaultLocale));
+        Motorcycle bike = null;
         String form = request.getParameter("form");
+        String bikeId = request.getParameter("bike");
+        try {
+            if(bikeId == null)
+                throw new MPException("");
+            bike = MPUtilities.findBike(bikeId);
+            formInfo.put("bike", bike);
+        } catch (MPException mPException) {
+            form = null;
+            MPLogger.severe("Bike not found in Fishiers.add");
+        }
+        List<Motorcycle> bikes = BeanGetter.getUserInfo().getMotorcycleCollection();
+        formInfo.put("bikes", bikes);
         String message;
 
         if (form != null) {
@@ -65,9 +82,12 @@ public class Fishiers {
             }
             Fishier newFishier = new Fishier();
             newFishier.setDescription(description);
-
+            newFishier.setLogin(BeanGetter.getUserInfo().getUser());
+            newFishier.setMotorcycle(bike);
+            bike.setFishier(newFishier);
             try {
                 BeanGetter.lookupFishierFacade().create(newFishier);
+                BeanGetter.lookupMotorcycleFacade().edit(bike);
             } catch (Exception exception) {
                 message = localeProvider.getMessage("error.errorWhileAdding", null, defaultLocale);
                 formInfo.put("message", message);
@@ -85,7 +105,7 @@ public class Fishiers {
             return new ModelAndView("fishiers/add", formInfo);
         }
         formInfo.put("action", "new.html");
-        return new ModelAndView("fishiers/add");
+        return new ModelAndView("fishiers/add", formInfo);
     }
 
     public ModelAndView editFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -246,6 +266,8 @@ public class Fishiers {
         Fishier fishier = (Fishier) formInfo.get("fishier");
         String fishierElement = request.getParameter("fishierElement");
         String periodLength = request.getParameter("periodLength");
+        String changeMileage = request.getParameter("changeMileage");
+        String changeDate = request.getParameter("changeDate");
         String activityPeriod = request.getParameter("activityPeriod");
         String action = request.getParameter("action");
 
@@ -261,11 +283,16 @@ public class Fishiers {
             }
 
             FishierElementBridge element = new FishierElementBridge();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Date newDate = sdf.parse(changeDate);
+            
             element.setFishier(fishier);
             element.setFishierelement(fishEl);
             element.setPeriodlength(Integer.parseInt(periodLength));
             element.setActivityperiod(activityPeriod);
             element.setAction(action);
+            element.setChangemileage(Integer.parseInt(changeMileage));
+            element.setChangedate(newDate);
 
             BeanGetter.lookupFishierElementBridgeFacade().create(element);
 
@@ -274,9 +301,16 @@ public class Fishiers {
             formInfo.put("messColor", DefaultValues.getSuccColor());
             formInfo.put("fishierElements", this.findFishierElementBridges());
         } catch (NumberFormatException nfe) {
+            formInfo.put("periodLength", null);
+            formInfo.put("changeMileage", null);
+            formInfo.put("changeDate", changeDate);
             formInfo.put("message", localeProvider.getMessage("error.parsingError", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
             formInfo.put("periodLength", periodLength);
+        }  catch (ParseException ex) {
+                formInfo.put("date", null);
+                formInfo.put("message", localeProvider.getMessage("error.wrongDate", null, defaultLocale));
+                formInfo.put("messColor", DefaultValues.getFailColor());
         } catch (Exception exception) {
             MPLogger.severe("Error while adding fishier element at Fishiers.addElement");
             exception.printStackTrace();

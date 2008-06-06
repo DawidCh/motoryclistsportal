@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -52,7 +53,7 @@ public class Motorcycle implements Serializable {
     @Column(name = "mileage")
     private Double mileage;
     @JoinColumn(name = "fishier", referencedColumnName = "id")
-    @ManyToOne
+    @OneToOne
     private Fishier fishier;
     @JoinColumn(name = "login", referencedColumnName = "login")
     @ManyToOne
