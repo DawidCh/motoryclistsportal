@@ -25,29 +25,49 @@
         <td><fmt:message key="report.lastChange"/></td>
         <td><fmt:message key="report.mileageChange"/></td>
         <td><fmt:message key="action"/></td></tr>
-    <c:forEach var="fishierElement" items="${fishierElements}">
+    <c:forEach var="fishierElementBridge" items="${fishierElementBridges}">
+        <form action="<c:url value="/fishier_elements/edit.html"/>" method="post">
+                <input type="hidden" name="fishierElementBridge" value="${fishierElementBridge.id}"/>
+                <input type="hidden" name="fishier" value="${fishier.id}"/>
         <tr>
-            <td><fmt:message key="parts.${fishierElement.fishierelement.description}"/></td>
-            <td><fmt:message key="fishiers.every"/> ${fishierElement.periodlength}</td>
-            <td><fmt:message key="parts.${fishierElement.activityperiod.description}"/></td>
-            <td><fmt:message key="activity.${fishierElement.action.description}"/></td>
-            <td>${fishierElement.changedate}</td>
-            <td>${fishierElement.changemileage}</td>
-            <td>
-                <form action="<c:url value="/fishier_elements/delete.html"/>" method="post">
-                    <input type="hidden" name="element" value="${fishierElement.id}"/>
-                    <input type="hidden" name="fishier" value="${fishier.id}"/>
-                    <input type="submit" value="<fmt:message key="fishiers.deleteelement"/>"/>
-                </form>
+            <td><fmt:message key="parts.${fishierElementBridge.fishierelement.description}"/></td>
+            <td><fmt:message key="fishiers.every"/> ${fishierElementBridge.periodlength}</td>
+            <td><fmt:message key="parts.${fishierElementBridge.activityperiod.description}"/></td>
+            <td><fmt:message key="activity.${fishierElementBridge.action.description}"/></td>
+            
+            
+
+            <td><div id="changeDateDiv_${fishierElementBridge.id}">${fishierElementBridge.changedate}</div>
+                <input id="changeDate_${fishierElementBridge.id}" style="display:none"
+                    name="changeDate" value="${fishierElementBridge.changedate}"/>
             </td>
+            <td><div id="changeMileageDiv_${fishierElementBridge.id}">${fishierElementBridge.changemileage}</div>
+                <input id="changeMileage_${fishierElementBridge.id}" style="display:none"
+                    name="changeMileage" value="${fishierElementBridge.changemileage}"/>
+            </td>
+            <td>
+                <input type="button" value="<fmt:message key="fishiers.deleteelement"/>" onclick="
+                location.href='<c:url value="/fishier_elements/delete.html?element=${fishierElementBridge.id}&fishier=${fishier.id}"/>'
+                "/>
+                <input type="submit" id="submit_${fishierElementBridge.id}" style="display:none" value="<fmt:message key="submit"/>"/>
+                <input type="button" value="<fmt:message key="fishiers.change"/>"
+                onclick="
+                        document.getElementById('changeMileage_${fishierElementBridge.id}').style.display='block';
+                        document.getElementById('changeMileageDiv_${fishierElementBridge.id}').style.display='none';
+                        document.getElementById('changeDate_${fishierElementBridge.id}').style.display='block';
+                        document.getElementById('changeDateDiv_${fishierElementBridge.id}').style.display='none';
+                        document.getElementById('submit_${fishierElementBridge.id}').style.display='inline';
+                        this.style.display='none'"/>
+             </td>
         </tr>
+        </form>
     </c:forEach>
     <c:if test="${!empty elements}">
     <form action="<c:url value="/fishier_elements/add.html"/>" method="post">
         <input type="hidden" name="fishier" value="${fishier.id}"/>
         <tr>
             <td>
-                <select name="fishierElement">
+                <select name="fishierElementBridge">
                     <c:forEach var="element" items="${elements}">
                         <option value="${element.id}"><fmt:message key="parts.${element.description}"/></option>
                     </c:forEach>

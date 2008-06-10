@@ -16,6 +16,8 @@ import javax.ejb.Local;
 @Local
 public interface MotorcycleFacadeLocal {
 
+    public List<Motorcycle> findWithoutFishier();
+
     void create(Motorcycle motorcycle);
 
     void edit(Motorcycle motorcycle);
