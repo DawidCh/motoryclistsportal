@@ -62,6 +62,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                         /fishiers/details.html=details
                         /fishier_elements/add.html=addElement
                         /fishier_elements/delete.html=deleteElement
+                        /fishier_elements/edit.html=editElement
                     </value>
                 </property>
             </bean>

@@ -49,4 +49,8 @@ public class MotorcycleFacade implements MotorcycleFacadeLocal {
         return em.createQuery("select object(o) from Motorcycle as o").getResultList();
     }
 
+    public List<Motorcycle> findWithoutFishier() {
+        return em.createQuery("select object(o) from Motorcycle as o where o.fishier IS NULL").getResultList();
+    }
+
 }
