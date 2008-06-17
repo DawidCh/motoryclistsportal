@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
+import utils.DefaultValues;
 import utils.LocaleProvider;
 import utils.MPUtilities;
 
@@ -42,7 +43,15 @@ public class Report implements Controller{
         List<Motorcycle> bikes = this.findBikesWFishiers();
         
         List<FishierElementBridge> fishierElements = this.findFishierElementBridgeByFishier(fishierid);
-        List<String> fuzzyResult = FuzzyDriver.getInstance().generateResult(fishierElements);
+        List<String> fuzzyResult = null;
+        try {
+            fuzzyResult = FuzzyDriver.getInstance().generateResult(fishierElements);
+
+        } catch (Exception exception) {
+            formInfo.put("message", localeProvider.getMessage("ai.computingError", null, defaultLocale));
+            formInfo.put("messColor", DefaultValues.getFailColor());
+        }
+
         
         formInfo.put("bikes", bikes);
         formInfo.put("fuzzyResult", fuzzyResult);
