@@ -60,6 +60,13 @@ public class FishierElementBridge implements Serializable {
     public FishierElementBridge() {
     }
 
+    public FishierElementBridge(FishierElementBridge fishElBr) {
+        this.action = fishElBr.action;
+        this.activityperiod = fishElBr.activityperiod;
+        this.fishierelement = fishElBr.fishierelement;   
+        this.periodlength = fishElBr.periodlength;
+    }
+
     public FishierElementBridge(Integer id) {
         this.id = id;
     }
@@ -139,6 +146,10 @@ public class FishierElementBridge implements Serializable {
 
     public void setFishierelement(FishiersElement fishierelement) {
         this.fishierelement = fishierelement;
+    }
+    
+    public void setChangemileage(Double mileage){
+        this.changemileage = mileage.intValue();
     }
 
     @Override

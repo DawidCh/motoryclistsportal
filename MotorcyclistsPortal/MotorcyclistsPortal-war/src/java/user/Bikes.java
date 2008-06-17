@@ -9,6 +9,7 @@ import entities.FishierElementBridge;
 import security.DetailedUserInformation;
 import entities.Motorcycle;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -354,16 +355,19 @@ public class Bikes {
                 Fishier fish = this.findFishier(fishier);
                 Fishier newFishier = new Fishier(fish);
                 newFishier.setMotorcycle(bikeObject);
-                //TODO: zrobić tak żeby przekopiowało fishierelementbridges
                 
-                List<FishierElementBridge> fishElBridgeColl = new ArrayList<FishierElementBridge>();
-                for (Iterator it = fish.getFishierElementBridgeCollection().iterator(); it.hasNext();) {
-                    FishierElementBridge fishElBr = (FishierElementBridge) it.next();
-                    fishElBridgeColl.add(fishElBr);
-                }
-                
-                newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
                 BeanGetter.lookupFishierFacade().create(newFishier);
+                List<FishierElementBridge> fishElBridgeColl = new ArrayList<FishierElementBridge>();
+                FishierElementBridge element;
+                for (Iterator it = fish.getFishierElementBridgeCollection().iterator(); it.hasNext();) {
+                    element = new FishierElementBridge((FishierElementBridge) it.next());
+                    element.setChangemileage(bikeObject.getMileage());
+                    element.setFishier(newFishier);
+                    element.setChangedate(Calendar.getInstance().getTime());
+                    BeanGetter.lookupFishierElementBridgeFacade().create(element);
+                    fishElBridgeColl.add(element);
+                }
+                newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
                 bikeObject.setFishier(newFishier);
                 BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
                 

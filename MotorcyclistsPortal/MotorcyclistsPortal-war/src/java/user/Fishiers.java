@@ -233,7 +233,6 @@ public class Fishiers {
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         // </editor-fold>
-        formInfo = (HashMap<String, Object>) this.details(request, response).getModel();
         String elementId = request.getParameter("element");
         String fishierId = request.getParameter("fishier");
         FishierElementBridge elementToDel = this.findFishierElementBridge(elementId);
@@ -242,16 +241,17 @@ public class Fishiers {
                 throw new Exception();
             }
             BeanGetter.lookupFishierElementBridgeFacade().remove(elementToDel);
-            formInfo.put("elements", this.findElements(fishierId));
+            //formInfo.put("elements", this.findElements(fishierId));
             formInfo.put("message", localeProvider.getMessage("success", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getSuccColor());
-            formInfo.put("fishierElementBridges", this.findFishierElementBridges());
+            //formInfo.put("fishierElementBridges", this.findFishierElementBridges());
         } catch (Exception exception) {
             MPLogger.severe("Error while deleting fishier element at Fishiers.deleteElement: " + elementId);
             exception.printStackTrace();
             formInfo.put("message", localeProvider.getMessage("error.errorWhileDeleting", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
         }
+        formInfo = (HashMap<String, Object>) this.details(request, response).getModel();
         return new ModelAndView("fishiers/details", formInfo);
     }
 
@@ -264,6 +264,8 @@ public class Fishiers {
         // </editor-fold>
 
         formInfo = (HashMap<String, Object>) this.details(request, response).getModel();
+        formInfo.put("elements", null);
+        formInfo.put("fishierElementBridges", null);
         Fishier fishier = (Fishier) formInfo.get("fishier");
         String fishierElementBridge = request.getParameter("fishierElementBridge");
         String periodLength = request.getParameter("periodLength");
