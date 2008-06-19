@@ -3,7 +3,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext.xml
-            /WEB-INF/acegi-config.xml
+            /WEB-INF/security-config.xml
         </param-value>
     </context-param>
     <listener>
@@ -49,10 +49,10 @@
     <!--acegi security-->
     <filter>
         <filter-name>Acegi Filter Chain Proxy</filter-name>
-        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <filter-class>org.springframework.security.util.FilterToBeanProxy</filter-class>
         <init-param>
             <param-name>targetClass</param-name>
-            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+            <param-value>org.springframework.security.util.FilterChainProxy</param-value>
         </init-param>
     </filter>
     
@@ -63,10 +63,10 @@
     
     <filter>
         <filter-name>Acegi Channel Processing Filter</filter-name>
-        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <filter-class>org.springframework.security.util.FilterToBeanProxy</filter-class>
         <init-param>
             <param-name>targetClass</param-name>
-            <param-value>org.acegisecurity.securechannel.ChannelProcessingFilter</param-value>
+            <param-value>org.springframework.security.securechannel.ChannelProcessingFilter</param-value>
         </init-param>
     </filter>
     
@@ -154,5 +154,11 @@
         <ejb-ref-type>Session</ejb-ref-type>
         <local>facades.TripTypeFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#TripTypeFacade</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>UsageFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.UsageFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#UsageFacade</ejb-link>
     </ejb-local-ref>
     </web-app>

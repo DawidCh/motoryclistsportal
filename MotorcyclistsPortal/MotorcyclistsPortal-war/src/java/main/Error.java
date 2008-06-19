@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.ui.AbstractProcessingFilter;
+import org.springframework.security.AuthenticationException;
+import org.springframework.security.ui.AbstractProcessingFilter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -30,7 +30,7 @@ public class Error implements Controller {
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         formInfo.put("pageTitle", localeProvider.getMessage("error.pageTitle", null, defaultLocale));
         // </editor-fold>
-        AuthenticationException aex = (AuthenticationException) request.getSession(false).getAttribute(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY);
+        AuthenticationException aex = (AuthenticationException) request.getSession(false).getAttribute(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY);
         try {
             MPLogger.severe(aex.getMessage());
             formInfo.put("errorMessage", aex.getMessage());
