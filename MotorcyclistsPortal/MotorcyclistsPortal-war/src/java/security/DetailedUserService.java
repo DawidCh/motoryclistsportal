@@ -6,8 +6,8 @@
 package security;
 
 import entities.User;
-import org.acegisecurity.userdetails.UserDetailsService;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.userdetails.UserDetailsService;
+import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 import utils.BeanGetter;
 import utils.MPLogger;

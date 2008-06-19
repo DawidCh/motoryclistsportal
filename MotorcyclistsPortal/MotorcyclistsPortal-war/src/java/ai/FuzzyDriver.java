@@ -5,12 +5,14 @@
 package ai;
 
 import entities.FishierElementBridge;
+import entities.Usage;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import utils.BeanGetter;
 
 /**
  *
@@ -18,9 +20,6 @@ import java.util.List;
  */
 public class FuzzyDriver {
 
-    public static String LOW_USAGE = new String("low");
-    public static String MEDIUM_USAGE = new String("medium");
-    public static String HARD_USAGE = new String("hard");
     private static FuzzyDriver instance;
 
     private FuzzyDriver() {
@@ -53,17 +52,35 @@ public class FuzzyDriver {
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Date changeDate = sdf.parse(fishierElBr.getChangedate());
-            Date now = Calendar.getInstance().getTime();
-            Long partAge = now.getTime() - changeDate.getTime();
-            return this.fuzzyValue(partAge, fishierElBr.getPeriodlength());
+
+            return this.fuzzyValue(changeDate, fishierElBr.getPeriodlength());
         }
     }
 
     private String fuzzyValue(Integer partMileage, int periodlength) {
-        return FuzzyDriver.HARD_USAGE;
+        Usage usage = null;
+        if (partMileage.intValue() > periodlength) {
+            usage = BeanGetter.lookupUsageFacade().findHardest();
+        }
+        else
+            usage = BeanGetter.lookupUsageFacade().findLowest();
+        return usage.getDescription();
     }
 
-    private String fuzzyValue(Long partAge, int periodlength) {
-        return FuzzyDriver.HARD_USAGE;
+    private String fuzzyValue(Date changeDate, int periodlength) {
+        Calendar usageLimitDate = Calendar.getInstance();
+        usageLimitDate.setTime(changeDate);
+        usageLimitDate.add(Calendar.YEAR, periodlength);
+        Calendar changeCalDate = Calendar.getInstance();
+        changeCalDate.setTime(changeDate);
+        Calendar now = Calendar.getInstance();
+        
+        Usage usage = null;
+        if (usageLimitDate.before(now)) {
+            usage = BeanGetter.lookupUsageFacade().findHardest();
+        }
+        else
+            usage = BeanGetter.lookupUsageFacade().findLowest();
+        return usage.getDescription();
     }
 }

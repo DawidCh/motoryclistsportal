@@ -9,8 +9,8 @@ import java.util.Locale;
 import utils.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.ui.AbstractProcessingFilter;
+import org.springframework.security.AuthenticationException;
+import org.springframework.security.ui.AbstractProcessingFilter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -36,7 +36,7 @@ public class Credentials implements Controller{
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 AuthenticationException aex = (AuthenticationException) request.
                         getSession(false).getAttribute(AbstractProcessingFilter.
-                        ACEGI_SECURITY_LAST_EXCEPTION_KEY);
+                        SPRING_SECURITY_LAST_EXCEPTION_KEY);
                 MPLogger.severe(aex.getMessage());
                 return new ModelAndView("login", formInfo);
             }

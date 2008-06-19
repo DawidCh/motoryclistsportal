@@ -8,8 +8,8 @@ package security;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
+import org.springframework.security.Authentication;
+import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import utils.BeanGetter;
 

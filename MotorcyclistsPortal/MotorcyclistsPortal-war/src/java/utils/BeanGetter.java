@@ -16,12 +16,13 @@ import facades.MotorcycleFacadeLocal;
 import facades.PrivilegesFacadeLocal;
 import facades.TripFacadeLocal;
 import facades.TripTypeFacadeLocal;
+import facades.UsageFacadeLocal;
 import facades.UserFacadeLocal;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import security.DetailedUserInformation;
@@ -70,6 +71,8 @@ public class BeanGetter {
             throw new RuntimeException(ne);
         }
     }
+    
+    
 
     public static UserFacadeLocal lookupUserFacade() {
         try {
@@ -175,6 +178,16 @@ public class BeanGetter {
         try {
             Context c = new InitialContext();
             return (TripTypeFacadeLocal) c.lookup("java:comp/env/TripTypeFacade");
+        } catch (NamingException ne) {
+            MPLogger.severe("Exception while looking up TripTypeFacade in BeanGetter");
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public static UsageFacadeLocal lookupUsageFacade() {
+        try {
+            Context c = new InitialContext();
+            return (UsageFacadeLocal) c.lookup("java:comp/env/UsageFacade");
         } catch (NamingException ne) {
             MPLogger.severe("Exception while looking up TripTypeFacade in BeanGetter");
             throw new RuntimeException(ne);
