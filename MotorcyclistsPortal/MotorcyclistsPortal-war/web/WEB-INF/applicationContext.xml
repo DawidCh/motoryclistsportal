@@ -26,7 +26,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <prop key="/secured/index.html">main</prop>
                 <prop key="/secured/profile.html">profile</prop>
                 <!--report secured pages-->
-                <prop key="/report/generate.html">report</prop>
+                <prop key="/report/*.html">report</prop>
                 <!--bike secured pages-->
                 <prop key="/bikes/*.html">bikes</prop>
                 <!--trip secured pages-->
@@ -37,7 +37,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             </props>
         </property>
     </bean>
-        
+    
     <!-- controllers -->
     <bean id="index" class="main.IndexController"/>
     <bean id="main" class="user.Main"/>
@@ -45,9 +45,23 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="error" class="main.Error"/>
     <bean id="register" class="main.Register"/>
     <bean id="credentials" class="main.Credentials"/>
-    <bean id="report" class="user.Report"/>
     
     <!--multicontrollers-->
+    <!--reports-->
+    <bean id="report" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+        <property name="methodNameResolver">
+            <bean class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+                <property name="mappings">
+                    <value>
+                        /report/generate.html=generateReport
+                    </value>
+                </property>
+            </bean>
+        </property>
+        <property name="delegate">
+            <bean class="user.Report"/>
+        </property>
+    </bean>
     <!--fishiers-->
     <bean id="fishiers" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
         <property name="methodNameResolver">
