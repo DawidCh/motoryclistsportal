@@ -26,6 +26,10 @@
                     <file>${file.reference.commons-logging-1.1.1.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+                <library files="1">
+                    <file>${libs.log4j.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
@@ -45,5 +49,13 @@
                 <id>dist</id>
             </reference>
         </references>
+        <spring-data xmlns="http://www.netbeans.org/ns/spring-data/1">
+            <config-files>
+                <config-file>web/WEB-INF/security-config.xml</config-file>
+                <config-file>web/WEB-INF/dispatcher-servlet.xml</config-file>
+                <config-file>web/WEB-INF/applicationContext.xml</config-file>
+            </config-files>
+            <config-file-groups/>
+        </spring-data>
     </configuration>
 </project>
