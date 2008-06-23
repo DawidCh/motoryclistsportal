@@ -34,26 +34,47 @@ import utils.MPUtilities;
  */
 public class Fishiers {
 
-    public ModelAndView showList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for showing list of fishiers which are owned by logged user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView showList(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        List<Fishier> fishiers = findFishiers();
-        formInfo.put("pageTitle", localeProvider.getMessage("fishiers.pageTitle", null, defaultLocale));
+        List < Fishier > fishiers = findFishiers();
+        formInfo.put("pageTitle", localeProvider.getMessage(
+                "fishiers.pageTitle", null, defaultLocale));
         formInfo.put("fishiers", fishiers);
         return new ModelAndView("fishiers/list", formInfo);
     }
 
-    public ModelAndView addFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for adding new fishier for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView addFishier(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("fishiers.pageTitle", null, defaultLocale));
-        formInfo.put("formTitle", localeProvider.getMessage("fishiers.formTitle.add", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.getMessage(
+                "fishiers.pageTitle", null, defaultLocale));
+        formInfo.put("formTitle", localeProvider.getMessage(
+                "fishiers.formTitle.add", null, defaultLocale));
         Motorcycle bike = null;
         String form = request.getParameter("form");
         String bikeId = request.getParameter("bike");
@@ -67,7 +88,7 @@ public class Fishiers {
             form = null;
             MPLogger.severe("Bike not found in Fishiers.add");
         }
-        List<Motorcycle> bikes = this.getBikes();
+        List < Motorcycle > bikes = this.getBikes();
         formInfo.put("bikes", bikes);
         String message;
 
@@ -75,7 +96,8 @@ public class Fishiers {
             String description = request.getParameter("description");
             if (description == null || description.length() == 0) {
                 MPLogger.severe("Not all fields filled in Fishiers.add");
-                message = localeProvider.getMessage("notAllFilled", null, defaultLocale);
+                message = localeProvider.getMessage(
+                        "notAllFilled", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
@@ -90,11 +112,13 @@ public class Fishiers {
                 BeanGetter.lookupFishierFacade().create(newFishier);
                 BeanGetter.lookupMotorcycleFacade().edit(bike);
             } catch (Exception exception) {
-                message = localeProvider.getMessage("error.errorWhileAdding", null, defaultLocale);
+                message = localeProvider.getMessage(
+                        "error.errorWhileAdding", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
-                MPLogger.severe("Error wihle persisting in db at Fishiers.add: " + exception.getMessage());
+                MPLogger.severe("Error wihle persisting in db at Fishiers.add: "
+                        + exception.getMessage());
                 return new ModelAndView("fishier/add", formInfo);
             }
             formInfo.put("fishier", newFishier);
@@ -102,43 +126,60 @@ public class Fishiers {
             message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getSuccColor());
-            formInfo.put("formTitle", localeProvider.getMessage("fishiers.formTitle.edit", null, defaultLocale));
+            formInfo.put("formTitle", localeProvider.getMessage(
+                    "fishiers.formTitle.edit", null, defaultLocale));
             return new ModelAndView("fishiers/add", formInfo);
         }
         formInfo.put("action", "new.html");
         return new ModelAndView("fishiers/add", formInfo);
     }
 
-    public ModelAndView editFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for editing fishier for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView editFishier(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("formTitle", localeProvider.getMessage("fishiers.formTitle.edit", null, defaultLocale));
+        formInfo.put("formTitle", localeProvider.getMessage(
+                "fishiers.formTitle.edit", null, defaultLocale));
         formInfo.put("action", "edit.html");
         String form = request.getParameter("form");
         String fishierId = request.getParameter("fishier");
         Fishier fishier;
         String message;
 
+        List < Motorcycle > bikes = this.getBikes();
+        formInfo.put("bikes", bikes);
+
         try {
             fishier = this.findFishier(fishierId);
             formInfo.put("fishier", fishier);
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("message", localeProvider.getMessage("fishiers.fishierNotFound", null, defaultLocale));
+            HashMap < String, Object > map = new HashMap < String, Object >();
+            map.put("message", localeProvider.getMessage(
+                    "fishiers.fishierNotFound", null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColor());
             ex.printStackTrace();
-            return new ModelAndView(this.showList(request, response).getView(), map);
+            return new ModelAndView(this.showList(request, response).getView(),
+                    map);
         }
 
         if (form != null) {
             String description = request.getParameter("description");
             if (description == null || description.length() == 0) {
                 MPLogger.severe("Not all fields filled in Fishiers.edit");
-                message = localeProvider.getMessage("notAllFilled", null, defaultLocale);
+                message = localeProvider.getMessage("notAllFilled", null,
+                        defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("fishiers/add", formInfo);
@@ -150,10 +191,12 @@ public class Fishiers {
                     BeanGetter.lookupFishierFacade().edit(fishier);
                 }
             } catch (Exception exception) {
-                message = localeProvider.getMessage("error.errorWhileAdding", null, defaultLocale);
+                message = localeProvider.getMessage("error.errorWhileAdding",
+                        null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
-                MPLogger.severe("Error wihle persisting in db at Fishiers.edit: " + exception.getMessage());
+                MPLogger.severe("Error wihle persisting"
+                        + "in db at Fishiers.edit: " + exception.getMessage());
                 exception.printStackTrace();
                 return new ModelAndView("fishier/add", formInfo);
             }
@@ -166,13 +209,23 @@ public class Fishiers {
         return new ModelAndView("fishiers/add", formInfo);
     }
 
-    public ModelAndView deleteFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for deleting fishier for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView deleteFishier(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("fishiers.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.getMessage(
+                "fishiers.pageTitle", null, defaultLocale));
         String fishierId = request.getParameter("fishier");
         String bikeId = request.getParameter("bike");
 
@@ -183,39 +236,47 @@ public class Fishiers {
             fishier = this.findFishier(fishierId);
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: ");
-            formInfo.put("message", localeProvider.getMessage("fishiers.fishierNotFound", null, defaultLocale));
+            formInfo.put("message", localeProvider.getMessage(
+                    "fishiers.fishierNotFound", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
             ex.printStackTrace();
             if (bikeId != null) {
                 formInfo.put("bike", bikeId);
-                return new ModelAndView("redirect:/bikes/details.html", formInfo);
+                return new ModelAndView(
+                        "redirect:/bikes/details.html", formInfo);
             } else {
                 formInfo.put("fishiers", this.findFishiers());
-                return new ModelAndView(this.details(request, response).getView(), formInfo);
+                return new ModelAndView(
+                        this.details(request, response).getView(), formInfo);
             }
         }
         try {
-            List<Motorcycle> bikes = BeanGetter.lookupMotorcycleFacade().findByFishier(fishier);
-            for (Iterator<Motorcycle> it = bikes.iterator(); it.hasNext();) {
+            List < Motorcycle > bikes =
+                    BeanGetter.lookupMotorcycleFacade().findByFishier(fishier);
+            for (Iterator < Motorcycle > it = bikes.iterator(); it.hasNext();) {
                 Motorcycle motorcycle = it.next();
                 motorcycle.setFishier(null);
                 BeanGetter.lookupMotorcycleFacade().edit(motorcycle);
             }
             BeanGetter.lookupFishierFacade().remove(fishier);
         } catch (Exception exception) {
-            message = localeProvider.getMessage("error.errorWhileDeleting", null, defaultLocale);
+            message = localeProvider.getMessage(
+                    "error.errorWhileDeleting", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getFailColor());
-            MPLogger.severe("Error wihle deleting in db at Fishiers.delete: " + exception.getMessage());
+            MPLogger.severe("Error wihle deleting in db at Fishiers.delete: "
+                    + exception.getMessage());
             if (bikeId != null) {
                 formInfo.put("bike", bikeId);
-                return new ModelAndView("redirect:/bikes/details.html", formInfo);
+                return new ModelAndView(
+                        "redirect:/bikes/details.html", formInfo);
             } else {
                 formInfo.put("fishiers", this.findFishiers());
                 return new ModelAndView("fishiers/list", formInfo);
             }
         }
-        formInfo.put("message", localeProvider.getMessage("success", null, defaultLocale));
+        formInfo.put("message", localeProvider.getMessage(
+                "success", null, defaultLocale));
         formInfo.put("messColor", DefaultValues.getSuccColor());
         if (bikeId != null) {
             formInfo.put("bike", bikeId);
@@ -226,48 +287,72 @@ public class Fishiers {
         }
     }
 
-    public ModelAndView deleteElement(
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for deleting fishier element for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView deleteElement(
+            final HttpServletRequest request,
+            final HttpServletResponse response)
+            throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
         String elementId = request.getParameter("element");
-        String fishierId = request.getParameter("fishier");
-        FishierElementBridge elementToDel = this.findFishierElementBridge(elementId);
+        FishierElementBridge elementToDel =
+                this.findFishierElementBridge(elementId);
         try {
             if (elementToDel == null) {
                 throw new Exception();
             }
             BeanGetter.lookupFishierElementBridgeFacade().remove(elementToDel);
-            //formInfo.put("elements", this.findElements(fishierId));
-            formInfo.put("message", localeProvider.getMessage("success", null, defaultLocale));
+            formInfo.put("message", localeProvider.getMessage(
+                    "success", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getSuccColor());
-            //formInfo.put("fishierElementBridges", this.findFishierElementBridges());
         } catch (Exception exception) {
-            MPLogger.severe("Error while deleting fishier element at Fishiers.deleteElement: " + elementId);
+            MPLogger.severe("Error while deleting fishier element at"
+                    + "Fishiers.deleteElement: " + elementId);
             exception.printStackTrace();
-            formInfo.put("message", localeProvider.getMessage("error.errorWhileDeleting", null, defaultLocale));
+            formInfo.put(
+                    "message", localeProvider.getMessage(
+                    "error.errorWhileDeleting", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
         }
-        formInfo = (HashMap<String, Object>) this.details(request, response).getModel();
+        formInfo = (HashMap<String, Object>) this.details(
+                request, response).getModel();
         return new ModelAndView("fishiers/details", formInfo);
     }
 
+    /**
+     * Method used for adding fishier element for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
     public ModelAndView addElement(
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
 
-        formInfo = (HashMap<String, Object>) this.details(request, response).getModel();
+        formInfo = ( HashMap < String, Object > )
+                this.details(request, response).getModel();
         formInfo.put("elements", null);
         formInfo.put("fishierElementBridges", null);
         Fishier fishier = (Fishier) formInfo.get("fishier");
-        String fishierElementBridge = request.getParameter("fishierElementBridge");
+        String fishierElementBridge =
+                request.getParameter("fishierElementBridge");
         String periodLength = request.getParameter("periodLength");
         String changeMileage = request.getParameter("changeMileage");
         String changeDate = request.getParameter("changeDate");
@@ -275,13 +360,17 @@ public class Fishiers {
         String action = request.getParameter("action");
 
         try {
-            FishiersElement fishEl = BeanGetter.lookupFishiersElementFacade().find(new Integer(fishierElementBridge));
+            FishiersElement fishEl = BeanGetter.lookupFishiersElementFacade().
+                    find(new Integer(fishierElementBridge));
             if (fishEl == null) {
-                MPLogger.severe("Error while finding fishierelement in Fishiers.addElement");
+                MPLogger.severe(
+                        "Error while finding"
+                        + "fishierelement in Fishiers.addElement");
                 throw new Exception();
             }
             if (fishier == null) {
-                MPLogger.severe("Error while finding fishier in Fishiers.addElement");
+                MPLogger.severe(
+                        "Error while finding fishier in Fishiers.addElement");
                 throw new Exception();
             }
 
@@ -299,45 +388,68 @@ public class Fishiers {
 
             BeanGetter.lookupFishierElementBridgeFacade().create(element);
 
-            formInfo.put("elements", this.findElements(fishier.getId().toString()));
-            formInfo.put("message", localeProvider.getMessage("success", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getSuccColor());
-            formInfo.put("fishierElementBridges", this.findFishierElementBridges());
+            formInfo.put("elements",
+                    this.findElements(fishier.getId().toString()));
+            formInfo.put("message",
+                    localeProvider.getMessage("success", null, defaultLocale));
+            formInfo.put("messColor",
+                    DefaultValues.getSuccColor());
+            formInfo.put("fishierElementBridges",
+                    this.findFishierElementBridges());
         } catch (NumberFormatException nfe) {
             formInfo.put("periodLength", null);
             formInfo.put("changeMileage", null);
             formInfo.put("changeDate", changeDate);
-            formInfo.put("message", localeProvider.getMessage("error.parsingError", null, defaultLocale));
+            formInfo.put("message",
+                    localeProvider.getMessage(
+                    "error.parsingError", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
             formInfo.put("periodLength", periodLength);
         } catch (ParseException ex) {
             formInfo.put("date", null);
-            formInfo.put("message", localeProvider.getMessage("error.wrongDate", null, defaultLocale));
+            formInfo.put("message",
+                    localeProvider.getMessage(
+                    "error.wrongDate", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
         } catch (Exception exception) {
-            MPLogger.severe("Error while adding fishier element at Fishiers.addElement");
+            MPLogger.severe("Error while adding fishier"
+                    + "element at Fishiers.addElement");
             exception.printStackTrace();
-            formInfo.put("message", localeProvider.getMessage("error.errorWhileAdding", null, defaultLocale));
+            formInfo.put("message", localeProvider.
+                    getMessage("error.errorWhileAdding", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
             formInfo.put("periodLength", periodLength);
         }
         return new ModelAndView("fishiers/details", formInfo);
     }
 
-    public ModelAndView details(
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for display fishier for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView details(
+            final HttpServletRequest request,
+            final HttpServletResponse response)
+            throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("fishiers.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.
+                getMessage("fishiers.pageTitle", null, defaultLocale));
         String fishierId = request.getParameter("fishier");
         Fishier fishier;
-        List<ActivityPeriod> periods = BeanGetter.lookupActivityPeriodFacade().findAll();
-        List<FishiersElement> elements;
-        List<Action> actions = BeanGetter.lookupActionFacade().findAll();
-        List<FishierElementBridge> fishierElementBridges;
+        List < ActivityPeriod > periods =
+                BeanGetter.lookupActivityPeriodFacade().findAll();
+        List < FishiersElement > elements;
+        List < Action > actions =
+                BeanGetter.lookupActionFacade().findAll();
+        List < FishierElementBridge > fishierElementBridges;
 
         formInfo.put("periods", periods);
         formInfo.put("actions", actions);
@@ -346,37 +458,56 @@ public class Fishiers {
             elements = this.findElements(fishierId);
             formInfo.put("elements", elements);
             fishier = this.findFishier(fishierId);
-            fishierElementBridges = this.findFishierElementBridgeByFishier(fishierId);
+            fishierElementBridges =
+                    this.findFishierElementBridgeByFishier(fishierId);
         } catch (Exception ex) {
             MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
             ex.printStackTrace();
-            formInfo.put("message", localeProvider.getMessage("fishiers.fishierNotFound", null, defaultLocale));
+            formInfo.put("message",
+                    localeProvider.getMessage("fishiers.fishierNotFound",
+                    null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
-            return new ModelAndView(this.showList(request, response).getView(), formInfo);
+            return new ModelAndView(this.showList(request, response).
+                    getView(), formInfo);
         }
         formInfo.put("fishierElementBridges", fishierElementBridges);
         formInfo.put("fishier", fishier);
         return new ModelAndView("fishiers/details", formInfo);
     }
 
-    public ModelAndView editElement(
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for editing fishier element for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView editElement(
+            final HttpServletRequest request,
+            final HttpServletResponse response)
+            throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
 
-        formInfo = (HashMap<String, Object>) this.details(request, response).getModel();
+        formInfo = ( HashMap < String, Object > )
+                this.details(request, response).getModel();
         Fishier fishier = (Fishier) formInfo.get("fishier");
-        String fishierElementBridgeId = request.getParameter("fishierElementBridge");
+        String fishierElementBridgeId =
+                request.getParameter("fishierElementBridge");
         String changeMileage = request.getParameter("changeMileage");
         String changeDate = request.getParameter("changeDate");
 
         try {
-            FishierElementBridge fishEl = BeanGetter.lookupFishierElementBridgeFacade().find(new Integer(fishierElementBridgeId));
+            FishierElementBridge fishEl =
+                    BeanGetter.lookupFishierElementBridgeFacade().
+                    find(new Integer(fishierElementBridgeId));
             if (fishEl == null) {
-                MPLogger.severe("Error while finding fishierelementbridge in Fishiers.editElement");
+                MPLogger.severe("Error while finding"
+                        + "fishierelementbridge in Fishiers.editElement");
                 throw new Exception();
             }
 
@@ -392,25 +523,43 @@ public class Fishiers {
 
             BeanGetter.lookupFishierElementBridgeFacade().edit(fishEl);
 
-            formInfo.put("elements", this.findElements(fishier.getId().toString()));
-            formInfo.put("message", localeProvider.getMessage("success", null, defaultLocale));
+            formInfo.put("elements",
+                    this.findElements(fishier.getId().toString()));
+            formInfo.put("message",
+                    localeProvider.getMessage("success", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getSuccColor());
         } catch (NumberFormatException nfe) {
-            formInfo.put("message", localeProvider.getMessage("error.parsingError", null, defaultLocale));
+            formInfo.put("message",
+                    localeProvider.
+                    getMessage("error.parsingError", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
         } catch (ParseException ex) {
-            formInfo.put("message", localeProvider.getMessage("error.wrongDate", null, defaultLocale));
+            formInfo.put("message",
+                    localeProvider.
+                    getMessage("error.wrongDate", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
         } catch (Exception exception) {
-            MPLogger.severe("Error while editing fishier element at Fishiers.editElement");
+            MPLogger.severe("Error while editing fishier"
+                    + "element at Fishiers.editElement");
             exception.printStackTrace();
-            formInfo.put("message", localeProvider.getMessage("error.errorWhileEditing", null, defaultLocale));
+            formInfo.put("message", localeProvider.
+                    getMessage("error.errorWhileEditing", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
-        } finally {formInfo.put("fishierElementBridges", this.findFishierElementBridges());}
+        } finally {
+            formInfo.put("fishierElementBridges",
+                    this.findFishierElementBridges());
+        }
         return new ModelAndView("fishiers/details", formInfo);
     }
 
-    private Fishier findFishier(String fishierId) throws MPException {
+    /**
+     * Method used for finding fishier for specified user.
+     * @param fishierId fishier id number
+     * @return fishier with specified id
+     * @throws utils.MPException
+     */
+    private Fishier findFishier(String fishierId)
+            throws MPException {
         for (Fishier fishier : BeanGetter.getUserInfo().getFishiers()) {
             if (fishier.getId().toString().equals(fishierId)) {
                 return fishier;
@@ -419,27 +568,61 @@ public class Fishiers {
         throw new MPException("Fishier not found at Fishier.findFishier");
     }
 
+    /**
+     * Method used for finding fishiers for specified user.
+     * @return List which contains all fishiers owned by logged user
+     */
     private List<Fishier> findFishiers() {
         return BeanGetter.getUserInfo().getFishiers();
     }
 
+    /**
+     * Methods used for finding FishierElementBridge by given id
+     * @param elementId id number of FishierElementBridge to find
+     * @return FishierElementBridge element if found
+     */
     private FishierElementBridge findFishierElementBridge(String elementId) {
-        return BeanGetter.lookupFishierElementBridgeFacade().find(Integer.parseInt(elementId));
+        return BeanGetter.lookupFishierElementBridgeFacade().
+                find(Integer.parseInt(elementId));
     }
 
+    /**
+     * Method used for finding FishierElement objects NOT connected
+     * with specified fishier
+     * @param fishierId fishier's id number
+     * @return List of FishierElement objects
+     */
     private List<FishiersElement> findElements(String fishierId) {
-        return BeanGetter.lookupFishiersElementFacade().findAllNotConnWithFishier(fishierId);
+        return BeanGetter.lookupFishiersElementFacade().
+                findAllNotConnWithFishier(fishierId);
     }
 
-    private List<FishierElementBridge> findFishierElementBridges() {
+    /**
+     * Method used for finding all FishierElementBridge.
+     * @return List of FishierElementBridge objects
+     */
+    private List <FishierElementBridge> findFishierElementBridges() {
         return BeanGetter.lookupFishierElementBridgeFacade().findAll();
     }
 
-    private List<FishierElementBridge> findFishierElementBridgeByFishier(String fishierId) {
-        return BeanGetter.lookupFishierElementBridgeFacade().findAllByFishier(fishierId);
+    /**
+     * Method used for finding FishierElementBridge objects connected
+     * with specified fishier
+     * @param fishierId fishier's id number
+     * @return List of FishierElementBridge objects
+     */
+    private List<FishierElementBridge>
+            findFishierElementBridgeByFishier(String fishierId) {
+        return BeanGetter.lookupFishierElementBridgeFacade().
+                findAllByFishier(fishierId);
     }
 
+    /**
+     * Method used for finding all Motorcycles for logged user
+     * @return List of Motorcycle objects
+     */
     private List<Motorcycle> getBikes() {
-        return BeanGetter.lookupMotorcycleFacade().findWithoutFishier();
+        return BeanGetter.lookupMotorcycleFacade().
+                findWithoutFishier(BeanGetter.getUserInfo().getUsername());
     }
 }

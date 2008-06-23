@@ -5,7 +5,7 @@
 
 package user;
 
-import ai.FuzzyDriver;
+import ai.fuzzyficators.FishierElementBridgeFuzzyficator;
 import entities.FishierElementBridge;
 import entities.FishierElementBridge;
 import entities.Motorcycle;
@@ -18,7 +18,6 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
@@ -29,9 +28,9 @@ import utils.MPUtilities;
  *
  * @author kalosh
  */
-public class Report implements Controller{
+public class Report {
 
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView generateReport(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: loc, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -43,18 +42,18 @@ public class Report implements Controller{
         List<Motorcycle> bikes = this.findBikesWFishiers();
         
         List<FishierElementBridge> fishierElements = this.findFishierElementBridgeByFishier(fishierid);
-        List<String> fuzzyResult = null;
+        List<String> fuzzyPartUsage = null;
         try {
-            fuzzyResult = FuzzyDriver.getInstance().generateResult(fishierElements);
-
+            fuzzyPartUsage = new FishierElementBridgeFuzzyficator().processCollection(fishierElements);
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage("ai.computingError", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
+            exception.printStackTrace();
         }
 
         
         formInfo.put("bikes", bikes);
-        formInfo.put("fuzzyResult", fuzzyResult);
+        formInfo.put("fuzzyResult", fuzzyPartUsage);
         formInfo.put("bike", bike);
         formInfo.put("fishierElements", fishierElements);
         formInfo.put("pageTitle", localeProvider.getMessage("report.pageTitle", null, defaultLocale));
