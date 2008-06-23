@@ -42,13 +42,13 @@ public class UsageFacade implements UsageFacadeLocal {
 
     public Usage findHardest() {
         return (Usage) em.createQuery("" +
-                "select object(o) from Usage as o where o.id=1" +
+                "select object(o) from Usage as o where o.id=5" +
                 "").getSingleResult();
     }
     
     public Usage findLowest() {
         return (Usage) em.createQuery("" +
-                "select object(o) from Usage as o where o.id=6" +
+                "select object(o) from Usage as o where o.id=1" +
                 "").getSingleResult();
     }
 
