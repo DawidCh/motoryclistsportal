@@ -40,7 +40,7 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
         FishierElementBridge fishierElBr = (FishierElementBridge) object;
         String activityPeriod = fishierElBr.getActivityperiod().getDescription();
         Usage fuzzyUsage = null;
-        double usage = 0.0;
+        Double usage = 0.0;
         if (activityPeriod.equals("distance")) {
             Integer changeDistance = fishierElBr.getChangemileage();
             Integer bikeMileage = new Integer(fishierElBr.getFishier().getMotorcycle().getMileage().toString());
@@ -78,7 +78,8 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
         List<Usage> usages = BeanGetter.lookupUsageFacade().findAll();
         parameters.add(usage);
         parameters.addAll(usages);
-        return ((Usage) this.fuzzyComputer.extractFuzzyValue(parameters)).getDescription();
+        Usage usageResult = ((Usage) this.fuzzyComputer.extractFuzzyValue(parameters));
+        return usageResult.getDescription();
     }
 
     private int getDiffInMonths(Calendar earlierDate, Calendar laterDate) {
