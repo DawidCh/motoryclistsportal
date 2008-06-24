@@ -17,9 +17,10 @@ public class SquareUsageComputer implements UsageComputerInterface {
      * Method used for computing percentage usage. It uses ax^2 function.
      * @param partUsageInUnits actually usage of part
      * @param partAvailabilityUsage reange of usage where part is available
-     * @return
+     * @return value of percentage usage of part
      */
-     public double computeUsage(int partUsageInUnits, int partAvailabilityUsage) {
+     public double computePercentageValue(final int partUsageInUnits,
+             final int partAvailabilityUsage) {
         double aFactor = 1.0 / Math.pow(partAvailabilityUsage, 2.0);
         double percetnageUsage = aFactor * Math.pow(partUsageInUnits, 2.0);
         if (percetnageUsage > 1.0) {

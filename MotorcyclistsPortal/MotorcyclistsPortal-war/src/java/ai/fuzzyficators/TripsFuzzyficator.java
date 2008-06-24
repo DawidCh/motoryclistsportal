@@ -24,7 +24,10 @@ public class TripsFuzzyficator extends Fuzzyficator {
      */
     @Override
     public final String processElement(Object object) throws Exception {
-        //todo:zaimplementować metodę
+        //todo:zaimplementować metodę wziąć pod uwagę Fuzzyficator i jego
+        //pola. Napisać fuzzycomputers i tripscomputers
+        Double result = 0.0;
+        this.results.add(result);
         return BeanGetter.lookupDistanceFacade().findLowest().getDescription();
     }
 
@@ -38,6 +41,7 @@ public class TripsFuzzyficator extends Fuzzyficator {
     public List<String> processCollection(List objects) throws Exception {
         Double averageDistance = 0.0;
         List < String > result = new ArrayList < String >();
+        this.results = new ArrayList < Double >();
         result.add("");
         for (int i = 0; i < objects.size(); i++) {
             Trip trip = (Trip) objects.get(i);

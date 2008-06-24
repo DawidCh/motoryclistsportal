@@ -10,5 +10,5 @@ package ai.usagecomputers;
  * @author kalosh
  */
 public interface UsageComputerInterface {
-    double computeUsage(int partUsageInUnits, int partAvailabilityUsage);
+    double computePercentageValue(int partUsageInUnits, int partAvailabilityUsage);
 }

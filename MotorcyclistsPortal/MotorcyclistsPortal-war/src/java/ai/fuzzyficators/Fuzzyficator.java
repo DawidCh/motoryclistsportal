@@ -5,6 +5,7 @@
 
 package ai.fuzzyficators;
 
+import ai.fuzzycomputers.FuzzyComputerInterface;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,16 @@ import java.util.List;
  * @author Dawid
  */
 public abstract class Fuzzyficator {
+
+    /**
+     * Object for computing Usage for specified
+     * percentage usage of element.
+     */
+    protected FuzzyComputerInterface fuzzyComputer;
+    /**
+     * List of Double objects representing values of membership functions
+     */
+    public List <Double> results;
 
     /**
      * Method using for computing fuzzy value for given object.
@@ -28,8 +39,10 @@ public abstract class Fuzzyficator {
      * @return fuzzy values for given attributes
      * @throws java.lang.Exception
      */
-    public List < String > processCollection(final List objects) throws Exception {
+    public List < String > processCollection(final List objects)
+            throws Exception {
         List < String > result = new ArrayList < String >();
+        this.results = new ArrayList < Double >();
         for (int i = 0; i < objects.size(); i++) {
             Object object = objects.get(i);
             result.add(this.processElement(object));

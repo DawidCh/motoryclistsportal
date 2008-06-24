@@ -31,28 +31,50 @@ import utils.MPUtilities;
  */
 public class Bikes {
 
-    public ModelAndView showList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for showing list of bikes which are owned by logged user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView showList(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
         DetailedUserInformation userInfo = BeanGetter.getUserInfo();
-        List<Motorcycle> bikes = new ArrayList<Motorcycle>(
-                BeanGetter.lookupMotorcycleFacade().findByLogin(userInfo.getUsername()));
+        List < Motorcycle > bikes = new ArrayList < Motorcycle >(
+                BeanGetter.lookupMotorcycleFacade().
+                findByLogin(userInfo.getUsername()));
         formInfo.put("bikes", bikes);
-        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.
+                getMessage("bikes.pageTitle", null, defaultLocale));
         return new ModelAndView("bikes/list", formInfo);
     }
 
-    public ModelAndView addBike(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for adding new bike for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView addBike(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
-        formInfo.put("formTitle", localeProvider.getMessage("bikes.formTitle.add", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.
+                getMessage("bikes.pageTitle", null, defaultLocale));
+        formInfo.put("formTitle", localeProvider.
+                getMessage("bikes.formTitle.add", null, defaultLocale));
         String form = request.getParameter("form");
         String message;
 
@@ -80,14 +102,16 @@ public class Bikes {
             //</editor-fold>
             for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
                 String currentKey = (String) it.next();
-                if (currentKey.equals(new String("pageTitle")) ||
-                        currentKey.equals(new String("formTitle"))) {
+                if (currentKey.equals(new String("pageTitle"))
+                        || currentKey.equals(new String("formTitle"))) {
                     continue;
                 }
-                if (request.getParameter(currentKey) == null ||
-                        request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.severe("Not all fields filled in new bike: " + currentKey);
-                    message = localeProvider.getMessage("notAllFilled", null, defaultLocale);
+                if (request.getParameter(currentKey) == null
+                        || request.getParameter(currentKey).isEmpty()) {
+                    MPLogger.severe("Not all fields filled in new bike: "
+                            + currentKey);
+                    message = localeProvider.
+                            getMessage("notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColor());
                     formInfo.put("action", "new.html");
@@ -96,22 +120,26 @@ public class Bikes {
             }
             newBike = new Motorcycle(
                     manufacturer, model, new Integer(year), new Integer(torque),
-                    new Integer(power), new Double(mileage), new Integer(displacement),
-                    nickname, BeanGetter.getUserInfo().getUser());
+                    new Integer(power), new Double(mileage),
+                    new Integer(displacement), nickname,
+                    BeanGetter.getUserInfo().getUser());
             try {
                 BeanGetter.lookupMotorcycleFacade().create(newBike);
 
             } catch (Exception exception) {
-                message = localeProvider.getMessage("error.errorWhileAdding", null, defaultLocale);
+                message = localeProvider.getMessage("error.errorWhileAdding",
+                        null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
-                MPLogger.severe("Error wihle persisting in db at Bikes.add: " + exception.getMessage());
+                MPLogger.severe("Error wihle persisting in db at Bikes.add: "
+                        + exception.getMessage());
                 return new ModelAndView("bikes/add", formInfo);
             }
             message = localeProvider.getMessage("success", null, defaultLocale);
-            formInfo = new HashMap<String, Object>();
-            formInfo.put("formTitle", localeProvider.getMessage("bikes.formTitle.edit", null, defaultLocale));
+            formInfo = new HashMap < String, Object >();
+            formInfo.put("formTitle", localeProvider.
+                    getMessage("bikes.formTitle.edit", null, defaultLocale));
             formInfo.put("message", message);
             formInfo.put("nickname", nickname);
             formInfo.put("manufacturer", manufacturer);
@@ -129,26 +157,41 @@ public class Bikes {
         formInfo.put("action", "new.html");
         return new ModelAndView("bikes/add", formInfo);
     }
-    
-    public ModelAndView reassignFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    /**
+     * Method used for deleting assigning fishier to bike for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView reassignFishier(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle",
+                null, defaultLocale));
         String message = new String();
         String bikeId = request.getParameter("bike");
         try {
             String fishier = request.getParameter("fishier");
             formInfo.put("fishier", fishier);
-            if (bikeId == null || bikeId.isEmpty() || fishier == null || fishier.isEmpty())
+            if (bikeId == null || bikeId.isEmpty() || fishier == null
+                    || fishier.isEmpty()) {
                 throw new Exception();
-            Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bikeId));
+            }
+            Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().
+                    find(Integer.parseInt(bikeId));
             formInfo.put("bike", bikeObject);
             Fishier fish = MPUtilities.findFishier(fishier);
-            if(fish == null || !fish.getId().equals(new Integer(fishier)))
-                throw new Exception("Fishier not found at Bikes.reaasignFishier");
+            if (fish == null || !fish.getId().equals(new Integer(fishier))) {
+                throw new Exception(
+                        "Fishier not found at Bikes.reaasignFishier");
+            }
             bikeObject.setFishier(null);
             BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
             message = localeProvider.getMessage("success", null, defaultLocale);
@@ -157,8 +200,10 @@ public class Bikes {
             formInfo.putAll(this.showList(request, response).getModel());
             return new ModelAndView("bikes/details", formInfo);
         } catch (Exception ex) {
-            MPLogger.severe("Error while reassigning fishier to bike in Bikes.reassignFishier");
-            message = localeProvider.getMessage("error.otherError", null, defaultLocale);
+            MPLogger.severe("Error while reassigning fishier to"
+                    + "bike in Bikes.reassignFishier");
+            message = localeProvider.getMessage("error.otherError",
+                    null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getFailColor());
             formInfo.putAll(this.showList(request, response).getModel());
@@ -167,22 +212,34 @@ public class Bikes {
         }
     }
 
-    public ModelAndView editBike(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for editing bike for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView editBike(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("formTitle", localeProvider.getMessage("bikes.formTitle.edit", null, defaultLocale));
+        formInfo.put("formTitle", localeProvider.
+                getMessage("bikes.formTitle.edit", null, defaultLocale));
         String bikeId = request.getParameter("bike");
         Motorcycle bike = null;
         try {
-            bike = BeanGetter.lookupMotorcycleFacade().find(new Integer(bikeId));
+            bike = BeanGetter.lookupMotorcycleFacade().
+                    find(new Integer(bikeId));
 
         } catch (Exception exception) {
             MPLogger.severe("Bike not found at bikes edit: " + bikeId);
             Map map = this.showList(request, response).getModel();
-            map.put("message", localeProvider.getMessage("bikes.bikeNotFound", null, defaultLocale));
+            map.put("message", localeProvider.getMessage("bikes.bikeNotFound",
+                    null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColor());
             exception.printStackTrace();
             return new ModelAndView("bikes/list", map);
@@ -211,14 +268,16 @@ public class Bikes {
             form = request.getParameter("form");
             for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
                 String currentKey = (String) it.next();
-                if (currentKey.equals(new String("pageTitle")) ||
-                        currentKey.equals(new String("formTitle"))) {
+                if (currentKey.equals(new String("pageTitle"))
+                        || currentKey.equals(new String("formTitle"))) {
                     continue;
                 }
-                if (request.getParameter(currentKey) == null ||
-                        request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.severe("Not all fields filled in edit bike: " + currentKey);
-                    message = localeProvider.getMessage("notAllFilled", null, defaultLocale);
+                if (request.getParameter(currentKey) == null
+                        || request.getParameter(currentKey).isEmpty()) {
+                    MPLogger.severe("Not all fields filled in edit bike: "
+                            + currentKey);
+                    message = localeProvider.getMessage("notAllFilled",
+                            null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColor());
                     formInfo.put("action", "edit.html");
@@ -255,7 +314,8 @@ public class Bikes {
 
             } catch (Exception exception) {
                 MPLogger.severe("Error while persisting bike");
-                message = localeProvider.getMessage("error.errorWhileAdding", null, defaultLocale);
+                message = localeProvider.getMessage("error.errorWhileAdding",
+                        null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 exception.printStackTrace();
@@ -278,17 +338,28 @@ public class Bikes {
         return new ModelAndView("bikes/add", formInfo);
     }
 
-    public ModelAndView deleteBike(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for deleting bike for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView deleteBike(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.
+                getMessage("bikes.pageTitle", null, defaultLocale));
         String bikeId = request.getParameter("bike");
         if (bikeId == null) {
             MPLogger.severe("Null bike id at deleteBike");
-            formInfo.put("errorMessage", localeProvider.getMessage("error.otherError", null, defaultLocale));
+            formInfo.put("errorMessage", localeProvider.
+                    getMessage("error.otherError", null, defaultLocale));
             return new ModelAndView("unsecured/error", formInfo);
         }
         Map map = null;
@@ -299,23 +370,35 @@ public class Bikes {
             map = this.showList(request, response).getModel();
         } catch (Exception mPException) {
             map = this.showList(request, response).getModel();
-            map.put("message", localeProvider.getMessage("error.errorWhileDeleting", null, defaultLocale));
+            map.put("message", localeProvider.getMessage(
+                    "error.errorWhileDeleting", null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColor());
             mPException.printStackTrace();
             return new ModelAndView("/bikes/list", map);
         }
-        map.put("message", localeProvider.getMessage("success", null, defaultLocale));
+        map.put("message", localeProvider.
+                getMessage("success", null, defaultLocale));
         map.put("messColor", DefaultValues.getSuccColor());
         return new ModelAndView("/bikes/list", map);
     }
 
-    public ModelAndView details(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for display bike for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView details(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.
+                getMessage("bikes.pageTitle", null, defaultLocale));
         String bikeId = request.getParameter("bike");
         Motorcycle bike = null;
         try {
@@ -326,20 +409,32 @@ public class Bikes {
             formInfo.put("bike", bike);
         } catch (Exception ex) {
             MPLogger.severe("Bike not found");
-            formInfo.put("errorMessage", localeProvider.getMessage("bikes.bikeNotFound", null, defaultLocale));
+            formInfo.put("errorMessage", localeProvider.
+                    getMessage("bikes.bikeNotFound", null, defaultLocale));
             ex.printStackTrace();
             return new ModelAndView("unsecured/error", formInfo);
         }
         return new ModelAndView("bikes/details", formInfo);
     }
 
-    public ModelAndView assignFishier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for assign specified fishier to specified bike
+     * for specified user.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public final ModelAndView assignFishier(final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
-        HashMap<String, Object> formInfo = new HashMap<String, Object>();
+        HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        formInfo.put("pageTitle", localeProvider.getMessage("bikes.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.
+                getMessage("bikes.pageTitle", null, defaultLocale));
         String form = request.getParameter("form");
         String message = new String();
         String bike = request.getParameter("bike");
@@ -348,43 +443,53 @@ public class Bikes {
             try {
                 String fishier = request.getParameter("fishier");
                 formInfo.put("fishier", fishier);
-                if (bike == null || bike.isEmpty() || fishier == null || fishier.isEmpty())
+                if (bike == null || bike.isEmpty()
+                        || fishier == null || fishier.isEmpty()) {
                     throw new Exception();
-                Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bike));
+                }
+                Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().
+                        find(Integer.parseInt(bike));
                 Fishier fish = MPUtilities.findFishier(fishier);
                 Fishier newFishier = new Fishier(fish);
                 newFishier.setMotorcycle(bikeObject);
-                
+
                 BeanGetter.lookupFishierFacade().create(newFishier);
-                List<FishierElementBridge> fishElBridgeColl = new ArrayList<FishierElementBridge>();
+                List < FishierElementBridge > fishElBridgeColl =
+                        new ArrayList < FishierElementBridge >();
                 FishierElementBridge element;
-                for (Iterator it = fish.getFishierElementBridgeCollection().iterator(); it.hasNext();) {
-                    element = new FishierElementBridge((FishierElementBridge) it.next());
+                for (Iterator it = fish.getFishierElementBridgeCollection().
+                        iterator(); it.hasNext();) {
+                    element = new FishierElementBridge((FishierElementBridge)
+                            it.next());
                     element.setChangemileage(bikeObject.getMileage());
                     element.setFishier(newFishier);
                     element.setChangedate(Calendar.getInstance().getTime());
-                    BeanGetter.lookupFishierElementBridgeFacade().create(element);
+                    BeanGetter.lookupFishierElementBridgeFacade().
+                            create(element);
                     fishElBridgeColl.add(element);
                 }
                 newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
                 bikeObject.setFishier(newFishier);
                 BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
-                
-                message = localeProvider.getMessage("success", null, defaultLocale);
+
+                message = localeProvider.getMessage("success",
+                        null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getSuccColor());
                 formInfo.putAll(this.showList(request, response).getModel());
                 return new ModelAndView("bikes/list", formInfo);
-            } catch (Exception ex) {
-                MPLogger.severe("Error while assigning fishier to bike in Bikes.assignFishier");
-                message = localeProvider.getMessage("error.otherError", null, defaultLocale);
+            } catch (Exception exception) {
+                MPLogger.severe("Error while assigning fishier to bike"
+                        + "in Bikes.assignFishier");
+                message = localeProvider.getMessage("error.otherError",
+                        null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.putAll(this.showList(request, response).getModel());
                 return new ModelAndView("bikes/list", formInfo);
             }
         } else {
-            List<Fishier> fishiers = MPUtilities.findFishiers();
+            List < Fishier > fishiers = MPUtilities.findFishiers();
             formInfo.put("fishiers", fishiers);
         }
         return new ModelAndView("bikes/selectFishier", formInfo);

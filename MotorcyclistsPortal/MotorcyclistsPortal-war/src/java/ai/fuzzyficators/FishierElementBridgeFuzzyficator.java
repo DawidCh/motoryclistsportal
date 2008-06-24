@@ -4,7 +4,6 @@
  */
 package ai.fuzzyficators;
 
-import ai.fuzzycomputers.FuzzyComputerInterface;
 import ai.fuzzycomputers.TrapeziumComputer;
 import ai.usagecomputers.SquareUsageComputer;
 import ai.usagecomputers.UsageComputerInterface;
@@ -25,18 +24,13 @@ import utils.MPException;
 public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
 
     /**
-     * Usage computer for computing percentage usage of element.
-     */
-    private UsageComputerInterface usageComputer;
-    /**
-     * Usage computer for computing Usage for specified
-     * percentage usage of element.
-     */
-    private FuzzyComputerInterface fuzzyComputer;
-    /**
      * Number of months in year.
      */
     private static final int MONTH_COUNT = 12;
+    /**
+     * Object for computing percentage usage of element.
+     */
+    private UsageComputerInterface usageComputer;
 
     /**
      * Constructor.
@@ -73,7 +67,7 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
                 fuzzyUsage = BeanGetter.lookupUsageFacade().findHardest();
                 return fuzzyUsage.getDescription();
             } else {
-                usage = this.usageComputer.computeUsage(partMileage,
+                usage = this.usageComputer.computePercentageValue(partMileage,
                         partAvailabilityMileage);
             }
         } else {
@@ -96,7 +90,7 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
                 int partAvailabilityMonths = partAvailabilityYears
                         * FishierElementBridgeFuzzyficator.MONTH_COUNT;
                 int monthsDiff = this.getDiffInMonths(changeCalDate, now);
-                usage = this.usageComputer.computeUsage(monthsDiff,
+                usage = this.usageComputer.computePercentageValue(monthsDiff,
                         partAvailabilityMonths);
             }
         }
@@ -106,6 +100,7 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
         parameters.addAll(usages);
         Usage usageResult = (Usage) this.fuzzyComputer.
                 extractFuzzyValue(parameters);
+        this.results.add(usage);
         return usageResult.getDescription();
     }
 

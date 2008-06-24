@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 <%@ include file="/WEB-INF/jspf/subheaders/report.jspf" %>
-<p><fmt:message key="report.fuzzyTrip"/>: ${fuzzyAverageValue}</p>
+<p><fmt:message key="report.fuzzyTrip"/>: <fmt:message key="fuzzyValues.trips.${fuzzyAverageValue}"/></p>
 <table>
     <th><fmt:message key="fishiers.fishierelements"/></th>
     <tr>
