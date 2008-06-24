@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @author kalosh
  */
 @Entity
-@Table(name = "usage")
+@Table(name = "fuzzyusage")
 @NamedQueries({})
 public class Usage implements Serializable {
 

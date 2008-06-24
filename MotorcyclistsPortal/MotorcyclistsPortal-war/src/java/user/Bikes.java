@@ -22,7 +22,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
-import utils.MPException;
 import utils.MPLogger;
 import utils.MPUtilities;
 
@@ -147,7 +146,7 @@ public class Bikes {
                 throw new Exception();
             Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bikeId));
             formInfo.put("bike", bikeObject);
-            Fishier fish = this.findFishier(fishier);
+            Fishier fish = MPUtilities.findFishier(fishier);
             if(fish == null || !fish.getId().equals(new Integer(fishier)))
                 throw new Exception("Fishier not found at Bikes.reaasignFishier");
             bikeObject.setFishier(null);
@@ -352,7 +351,7 @@ public class Bikes {
                 if (bike == null || bike.isEmpty() || fishier == null || fishier.isEmpty())
                     throw new Exception();
                 Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().find(Integer.parseInt(bike));
-                Fishier fish = this.findFishier(fishier);
+                Fishier fish = MPUtilities.findFishier(fishier);
                 Fishier newFishier = new Fishier(fish);
                 newFishier.setMotorcycle(bikeObject);
                 
@@ -385,22 +384,9 @@ public class Bikes {
                 return new ModelAndView("bikes/list", formInfo);
             }
         } else {
-            List<Fishier> fishiers = this.findFishiers();
+            List<Fishier> fishiers = MPUtilities.findFishiers();
             formInfo.put("fishiers", fishiers);
         }
         return new ModelAndView("bikes/selectFishier", formInfo);
-    }
-
-    private List<Fishier> findFishiers() {
-        return BeanGetter.getUserInfo().getFishiers();
-    }
-    
-    private Fishier findFishier(String fishierId) throws MPException {
-        for (Fishier fishier : BeanGetter.getUserInfo().getFishiers()) {
-            if (fishier.getId().toString().equals(fishierId)) {
-                return fishier;
-            }
-        }
-        throw new MPException("Fishier not found at Bikes.findFishier");
     }
 }

@@ -50,7 +50,6 @@ public class MotorcycleFacade implements MotorcycleFacadeLocal {
         return em.createQuery("select object(o) from Motorcycle as o").getResultList();
     }
 
-    //TODO: zrobić tak żeby szukało tylko po użytkowniku
     public List<Motorcycle> findWithoutFishier(String login) {
         return em.createQuery("select object(o) from Motorcycle as o where o.fishier IS NULL and o.login.login='"+login+"'").getResultList();
     }
