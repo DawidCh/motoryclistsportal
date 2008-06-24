@@ -15,6 +15,7 @@ public class MPException extends Exception {
     public static String OTHER_ISSUE = "Other reason";
 
     public MPException(String message) {
+        //todo: zrobić żeby logowało w momencie wywalania wyjątku
         super(message);
     }
 }

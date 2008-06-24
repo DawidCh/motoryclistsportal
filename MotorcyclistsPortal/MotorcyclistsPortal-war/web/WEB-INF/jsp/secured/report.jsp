@@ -1,6 +1,7 @@
 <%@ include file="/WEB-INF/jspf/taglibs.jspf" %>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 <%@ include file="/WEB-INF/jspf/subheaders/report.jspf" %>
+<p><fmt:message key="report.fuzzyTrip"/>: ${fuzzyAverageValue}</p>
 <table>
     <th><fmt:message key="fishiers.fishierelements"/></th>
     <tr>
@@ -10,6 +11,7 @@
         <td><fmt:message key="report.mileageChange"/></td>
         <td><fmt:message key="report.lastChange"/></td>
         <td><fmt:message key="report.usage"/></td>
+        <td><fmt:message key="report.fuzzyTrip"/></td>
     </tr>
     <c:forEach var="fishierElement" items="${fishierElements}" varStatus="status">
         <tr>
@@ -19,7 +21,8 @@
             <td><fmt:message key="activity.${fishierElement.action.description}"/></td>
             <td>${fishierElement.changemileage}</td>
             <td>${fishierElement.changedate}</td>
-            <td><fmt:message key="usage.${fuzzyResult[status.count-1]}"/></td>
+            <td><fmt:message key="fuzzyValues.usage.${fuzzyPartUsage[status.count-1]}"/></td>
+            <td><fmt:message key="fuzzyValues.trips.${fuzzyTripLength[status.count-1]}"/></td>
         </tr>
     </c:forEach>
 </table>

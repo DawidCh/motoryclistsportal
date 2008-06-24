@@ -22,7 +22,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
-import utils.MPException;
 import utils.MPLogger;
 import utils.MPUtilities;
 
@@ -38,7 +37,7 @@ public class Trips {
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         // </editor-fold>
-        List<Trip> trips = trips = this.findTrips();
+        List<Trip> trips = trips = MPUtilities.findTrips();
         formInfo.put("trips", trips);
         formInfo.put("pageTitle", localeProvider.getMessage("trips.pageTitle", null, defaultLocale));
         return new ModelAndView("trips/list", formInfo);
@@ -319,7 +318,7 @@ public class Trips {
         Map map = null;
         Trip tripToDel = null;
         try {
-            tripToDel = this.findTrip(tripId);
+            tripToDel = MPUtilities.findTrip(tripId);
             BeanGetter.lookupTripFacade().remove(tripToDel);
             map = this.showList(request, response).getModel();
         } catch (Exception mPException) {
@@ -344,30 +343,19 @@ public class Trips {
         String tripId = request.getParameter("trip");
         Trip trip = null;
         try {
-            trip = this.findTrip(tripId);
+            trip = MPUtilities.findTrip(tripId);
             if (trip == null) {
                 throw new Exception("Trip not found at Trip.details");
             }
             formInfo.put("trip", trip);
         } catch (Exception ex) {
             MPLogger.severe("Trip not found");
-            formInfo.put("errorMessage", localeProvider.getMessage("trips.tripNotFound", null, defaultLocale));
+            formInfo.put("errorMessage", localeProvider.getMessage(
+                    "trips.tripNotFound", null, defaultLocale));
             ex.printStackTrace();
-            return new ModelAndView(this.showList(request, response).getView(), formInfo);
+            return new ModelAndView(this.showList(request, response).
+                    getView(), formInfo);
         }
         return new ModelAndView("trips/details", formInfo);
-    }
-
-    private Trip findTrip(String tripId) throws MPException {
-        for (Trip trip : BeanGetter.getUserInfo().getTripCollection()) {
-            if (trip.getId().toString().equals(tripId)) {
-                return trip;
-            }
-        }
-        throw new MPException("Trip not found at Trips.findTrip");
-    }
-
-    private List<Trip> findTrips() {
-        return BeanGetter.getUserInfo().getTripCollection();
     }
 }

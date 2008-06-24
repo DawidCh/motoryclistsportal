@@ -7,6 +7,7 @@ package ai.fuzzycomputers;
 import entities.Usage;
 import java.util.List;
 import utils.MPException;
+import utils.MPLogger;
 
 /**
  *
@@ -29,7 +30,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
         }
         List parameters = (List) argument;
         Double percentageValue = (Double) parameters.get(0);
-        Usage maxValue = null;
+        Usage maxValue = (Usage) parameters.get(1);
         double membershipFunctionValue = this.computeMembershipFunctionValue(
                 (Usage) parameters.get(1), percentageValue);
         double tempMemFunVal = 0.0;

@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
@@ -337,8 +339,9 @@ public class Fishiers {
      * and chosen page for display
      * @throws java.lang.Exception
      */
-    public ModelAndView addElement(
-            HttpServletRequest request, HttpServletResponse response)
+    public final ModelAndView addElement(
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -573,7 +576,14 @@ public class Fishiers {
      * @return List which contains all fishiers owned by logged user
      */
     private List<Fishier> findFishiers() {
-        return BeanGetter.getUserInfo().getFishiers();
+        List <Fishier> result = null;
+        try {
+            result = BeanGetter.getUserInfo().getFishiers();
+        } catch (MPException mpException) {
+            MPLogger.severe("Exception caught in Fishiers.findFishiers: "
+                    + mpException.getMessage());
+        }
+        return result;
     }
 
     /**
@@ -622,7 +632,14 @@ public class Fishiers {
      * @return List of Motorcycle objects
      */
     private List<Motorcycle> getBikes() {
-        return BeanGetter.lookupMotorcycleFacade().
-                findWithoutFishier(BeanGetter.getUserInfo().getUsername());
+        List < Motorcycle > bikes = null;
+        try {
+            bikes = BeanGetter.lookupMotorcycleFacade().
+                    findWithoutFishier(BeanGetter.getUserInfo().getUsername());
+        } catch (MPException mpException) {
+            MPLogger.severe("Exception caught in Fishiers.findFishiers: "
+                    + mpException.getMessage());
+        }
+        return bikes;
     }
 }
