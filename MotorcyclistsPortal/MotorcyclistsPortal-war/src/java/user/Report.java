@@ -50,12 +50,14 @@ public class Report {
         String bikeid = request.getParameter("bike");
         Motorcycle bike = MPUtilities.findBike(bikeid);
         String fishierid = bike.getFishier().getId().toString();
+
         List < Motorcycle > bikes = this.findBikesWFishiers();
         List < Trip > trips = MPUtilities.findTrips();
         List < FishierElementBridge > fishierElements =
                 this.findFishierElementBridgeByFishier(fishierid);
         List < String > fuzzyPartUsage = null;
         List < String > fuzzyTripDistance = null;
+
         String fuzzyAverageValue = null;
         try {
             fuzzyPartUsage = new FishierElementBridgeFuzzyficator().

@@ -7,7 +7,6 @@ package ai.fuzzycomputers;
 import entities.Usage;
 import java.util.List;
 import utils.MPException;
-import utils.MPLogger;
 
 /**
  *
