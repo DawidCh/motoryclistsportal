@@ -5,10 +5,14 @@
 
 package ai.fuzzyficators;
 
+import entities.Distance;
 import entities.Trip;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import utils.BeanGetter;
+import utils.MPException;
+import utils.MPUtilities;
 
 /**
  *
@@ -24,11 +28,17 @@ public class TripsFuzzyficator extends Fuzzyficator {
      */
     @Override
     public final String processElement(Object object) throws Exception {
-        //todo:zaimplementować metodę wziąć pod uwagę Fuzzyficator i jego
-        //pola. Napisać fuzzycomputers i tripscomputers
-        Double result = 0.0;
-        this.results.add(result);
-        return BeanGetter.lookupDistanceFacade().findLowest().getDescription();
+        if (!(object instanceof Trip)) {
+            throw new MPException("Object passed to"
+                    + "FishierElementBridgheFuzzyficator.processElement"
+                    + "is not properly");
+        }
+        Trip trip = (Trip) object;
+        List distances =
+                BeanGetter.lookupDistanceFacade().findAll();
+        Distance distanceResults = (Distance) MPUtilities.getFuzzySetForValue(
+                distances, trip.getDistance());
+        return distanceResults.getDescription();
     }
 
     /**
@@ -39,17 +49,27 @@ public class TripsFuzzyficator extends Fuzzyficator {
      */
     @Override
     public List<String> processCollection(List objects) throws Exception {
-        Double averageDistance = 0.0;
-        List < String > result = new ArrayList < String >();
-        this.results = new ArrayList < Double >();
-        result.add("");
+        List < String > result = new ArrayList < String > ();
+        //this.results = new ArrayList < Double >();
         for (int i = 0; i < objects.size(); i++) {
             Trip trip = (Trip) objects.get(i);
             result.add(this.processElement(trip));
+        }
+        return result;
+    }
+
+    /**
+     * Method used for computing average trip's distance.
+     * @return average distance of all user's trips
+     */
+    public final Double computeFuzzyAverageDistance() {
+        List < Trip > trips = BeanGetter.lookupTripFacade().findAll();
+        Double averageDistance = 0.0;
+        for (Iterator < Trip > it = trips.iterator(); it.hasNext();) {
+            Trip trip = it.next();
             averageDistance += trip.getDistance();
         }
-        averageDistance /= objects.size();
-        result.set(0, this.processElement(averageDistance));
-        return result;
+        averageDistance /= trips.size();
+        return averageDistance;
     }
 }

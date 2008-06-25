@@ -6,6 +6,7 @@
 package ai.fuzzyficators;
 
 import ai.fuzzycomputers.FuzzyComputerInterface;
+import ai.fuzzycomputers.TrapeziumComputer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,12 @@ public abstract class Fuzzyficator {
     /**
      * List of Double objects representing values of membership functions
      */
-    public List <Double> results;
+    //protected List <Double> results;
 
+    public Fuzzyficator() {
+        this.fuzzyComputer = new TrapeziumComputer();
+    }
+    
     /**
      * Method using for computing fuzzy value for given object.
      * @param object given for computing fuzzy value
@@ -42,7 +47,7 @@ public abstract class Fuzzyficator {
     public List < String > processCollection(final List objects)
             throws Exception {
         List < String > result = new ArrayList < String >();
-        this.results = new ArrayList < Double >();
+        //this.results = new ArrayList < Double >();
         for (int i = 0; i < objects.size(); i++) {
             Object object = objects.get(i);
             result.add(this.processElement(object));

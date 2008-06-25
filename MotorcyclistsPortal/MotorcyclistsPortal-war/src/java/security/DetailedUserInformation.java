@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package security;
 
 import entities.Fishier;
@@ -18,92 +17,199 @@ import org.springframework.security.userdetails.User;
 import utils.BeanGetter;
 
 /**
- *
+ * Class represents current logged in user's information.
  * @author kalosh
  */
-public class DetailedUserInformation extends User{
+public class DetailedUserInformation extends User {
 
+    /**
+     * Field used for keeping user information.
+     */
     private entities.User user;
 
-    public DetailedUserInformation(entities.User user){
-        super(user.getLoginData().getLogin(), user.getLoginData().getPassword(),
-                user.getLoginData().getEnabled(), new GrantedAuthority[]{
-                    new GrantedAuthorityImpl(user.getLoginData().getPrivileges().getDescription())});
-        this.user = user;
+    /**
+     * Parametrized constructor.
+     * @param entitiesUser entities.User passed from authenticating method
+     */
+    public DetailedUserInformation(final entities.User entitiesUser) {
+        super(entitiesUser.getLoginData().getLogin(), entitiesUser.
+                getLoginData().getPassword(),
+                entitiesUser.getLoginData().getEnabled(),
+                new GrantedAuthority[]{
+                    new GrantedAuthorityImpl(entitiesUser.getLoginData().
+                    getPrivileges().getDescription())
+                });
+        this.user = entitiesUser;
     }
-    public entities.User getUser() {
+
+    /**
+     * Method used for retrieving average trip distance.
+     * @return Double value of average trips distance
+     */
+    public final Double getAverageTripDistance() {
+        return this.user.getAverageTripDistance();
+    }
+
+    /**
+     * Method used for setting average trip distance.
+     * @param distance new average trip distance
+     */
+    public final void setAverageTripDistance(final Double distance) {
+        this.user.setAverageTripDistance(distance);
+    }
+
+    /**
+     * Method used for providing User.
+     * @return entities.User object representing current user
+     */
+    public final entities.User getUser() {
         return user;
     }
 
-    public List<Motorcycle> getMotorcycleCollection(){
-        return BeanGetter.lookupMotorcycleFacade().findByLogin(this.getUsername());
-    }
-    
-    public List<Trip> getTripCollection(){
-        return BeanGetter.lookupTripFacade().findByLogin(this.getUsername());
-    }
-    
-    public List<Fishier> getFishiers(){
-        return BeanGetter.lookupFishierFacade().findByLogin(this.getUsername());
+    /**
+     * Method used for providing List of Motorcycles own by user.
+     * @return List of Motorcycle objects if found
+     */
+    public final List < Motorcycle > getMotorcycleCollection() {
+        return BeanGetter.lookupMotorcycleFacade().
+                findByLogin(this.getUsername());
     }
 
-    public void setBirthdate(Date birthdate) {
+    /**
+     * Method used for providing List of user's trips.
+     * @return List of entities.Trip objects
+     */
+    public final List < Trip > getTripCollection() {
+        return BeanGetter.lookupTripFacade().findByLogin(this.getUsername());
+    }
+
+    /**
+     * Method used for providing List of user's fishiers.
+     * @return List of entities.Fishier objects
+     */
+    public final List < Fishier > getFishiers() {
+        return BeanGetter.lookupFishierFacade().
+                findByLogin(this.getUsername());
+    }
+
+    /**
+     * Method used for setting user's birthdate.
+     * @param birthdate Date to set
+     */
+    public final void setBirthdate(final Date birthdate) {
         this.user.setBirthdate(birthdate);
     }
 
-    public void setGender(String gender) {
+    /**
+     * Method used for setting user's gender.
+     * @param gender gender to set
+     */
+    public final void setGender(final String gender) {
         this.user.setGender(gender);
     }
 
-    public void setCity(String city) {
+    /**
+     * Method used for setting user's city.
+     * @param city city to set
+     */
+    public final void setCity(final String city) {
         this.user.setCity(city);
     }
 
-    public void setMileageType(String mileageType) {
+    /**
+     * Method used for setting user's mileage type.
+     * @param mileageType mileage type to set: km or mil
+     */
+    public final void setMileageType(final String mileageType) {
         this.user.setMileageType(mileageType);
     }
-    
-    public String getMileageType(){
+
+    /**
+     * Method used for geting user's mileage type.
+     * @return mileage type as a String
+     */
+    public final String getMileageType() {
         return this.user.getMileageType();
     }
 
-    public void setSurname(String surname) {
+    /**
+     * Method used for setting user's surname.
+     * @param surname value to set
+     */
+    public final void setSurname(final String surname) {
         this.user.setSurname(surname);
     }
 
-    public void setName(String name) {
+    /**
+     * Method used for setting user's name.
+     * @param name value to set
+     */
+    public final void setName(final String name) {
         this.user.setName(name);
     }
 
-    public void setLocale(Locale locale) {
+    /**
+     * Method used for setting user's locale.
+     * @param locale value to set
+     */
+    public final void setLocale(final Locale locale) {
         this.user.setLocale(locale);
     }
 
-    public String getName() {
+    /**
+     * Method used for geting user's name.
+     * @return name as a String
+     */
+    public final String getName() {
         return this.user.getName();
     }
 
-    public LoginData getLoginData() {
+    /**
+     * Method used for geting user's LoginData like password, login,
+     * priviledges.
+     * @return LoginData contains user information about authentication
+     */
+    public final LoginData getLoginData() {
         return this.user.getLoginData();
     }
 
-    public Locale getLocale() {
+    /**
+     * Method used for geting user's localization.
+     * @return user's Locale
+     */
+    public final Locale getLocale() {
         return this.user.getLocale();
     }
 
-    public String getGender() {
+    /**
+     * Method used for geting user's gender.
+     * @return user's gender as a String
+     */
+    public final String getGender() {
         return this.user.getGender();
     }
 
-    public String getCity() {
+    /**
+     * Method used for geting user's city.
+     * @return city as a String
+     */
+    public final String getCity() {
         return this.user.getCity();
     }
 
-    public Date getBirthdate() {
+    /**
+     * Method used for geting user's birthdate.
+     * @return Date object represents user's birthdate
+     */
+    public final Date getBirthdate() {
         return this.user.getBirthdate();
     }
 
-    public String getSurname() {
+    /**
+     * Method used for geting user's surname.
+     * @return surname as a String
+     */
+    public final String getSurname() {
         return this.user.getSurname();
     }
 }
