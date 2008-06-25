@@ -54,6 +54,8 @@ public class User implements Serializable {
     private LoginData loginData;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Trip> tripCollection;
+    @Column(name = "averagedistance", nullable = false)
+    private Double averageTripsDistance;
 
     public User() {
     }
@@ -82,6 +84,14 @@ public class User implements Serializable {
         this.birthdate = birthdate;
         this.setLocale(locale);
         this.mileagetype = mileageType;
+    }
+
+    public void setAverageTripDistance(Double averageTripsDistance) {
+        this.averageTripsDistance = averageTripsDistance;
+    }
+
+    public Double getAverageTripDistance() {
+        return averageTripsDistance;
     }
 
     public String getName() {

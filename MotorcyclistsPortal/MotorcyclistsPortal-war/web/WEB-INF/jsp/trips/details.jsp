@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/jspf/subheaders/trips.jspf" %>
 
 <table>
-    <th><fmt:message key="trips.formTitle.add"/>
+    <th><fmt:message key="trips.formTitle.details"/>
     </th>
     <tr><td><fmt:message key="trips.date"/></td><td>${trip.date}</td></tr>
     <tr><td><fmt:message key="trips.bike"/></td><td><a href="<c:url value="/bikes/details.html?bike=${trip.bike.id}"/>">${trip.bike.nickname}</a></td></tr>

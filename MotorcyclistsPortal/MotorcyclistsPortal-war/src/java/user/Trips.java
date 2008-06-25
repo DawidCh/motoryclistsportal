@@ -4,6 +4,7 @@
  */
 package user;
 
+import ai.fuzzyficators.TripsFuzzyficator;
 import entities.Motorcycle;
 import entities.Trip;
 import entities.TripType;
@@ -30,7 +31,8 @@ import utils.MPUtilities;
  * @author kalosh
  */
 public class Trips {
-
+//todo:zrobić tak żeby wpisywało mi średnią trasę tuż po dodaniu trasy
+    //lub po jej edycji (zmiany dystansu trasy - tylko)
     /**
      * Method used for showing list of trips which are owned by logged user.
      * @param request HTTP request object
@@ -46,7 +48,13 @@ public class Trips {
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        List<Trip> trips = trips = MPUtilities.findTrips();
+        List < Trip > trips = MPUtilities.findTrips();
+        List < String > fuzzyTripDistance = null;
+        fuzzyTripDistance = new TripsFuzzyficator().
+                    processCollection(trips);
+        formInfo.put("fuzzyTripLength", fuzzyTripDistance);
+        formInfo.put("fuzzyAverageValue", MPUtilities.getFuzzyAvgDist().
+                getDescription());
         formInfo.put("trips", trips);
         formInfo.put("pageTitle", localeProvider.
                 getMessage("trips.pageTitle", null, defaultLocale));
@@ -137,7 +145,7 @@ public class Trips {
                 newTrip = new Trip(newDate, description, doubleDistance, title,
                         type, bike, BeanGetter.getUserInfo().getUser());
                 BeanGetter.lookupTripFacade().create(newTrip);
-
+                MPUtilities.recalculateAverageTripDistance();
             } catch (ParseException parseException) {
                 formInfo.put("date", null);
                 message = localeProvider.getMessage("error.wrongDate", null,
@@ -293,6 +301,7 @@ public class Trips {
                 }
                 if (trip.getDistance() != doubleDistance) {
                     trip.setDistance(doubleDistance);
+                    MPUtilities.recalculateAverageTripDistance();
                 }
                 if (!trip.getTitle().equals(title)) {
                     trip.setTitle(title);
@@ -375,6 +384,7 @@ public class Trips {
             tripToDel = MPUtilities.findTrip(tripId);
             BeanGetter.lookupTripFacade().remove(tripToDel);
             map = this.showList(request, response).getModel();
+            MPUtilities.recalculateAverageTripDistance();
         } catch (Exception mPException) {
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.

@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fuzzydistance")
 @NamedQueries({@NamedQuery(name = "Distance.findById", query = "SELECT d FROM Distance d WHERE d.id = :id"), @NamedQuery(name = "Distance.findByDescription", query = "SELECT d FROM Distance d WHERE d.description = :description"), @NamedQuery(name = "Distance.findByAlpha", query = "SELECT d FROM Distance d WHERE d.alpha = :alpha"), @NamedQuery(name = "Distance.findByBeta", query = "SELECT d FROM Distance d WHERE d.beta = :beta"), @NamedQuery(name = "Distance.findByGamma", query = "SELECT d FROM Distance d WHERE d.gamma = :gamma"), @NamedQuery(name = "Distance.findByDelta", query = "SELECT d FROM Distance d WHERE d.delta = :delta")})
-public class Distance implements Serializable {
+public class Distance implements Serializable, TrapesiumInterface {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "id", nullable = false)
@@ -34,7 +34,7 @@ public class Distance implements Serializable {
     @Column(name = "gamma", nullable = false)
     private double gamma;
     @Column(name = "delta", nullable = false)
-    private double delta;
+    private Double delta;
 
     public Distance() {
     }
@@ -68,31 +68,31 @@ public class Distance implements Serializable {
         this.description = description;
     }
 
-    public double getAlpha() {
+    public Double getAlpha() {
         return alpha;
     }
 
-    public void setAlpha(double alpha) {
+    public void setAlpha(Double alpha) {
         this.alpha = alpha;
     }
 
-    public double getBeta() {
+    public Double getBeta() {
         return beta;
     }
 
-    public void setBeta(double beta) {
+    public void setBeta(Double beta) {
         this.beta = beta;
     }
 
-    public double getGamma() {
+    public Double getGamma() {
         return gamma;
     }
 
-    public void setGamma(double gamma) {
+    public void setGamma(Double gamma) {
         this.gamma = gamma;
     }
 
-    public double getDelta() {
+    public Double getDelta() {
         return delta;
     }
 
@@ -109,7 +109,6 @@ public class Distance implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Distance)) {
             return false;
         }

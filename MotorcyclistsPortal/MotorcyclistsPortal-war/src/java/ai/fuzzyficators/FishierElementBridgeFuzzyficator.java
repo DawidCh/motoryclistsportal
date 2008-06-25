@@ -4,18 +4,17 @@
  */
 package ai.fuzzyficators;
 
-import ai.fuzzycomputers.TrapeziumComputer;
 import ai.usagecomputers.SquareUsageComputer;
 import ai.usagecomputers.UsageComputerInterface;
 import entities.FishierElementBridge;
 import entities.Usage;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import utils.BeanGetter;
 import utils.MPException;
+import utils.MPUtilities;
 
 /**
  *
@@ -36,8 +35,8 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
      * Constructor.
      */
     public FishierElementBridgeFuzzyficator() {
+        super();
         this.usageComputer = new SquareUsageComputer();
-        this.fuzzyComputer = new TrapeziumComputer();
     }
 
     /**
@@ -94,13 +93,10 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
                         partAvailabilityMonths);
             }
         }
-        List parameters = new ArrayList();
-        List < Usage > usages = BeanGetter.lookupUsageFacade().findAll();
-        parameters.add(usage);
-        parameters.addAll(usages);
-        Usage usageResult = (Usage) this.fuzzyComputer.
-                extractFuzzyValue(parameters);
-        this.results.add(usage);
+        List usages = BeanGetter.lookupUsageFacade().findAll();
+        Usage usageResult = (Usage) MPUtilities.
+                getFuzzySetForValue(usages, usage);
+        //this.results.add(usage);
         return usageResult.getDescription();
     }
 

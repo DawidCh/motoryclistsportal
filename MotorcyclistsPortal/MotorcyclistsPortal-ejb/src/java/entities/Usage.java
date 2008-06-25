@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fuzzyusage")
 @NamedQueries({})
-public class Usage implements Serializable {
+public class Usage implements Serializable, TrapesiumInterface {
 
     private static final long serialVersionUID = 1L;
     @Column(name = "description", nullable = false)
