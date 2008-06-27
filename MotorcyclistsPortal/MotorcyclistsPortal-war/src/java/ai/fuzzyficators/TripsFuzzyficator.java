@@ -8,7 +8,6 @@ package ai.fuzzyficators;
 import entities.Distance;
 import entities.Trip;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import utils.BeanGetter;
 import utils.MPException;
@@ -56,20 +55,5 @@ public class TripsFuzzyficator extends Fuzzyficator {
             result.add(this.processElement(trip));
         }
         return result;
-    }
-
-    /**
-     * Method used for computing average trip's distance.
-     * @return average distance of all user's trips
-     */
-    public final Double computeFuzzyAverageDistance() {
-        List < Trip > trips = BeanGetter.lookupTripFacade().findAll();
-        Double averageDistance = 0.0;
-        for (Iterator < Trip > it = trips.iterator(); it.hasNext();) {
-            Trip trip = it.next();
-            averageDistance += trip.getDistance();
-        }
-        averageDistance /= trips.size();
-        return averageDistance;
     }
 }

@@ -22,7 +22,7 @@ public class DetailedUserService implements UserDetailsService {
         DetailedUserInformation userInfo;
         User user = BeanGetter.lookupUserFacade().find(login);
         if(user == null){
-            MPLogger.severe("login: "+login);
+            MPLogger.error("login: "+login);
             throw new UsernameNotFoundException(login);
         }
         userInfo = new DetailedUserInformation(user);

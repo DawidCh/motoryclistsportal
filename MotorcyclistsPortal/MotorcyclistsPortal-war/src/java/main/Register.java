@@ -67,7 +67,7 @@ public class Register implements Controller {
             } catch (ParseException ex) {
                 message = localeProvider.getMessage("error.wrongDate", null, defaultLocale);
                 formInfo.put("message", message);
-                MPLogger.severe("Wrong date format in Register from " + formInfo.get("birthdate"));
+                MPLogger.error("Wrong date format in Register from " + formInfo.get("birthdate"));
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("unsecured/register", formInfo);
             }
@@ -99,7 +99,7 @@ public class Register implements Controller {
             try {
                 loginData = new LoginData((String)formInfo.get("newLogin"), (String)formInfo.get("password"));
             } catch (Exception exception) {
-                MPLogger.severe("Error while creating LoginData object");
+                MPLogger.error("Error while creating LoginData object");
                 formInfo.put("message", localeProvider.getMessage("register.shaerror", null, defaultLocale));
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("unsecured/register", formInfo);
@@ -114,7 +114,7 @@ public class Register implements Controller {
                 BeanGetter.lookupUserFacade().create(user);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
-                MPLogger.severe("Error while adding to database in Register: " + excMess);
+                MPLogger.error("Error while adding to database in Register: " + excMess);
                 message = localeProvider.getMessage("register.addtobase", null, defaultLocale);
                 if (excMess.equals(MPException.LOGIN_EXISTS)) {
                     message += ": " + localeProvider.getMessage("register.loginExists", null, defaultLocale);

@@ -26,13 +26,18 @@ import utils.MPLogger;
 public class VarLoader extends HandlerInterceptorAdapter {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-        if (null != request.getParameter("saveLocale") &&
-                SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+    public boolean preHandle(final HttpServletRequest request,
+            final HttpServletResponse response, final Object object)
+            throws Exception {
+        if (null != request.getParameter("saveLocale")
+                && SecurityContextHolder.getContext().getAuthentication().
+                isAuthenticated()) {
             try {
                 this.persistDLocales(request);
             } catch (MPException mPException) {
-                response.sendRedirect("error.html?errorMessage=" + mPException.getMessage());
+                response.
+                        sendRedirect("error.html?errorMessage="
+                        + mPException.getMessage());
                 return false;
             }
         }
@@ -40,35 +45,50 @@ public class VarLoader extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object, ModelAndView map) throws Exception {
+    public void postHandle(final HttpServletRequest request,
+            final HttpServletResponse response, final Object object,
+            final ModelAndView map) throws Exception {
         try {
-            map.addObject("languages", BeanGetter.getApplicationSettings(request).getAvailableLanguages());
-            if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-                map.addObject("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            map.addObject("languages", BeanGetter.
+                    getApplicationSettings(request).getAvailableLanguages());
+            if (SecurityContextHolder.getContext().
+                    getAuthentication().isAuthenticated()) {
+                map.addObject("user", SecurityContextHolder.getContext().
+                        getAuthentication().getPrincipal());
             }
-            map.addObject("currentLocale", RequestContextUtils.getLocale(request).toString());
+            map.addObject("currentLocale", RequestContextUtils.
+                    getLocale(request).toString());
             map.addObject("failColor", DefaultValues.getFailColor());
             map.addObject("succColor", DefaultValues.getSuccColor());
         } catch (Exception ex) {
-            MPLogger.severe("User is not in the session in VarLoader.postHandle");
+            MPLogger.
+                    error("User is not in the session in VarLoader.postHandle");
         }
-        if(request.getContextPath().contains("logout")){
-            MPLogger.severe("pupusia");
+        if (request.getContextPath().contains("logout")) {
+            MPLogger.error("pupusia");
             SecurityContextHolder.setContext(new SecurityContextImpl());
             request.getSession(false).invalidate();
         }
     }
 
-    public void persistDLocales(HttpServletRequest request) throws MPException {
+    /**
+     * Method used for storing in db selected locale (language).
+     * @param request HTTP request object
+     * @throws utils.MPException
+     */
+    public void persistDLocales(final HttpServletRequest request)
+            throws MPException {
         Locale localeToSet = RequestContextUtils.getLocale(request);
         try {
             DetailedUserInformation userInfo = BeanGetter.getUserInfo();
             userInfo.setLocale(localeToSet);
             BeanGetter.lookupUserFacade().edit(userInfo.getUser());
         } catch (Exception ex) {
-            MPLogger.severe("Error while persisting language at UserSession");
+            MPLogger.error("Error while persisting language at UserSession");
             LocaleProvider loc = BeanGetter.getLocaleProvider(request);
-            throw new MPException(loc.getMessage("session.errorWhilePersist", null, localeToSet));
+            throw new MPException(
+                    loc.getMessage("session.errorWhilePersist",
+                    null, localeToSet));
         }
     }
 }

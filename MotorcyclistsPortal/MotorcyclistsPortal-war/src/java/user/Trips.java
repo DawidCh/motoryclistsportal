@@ -31,8 +31,7 @@ import utils.MPUtilities;
  * @author kalosh
  */
 public class Trips {
-//todo:zrobić tak żeby wpisywało mi średnią trasę tuż po dodaniu trasy
-    //lub po jej edycji (zmiany dystansu trasy - tylko)
+
     /**
      * Method used for showing list of trips which are owned by logged user.
      * @param request HTTP request object
@@ -117,7 +116,7 @@ public class Trips {
                 }
                 if (request.getParameter(currentKey) == null
                         || request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.severe("Not all fields filled in new trip: "
+                    MPLogger.error("Not all fields filled in new trip: "
                             + currentKey);
                     message = localeProvider.
                             getMessage("notAllFilled", null, defaultLocale);
@@ -129,7 +128,7 @@ public class Trips {
             }
             Motorcycle bike = MPUtilities.findBike(bikeId);
             if (bike == null) {
-                MPLogger.severe("Bike not found at Trips add: " + bikeId);
+                MPLogger.error("Bike not found at Trips add: " + bikeId);
                 message = localeProvider.getMessage("trips.bikeNotFound",
                         null, defaultLocale);
                 formInfo.put("message", message);
@@ -168,7 +167,7 @@ public class Trips {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
-                MPLogger.severe("Error wihle persisting in db at Trip.add: "
+                MPLogger.error("Error wihle persisting in db at Trip.add: "
                         + exception.getMessage());
                 return new ModelAndView("trips/add", formInfo);
             }
@@ -232,7 +231,7 @@ public class Trips {
             formInfo.put("distance", trip.getDistance());
             formInfo.put("bike", trip.getBike().getId());
         } catch (Exception exception) {
-            MPLogger.severe("Trip not found at trips edit: " + tripId);
+            MPLogger.error("Trip not found at trips edit: " + tripId);
             Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("trips.tripNotFound",
                     null, defaultLocale));
@@ -266,7 +265,7 @@ public class Trips {
                 }
                 if (request.getParameter(currentKey) == null
                         || request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.severe("Not all fields filled in new bike: "
+                    MPLogger.error("Not all fields filled in new bike: "
                             + currentKey);
                     message = localeProvider.getMessage("notAllFilled", null,
                             defaultLocale);
@@ -282,7 +281,7 @@ public class Trips {
                 Date newDate = sdf.parse(date);
                 Motorcycle bike = MPUtilities.findBike(bikeId);
                 if (bike == null) {
-                    MPLogger.severe("Bike not found at Trips add: " + bikeId);
+                    MPLogger.error("Bike not found at Trips add: " + bikeId);
                     message = localeProvider.getMessage("trips.bikeNotFound",
                             null, defaultLocale);
                     formInfo.put("message", message);
@@ -340,7 +339,7 @@ public class Trips {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "edit.html");
-                MPLogger.severe("Error wihle persisting in db at Trip.add: "
+                MPLogger.error("Error wihle persisting in db at Trip.add: "
                         + exception.getMessage());
                 return new ModelAndView("trips/add", formInfo);
             }
@@ -373,7 +372,7 @@ public class Trips {
                 null, defaultLocale));
         String tripId = request.getParameter("trip");
         if (tripId == null) {
-            MPLogger.severe("Null trip id at Trips.deleteTrip");
+            MPLogger.error("Null trip id at Trips.deleteTrip");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("error.otherError", null, defaultLocale));
             return new ModelAndView("unsecured/error", formInfo);
@@ -426,7 +425,7 @@ public class Trips {
             }
             formInfo.put("trip", trip);
         } catch (Exception ex) {
-            MPLogger.severe("Trip not found");
+            MPLogger.error("Trip not found");
             formInfo.put("errorMessage", localeProvider.getMessage(
                     "trips.tripNotFound", null, defaultLocale));
             ex.printStackTrace();

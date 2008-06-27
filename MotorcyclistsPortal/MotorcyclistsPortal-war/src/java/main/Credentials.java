@@ -37,7 +37,7 @@ public class Credentials implements Controller{
                 AuthenticationException aex = (AuthenticationException) request.
                         getSession(false).getAttribute(AbstractProcessingFilter.
                         SPRING_SECURITY_LAST_EXCEPTION_KEY);
-                MPLogger.severe(aex.getMessage());
+                MPLogger.error(aex.getMessage());
                 return new ModelAndView("login", formInfo);
             }
             return new ModelAndView("login", formInfo);

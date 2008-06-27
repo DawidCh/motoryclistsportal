@@ -24,7 +24,7 @@ public class SquareUsageComputer implements UsageComputerInterface {
         double aFactor = 1.0 / Math.pow(partAvailabilityUsage, 2.0);
         double percetnageUsage = aFactor * Math.pow(partUsageInUnits, 2.0);
         if (percetnageUsage > 1.0) {
-            MPLogger.severe("Percentage usage upper"
+            MPLogger.error("Percentage usage upper"
                     + "100% in FuzzyDriver.computeUsage");
         }
         return percetnageUsage;
