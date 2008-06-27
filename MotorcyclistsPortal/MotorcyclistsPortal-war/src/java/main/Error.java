@@ -32,7 +32,7 @@ public class Error implements Controller {
         // </editor-fold>
         AuthenticationException aex = (AuthenticationException) request.getSession(false).getAttribute(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY);
         try {
-            MPLogger.severe(aex.getMessage());
+            MPLogger.error(aex.getMessage());
             formInfo.put("errorMessage", aex.getMessage());
 
         } catch (NullPointerException nullPointerException) {

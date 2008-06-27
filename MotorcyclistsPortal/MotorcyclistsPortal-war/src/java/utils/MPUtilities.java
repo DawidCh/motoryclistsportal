@@ -14,8 +14,6 @@ import entities.Trip;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -54,7 +52,7 @@ public class MPUtilities {
         try {
             trips = BeanGetter.getUserInfo().getTripCollection();
         } catch (MPException mpException) {
-            MPLogger.severe("Exception caught in MPUtilities.findTrips: "
+            MPLogger.error("Exception caught in MPUtilities.findTrips: "
                     + mpException.getMessage());
         }
         return trips;
@@ -84,7 +82,7 @@ public class MPUtilities {
         try {
             fishiers = BeanGetter.getUserInfo().getFishiers();
         } catch (MPException mpException) {
-            MPLogger.severe("Exception caught in MPUtilities.findFishiers: "
+            MPLogger.error("Exception caught in MPUtilities.findFishiers: "
                     + mpException.getMessage());
         }
         return fishiers;
@@ -117,7 +115,7 @@ public class MPUtilities {
             bikes = BeanGetter.lookupMotorcycleFacade().
                     findByLogin(BeanGetter.getUserInfo().getUsername());
         } catch (MPException mpException) {
-            MPLogger.severe("Exception cautght in Report.findBikesWFishiers: "
+            MPLogger.error("Exception cautght in Report.findBikesWFishiers: "
                     + mpException.getMessage());
             return null;
         }
@@ -154,7 +152,7 @@ public class MPUtilities {
         try {
             result = new TrapeziumComputer().extractFuzzyValue(parameters);
         } catch (MPException exception) {
-            MPLogger.severe("Exception caught in MPUtilities:"
+            MPLogger.error("Exception caught in MPUtilities:"
                     + exception.getMessage());
         }
         return result;
@@ -169,11 +167,13 @@ public class MPUtilities {
                 BeanGetter.lookupDistanceFacade().findAll();
         Distance distanceResults = null;
         try {
+            Double avgTripDist =
+                    BeanGetter.getUserInfo().getAverageTripDistance();
             distanceResults = (Distance) MPUtilities.getFuzzySetForValue(
-                distances,
-                BeanGetter.getUserInfo().getAverageTripDistance());
+                distances, avgTripDist);
+            MPLogger.fatal("getter: "+distanceResults + " " + avgTripDist);
         } catch (MPException exception) {
-            MPLogger.severe("Exception caught in MPUtilities:"
+            MPLogger.error("Exception caught in MPUtilities:"
                     + exception.getMessage());
         }
         return distanceResults;
@@ -184,6 +184,7 @@ public class MPUtilities {
      * @return new average distance
      */
     public static Double recalculateAverageTripDistance() {
+        //todo:najpier odpala się getter a później przeliczanie - dziwne
         Double averageResult = 0.0;
         List < Trip > trips = MPUtilities.findTrips();
         for (Iterator<Trip> it = trips.iterator(); it.hasNext();) {
@@ -191,10 +192,13 @@ public class MPUtilities {
             averageResult += trip.getDistance();
         }
         averageResult /= trips.size();
+        MPLogger.fatal("recalc: "+averageResult);
         try {
             BeanGetter.getUserInfo().setAverageTripDistance(averageResult);
+            BeanGetter.lookupUserFacade().
+                    edit(BeanGetter.getUserInfo().getUser());
         } catch (MPException ex) {
-            MPLogger.severe("Exception caught in"
+            MPLogger.error("Exception caught in"
                     + "MPUtilities.recalculateAverageTripDistance: "
                     + ex.getMessage());
         }

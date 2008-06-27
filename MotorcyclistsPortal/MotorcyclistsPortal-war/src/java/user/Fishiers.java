@@ -88,7 +88,7 @@ public class Fishiers {
             formInfo.put("bike", bike);
         } catch (MPException mPException) {
             form = null;
-            MPLogger.severe("Bike not found in Fishiers.add");
+            MPLogger.error("Bike not found in Fishiers.add");
         }
         List < Motorcycle > bikes = this.getBikes();
         formInfo.put("bikes", bikes);
@@ -97,7 +97,7 @@ public class Fishiers {
         if (form != null) {
             String description = request.getParameter("description");
             if (description == null || description.length() == 0) {
-                MPLogger.severe("Not all fields filled in Fishiers.add");
+                MPLogger.error("Not all fields filled in Fishiers.add");
                 message = localeProvider.getMessage(
                         "notAllFilled", null, defaultLocale);
                 formInfo.put("message", message);
@@ -119,7 +119,7 @@ public class Fishiers {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
-                MPLogger.severe("Error wihle persisting in db at Fishiers.add: "
+                MPLogger.error("Error wihle persisting in db at Fishiers.add: "
                         + exception.getMessage());
                 return new ModelAndView("fishier/add", formInfo);
             }
@@ -166,7 +166,7 @@ public class Fishiers {
             fishier = this.findFishier(fishierId);
             formInfo.put("fishier", fishier);
         } catch (Exception ex) {
-            MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
+            MPLogger.error("Fishier not found at fishiers edit: " + fishierId);
             HashMap < String, Object > map = new HashMap < String, Object >();
             map.put("message", localeProvider.getMessage(
                     "fishiers.fishierNotFound", null, defaultLocale));
@@ -179,7 +179,7 @@ public class Fishiers {
         if (form != null) {
             String description = request.getParameter("description");
             if (description == null || description.length() == 0) {
-                MPLogger.severe("Not all fields filled in Fishiers.edit");
+                MPLogger.error("Not all fields filled in Fishiers.edit");
                 message = localeProvider.getMessage("notAllFilled", null,
                         defaultLocale);
                 formInfo.put("message", message);
@@ -197,7 +197,7 @@ public class Fishiers {
                         null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
-                MPLogger.severe("Error wihle persisting"
+                MPLogger.error("Error wihle persisting"
                         + "in db at Fishiers.edit: " + exception.getMessage());
                 exception.printStackTrace();
                 return new ModelAndView("fishier/add", formInfo);
@@ -237,7 +237,7 @@ public class Fishiers {
         try {
             fishier = this.findFishier(fishierId);
         } catch (Exception ex) {
-            MPLogger.severe("Fishier not found at fishiers edit: ");
+            MPLogger.error("Fishier not found at fishiers edit: ");
             formInfo.put("message", localeProvider.getMessage(
                     "fishiers.fishierNotFound", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
@@ -266,7 +266,7 @@ public class Fishiers {
                     "error.errorWhileDeleting", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getFailColor());
-            MPLogger.severe("Error wihle deleting in db at Fishiers.delete: "
+            MPLogger.error("Error wihle deleting in db at Fishiers.delete: "
                     + exception.getMessage());
             if (bikeId != null) {
                 formInfo.put("bike", bikeId);
@@ -318,7 +318,7 @@ public class Fishiers {
                     "success", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getSuccColor());
         } catch (Exception exception) {
-            MPLogger.severe("Error while deleting fishier element at"
+            MPLogger.error("Error while deleting fishier element at"
                     + "Fishiers.deleteElement: " + elementId);
             exception.printStackTrace();
             formInfo.put(
@@ -366,13 +366,13 @@ public class Fishiers {
             FishiersElement fishEl = BeanGetter.lookupFishiersElementFacade().
                     find(new Integer(fishierElementBridge));
             if (fishEl == null) {
-                MPLogger.severe(
+                MPLogger.error(
                         "Error while finding"
                         + "fishierelement in Fishiers.addElement");
                 throw new Exception();
             }
             if (fishier == null) {
-                MPLogger.severe(
+                MPLogger.error(
                         "Error while finding fishier in Fishiers.addElement");
                 throw new Exception();
             }
@@ -415,7 +415,7 @@ public class Fishiers {
                     "error.wrongDate", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
         } catch (Exception exception) {
-            MPLogger.severe("Error while adding fishier"
+            MPLogger.error("Error while adding fishier"
                     + "element at Fishiers.addElement");
             exception.printStackTrace();
             formInfo.put("message", localeProvider.
@@ -464,7 +464,7 @@ public class Fishiers {
             fishierElementBridges =
                     this.findFishierElementBridgeByFishier(fishierId);
         } catch (Exception ex) {
-            MPLogger.severe("Fishier not found at fishiers edit: " + fishierId);
+            MPLogger.error("Fishier not found at fishiers edit: " + fishierId);
             ex.printStackTrace();
             formInfo.put("message",
                     localeProvider.getMessage("fishiers.fishierNotFound",
@@ -509,7 +509,7 @@ public class Fishiers {
                     BeanGetter.lookupFishierElementBridgeFacade().
                     find(new Integer(fishierElementBridgeId));
             if (fishEl == null) {
-                MPLogger.severe("Error while finding"
+                MPLogger.error("Error while finding"
                         + "fishierelementbridge in Fishiers.editElement");
                 throw new Exception();
             }
@@ -542,7 +542,7 @@ public class Fishiers {
                     getMessage("error.wrongDate", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
         } catch (Exception exception) {
-            MPLogger.severe("Error while editing fishier"
+            MPLogger.error("Error while editing fishier"
                     + "element at Fishiers.editElement");
             exception.printStackTrace();
             formInfo.put("message", localeProvider.
@@ -580,7 +580,7 @@ public class Fishiers {
         try {
             result = BeanGetter.getUserInfo().getFishiers();
         } catch (MPException mpException) {
-            MPLogger.severe("Exception caught in Fishiers.findFishiers: "
+            MPLogger.error("Exception caught in Fishiers.findFishiers: "
                     + mpException.getMessage());
         }
         return result;
@@ -637,7 +637,7 @@ public class Fishiers {
             bikes = BeanGetter.lookupMotorcycleFacade().
                     findWithoutFishier(BeanGetter.getUserInfo().getUsername());
         } catch (MPException mpException) {
-            MPLogger.severe("Exception caught in Fishiers.findFishiers: "
+            MPLogger.error("Exception caught in Fishiers.findFishiers: "
                     + mpException.getMessage());
         }
         return bikes;

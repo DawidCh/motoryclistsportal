@@ -7,7 +7,6 @@ package ai.fuzzycomputers;
 import entities.TrapesiumInterface;
 import java.util.List;
 import utils.MPException;
-import utils.MPLogger;
 
 /**
  *
@@ -45,7 +44,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
         }
         return maxValue;
     }
-//todo:cos się walnęło
+
     /**
      * Method used for computing membership function value for specified pair
      * of TrapesiumInterface and specified value.
@@ -69,10 +68,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
         } else if (doubleValue > gamma && doubleValue <= delta) {
             result = (1.0 / (gamma - delta)) * doubleValue
                     - (delta / (gamma - delta));
-        } else if (doubleValue > delta) {
-            result = 1.0;
         }
-        MPLogger.severe(result+" "+doubleValue);
         return result;
     }
 }

@@ -51,7 +51,7 @@ public class Profile extends AbstractController {
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage("profile.errorRecivingData", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
-            MPLogger.severe("Error while reciving data from database at Profile: "+exception.getMessage());
+            MPLogger.error("Error while reciving data from database at Profile: "+exception.getMessage());
             return new ModelAndView("user/profile", formInfo);
         }
         
@@ -67,7 +67,7 @@ public class Profile extends AbstractController {
         formInfo.put("birthdate", sdf.format(user.getBirthdate()));
         // </editor-fold>
         if (null != request.getParameter("form")) {
-            MPLogger.severe(request.getParameter("city"));
+            MPLogger.error(request.getParameter("city"));
             //<editor-fold defaultstate="collapsed" desc="data verification">
             String message = new String();
             String password = request.getParameter("password");
@@ -102,7 +102,7 @@ public class Profile extends AbstractController {
                 message = localeProvider.getMessage("profile.wrongDate", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                MPLogger.severe("Wrong date format in Register from "
+                MPLogger.error("Wrong date format in Register from "
                         + formInfo.get("birthdate"));
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("user/profile", formInfo);
@@ -156,7 +156,7 @@ public class Profile extends AbstractController {
                 BeanGetter.lookupUserFacade().edit(user);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
-                MPLogger.severe("Error while setting data to"
+                MPLogger.error("Error while setting data to"
                         + "database in Profile: " + excMess);
                 message = localeProvider.getMessage("profile.addtobase",
                         null, defaultLocale) + localeProvider.

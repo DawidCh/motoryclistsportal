@@ -112,7 +112,7 @@ public class BeanGetter {
             return (PrivilegesFacadeLocal)
                     c.lookup("java:comp/env/PrivilegesFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking up"
+            MPLogger.error("Exception while looking up"
                     + "PrivilegesFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -128,7 +128,7 @@ public class BeanGetter {
             Context c = new InitialContext();
             return (UserFacadeLocal) c.lookup("java:comp/env/UserFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking"
+            MPLogger.error("Exception while looking"
                     + "up UserFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -145,7 +145,7 @@ public class BeanGetter {
             return (LoginDataFacadeLocal)
                     c.lookup("java:comp/env/LoginDataFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking"
+            MPLogger.error("Exception while looking"
                     + "up LoginFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -162,7 +162,7 @@ public class BeanGetter {
             return (AvailableLangsFacadeLocal)
                     c.lookup("java:comp/env/AvailableLangsFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking"
+            MPLogger.error("Exception while looking"
                     + "up AvailableLangs in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -179,7 +179,7 @@ public class BeanGetter {
             return (MotorcycleFacadeLocal)
                     c.lookup("java:comp/env/MotorcycleFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking"
+            MPLogger.error("Exception while looking"
                     + "up MotorcycleFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -195,7 +195,7 @@ public class BeanGetter {
             Context c = new InitialContext();
             return (FishierFacadeLocal) c.lookup("java:comp/env/FishierFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking "
+            MPLogger.error("Exception while looking "
                     + "up FishierFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -212,7 +212,7 @@ public class BeanGetter {
             return (ActivityPeriodFacadeLocal)
                     c.lookup("java:comp/env/ActivityPeriodFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking"
+            MPLogger.error("Exception while looking"
                     + "up ActivityPeriodFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -229,7 +229,7 @@ public class BeanGetter {
             return (FishiersElementFacadeLocal)
                     c.lookup("java:comp/env/FishiersElementFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking"
+            MPLogger.error("Exception while looking"
                     + "up FishiersElementFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -247,7 +247,7 @@ public class BeanGetter {
             return (FishierElementBridgeFacadeLocal)
                     c.lookup("java:comp/env/FishierElementBridgeFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking "
+            MPLogger.error("Exception while looking "
                     + "up FishierElementBridgeFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -263,7 +263,7 @@ public class BeanGetter {
             Context c = new InitialContext();
             return (ActionFacadeLocal) c.lookup("java:comp/env/ActionFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking"
+            MPLogger.error("Exception while looking"
                     + "up ActionFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -280,7 +280,7 @@ public class BeanGetter {
             return (TripFacadeLocal)
                     c.lookup("java:comp/env/TripFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while"
+            MPLogger.error("Exception while"
                     + "looking up TripFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -297,7 +297,7 @@ public class BeanGetter {
             return (TripTypeFacadeLocal)
                     c.lookup("java:comp/env/TripTypeFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while"
+            MPLogger.error("Exception while"
                     + "looking up TripTypeFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -313,7 +313,7 @@ public class BeanGetter {
             Context c = new InitialContext();
             return (UsageFacadeLocal) c.lookup("java:comp/env/UsageFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking up"
+            MPLogger.error("Exception while looking up"
                     + "TripTypeFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
@@ -330,7 +330,7 @@ public class BeanGetter {
             return (DistanceFacadeLocal)
                     c.lookup("java:comp/env/DistanceFacade");
         } catch (NamingException ne) {
-            MPLogger.severe("Exception while looking up"
+            MPLogger.error("Exception while looking up"
                     + "DistanceFacade in BeanGetter");
             throw new RuntimeException(ne);
         }
