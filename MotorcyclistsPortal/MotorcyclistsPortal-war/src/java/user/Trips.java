@@ -382,8 +382,8 @@ public class Trips {
         try {
             tripToDel = MPUtilities.findTrip(tripId);
             BeanGetter.lookupTripFacade().remove(tripToDel);
-            map = this.showList(request, response).getModel();
             MPUtilities.recalculateAverageTripDistance();
+            map = this.showList(request, response).getModel();
         } catch (Exception mPException) {
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.
