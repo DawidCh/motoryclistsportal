@@ -7,6 +7,7 @@ package main;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.context.SecurityContextImpl;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +18,6 @@ import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
 import utils.MPException;
-import utils.MPLogger;
 
 /**
  *
@@ -61,11 +61,10 @@ public class VarLoader extends HandlerInterceptorAdapter {
             map.addObject("failColor", DefaultValues.getFailColor());
             map.addObject("succColor", DefaultValues.getSuccColor());
         } catch (Exception ex) {
-            MPLogger.
-                    error("User is not in the session in VarLoader.postHandle");
+            Logger.getLogger("E").debug("User is not in the session "
+                    + "in VarLoader.postHandle");
         }
         if (request.getContextPath().contains("logout")) {
-            MPLogger.error("pupusia");
             SecurityContextHolder.setContext(new SecurityContextImpl());
             request.getSession(false).invalidate();
         }
@@ -84,7 +83,7 @@ public class VarLoader extends HandlerInterceptorAdapter {
             userInfo.setLocale(localeToSet);
             BeanGetter.lookupUserFacade().edit(userInfo.getUser());
         } catch (Exception ex) {
-            MPLogger.error("Error while persisting language at UserSession");
+            Logger.getLogger("E").error("Error while persisting language at UserSession");
             LocaleProvider loc = BeanGetter.getLocaleProvider(request);
             throw new MPException(
                     loc.getMessage("session.errorWhilePersist",

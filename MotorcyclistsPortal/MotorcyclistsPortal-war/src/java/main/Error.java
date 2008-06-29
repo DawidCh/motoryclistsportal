@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.security.AuthenticationException;
 import org.springframework.security.ui.AbstractProcessingFilter;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +16,6 @@ import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.LocaleProvider;
-import utils.MPLogger;
 
 /**
  *
@@ -32,7 +32,7 @@ public class Error implements Controller {
         // </editor-fold>
         AuthenticationException aex = (AuthenticationException) request.getSession(false).getAttribute(AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY);
         try {
-            MPLogger.error(aex.getMessage());
+            Logger.getLogger("E").error(aex.getMessage());
             formInfo.put("errorMessage", aex.getMessage());
 
         } catch (NullPointerException nullPointerException) {

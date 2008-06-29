@@ -167,4 +167,16 @@
         <local>facades.DistanceFacadeLocal</local>
         <ejb-link>MotorcyclistsPortal-ejb.jar#DistanceFacade</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>FuzzyAdviseFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.FuzzyAdviseFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#FuzzyAdviseFacade</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>FuzzyDecisionFacade</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>facades.FuzzyDecisionFacadeLocal</local>
+        <ejb-link>MotorcyclistsPortal-ejb.jar#FuzzyDecisionFacade</ejb-link>
+    </ejb-local-ref>
     </web-app>

@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
-import utils.MPLogger;
 
 /**
  *
@@ -37,7 +37,9 @@ public class Profile extends AbstractController {
      * @throws java.lang.Exception
      */
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected ModelAndView handleRequestInternal(
+            final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -49,14 +51,17 @@ public class Profile extends AbstractController {
             user = BeanGetter.getUserInfo().getUser();
 
         } catch (Exception exception) {
-            formInfo.put("message", localeProvider.getMessage("profile.errorRecivingData", null, defaultLocale));
+            formInfo.put("message", localeProvider.getMessage(
+                    "profile.errorRecivingData", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
-            MPLogger.error("Error while reciving data from database at Profile: "+exception.getMessage());
+            Logger.getLogger("E").error("Error while reciving data from database"
+                    + "at Profile: " + exception.getMessage());
             return new ModelAndView("user/profile", formInfo);
         }
-        
+
         formInfo.put("defaultLocale", defaultLocale);
-        formInfo.put("pageTitle", localeProvider.getMessage("profile.pageTitle", null, defaultLocale));
+        formInfo.put("pageTitle", localeProvider.getMessage("profile.pageTitle",
+                null, defaultLocale));
 
         formInfo.put("name", user.getName());
         formInfo.put("surname", user.getSurname());
@@ -67,7 +72,7 @@ public class Profile extends AbstractController {
         formInfo.put("birthdate", sdf.format(user.getBirthdate()));
         // </editor-fold>
         if (null != request.getParameter("form")) {
-            MPLogger.error(request.getParameter("city"));
+            Logger.getLogger("E").error(request.getParameter("city"));
             //<editor-fold defaultstate="collapsed" desc="data verification">
             String message = new String();
             String password = request.getParameter("password");
@@ -102,7 +107,7 @@ public class Profile extends AbstractController {
                 message = localeProvider.getMessage("profile.wrongDate", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                MPLogger.error("Wrong date format in Register from "
+                Logger.getLogger("E").error("Wrong date format in Register from "
                         + formInfo.get("birthdate"));
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 return new ModelAndView("user/profile", formInfo);
@@ -149,6 +154,7 @@ public class Profile extends AbstractController {
             }
             if (!password.equals(loginData.getPassword())
                     && !password.equals(new String(""))) {
+                //todo: zaszyfrować hasło wprowadzane do bazy
                 loginData.setPassword(password);
             }
 
@@ -156,7 +162,7 @@ public class Profile extends AbstractController {
                 BeanGetter.lookupUserFacade().edit(user);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
-                MPLogger.error("Error while setting data to"
+                Logger.getLogger("E").error("Error while setting data to"
                         + "database in Profile: " + excMess);
                 message = localeProvider.getMessage("profile.addtobase",
                         null, defaultLocale) + localeProvider.

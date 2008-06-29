@@ -4,6 +4,8 @@
  */
 package entities;
 
+import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.FuzzyValue;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fuzzyusage")
 @NamedQueries({})
-public class Usage implements Serializable, TrapesiumInterface {
+public class Usage extends TrapeziumMembershipFunctionInterface
+        implements Serializable, FuzzyValue {
 
     private static final long serialVersionUID = 1L;
     @Column(name = "description", nullable = false)
@@ -85,7 +88,7 @@ public class Usage implements Serializable, TrapesiumInterface {
 
     @Override
     public String toString() {
-        return "entities.Usage[id=" + id + "]";
+        return this.getDescription();
     }
 
     public Double getDelta() {

@@ -4,8 +4,10 @@
  */
 package ai.fuzzycomputers;
 
-import entities.TrapesiumInterface;
+import fuzzyelements.FuzzyValue;
+import fuzzyelements.TrapeziumMembershipFunctionInterface;
 import java.util.List;
+import org.apache.log4j.Logger;
 import utils.MPException;
 
 /**
@@ -23,25 +25,34 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
      * @throws MPException
      */
     @Override
-    public TrapesiumInterface extractFuzzyValue(Object collection) throws MPException {
+    public TrapeziumMembershipFunctionInterface extractFuzzyValue
+            (Object collection) throws MPException {
         if (!(collection instanceof List)) {
             throw new MPException("Object passed to" +
                     "TrapeziumComputer.processFuzzyfication is not properly");
         }
         List parameters = (List) collection;
         Double percentageValue = (Double) parameters.get(0);
-        TrapesiumInterface maxValue = (TrapesiumInterface) parameters.get(1);
+        TrapeziumMembershipFunctionInterface maxValue =
+                (TrapeziumMembershipFunctionInterface) parameters.get(1);
         double membershipFunctionValue = this.computeMembershipFunctionValue(
-                (TrapesiumInterface) parameters.get(1), percentageValue);
+                (TrapeziumMembershipFunctionInterface)
+                parameters.get(1), percentageValue);
         double tempMemFunVal = 0.0;
         for (int i = 2; i < parameters.size(); i++) {
             tempMemFunVal = this.computeMembershipFunctionValue(
-                    (TrapesiumInterface) parameters.get(i), percentageValue);
+                    (TrapeziumMembershipFunctionInterface)
+                    parameters.get(i), percentageValue);
             if (tempMemFunVal > membershipFunctionValue) {
                 membershipFunctionValue = tempMemFunVal;
-                maxValue = (TrapesiumInterface) parameters.get(i);
+                maxValue = (TrapeziumMembershipFunctionInterface)
+                        parameters.get(i);
             }
         }
+        maxValue.setMembershipFunctionValue(membershipFunctionValue);
+        Logger.getLogger("E").debug(((FuzzyValue) maxValue).getDescription()
+                + ", membership function value: "
+                + maxValue.getMembershipFunctionValue().toString());
         return maxValue;
     }
 
@@ -54,7 +65,8 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
      * @return
      */
     private double computeMembershipFunctionValue(
-            TrapesiumInterface trapesiumInterface, Double doubleValue) {
+            TrapeziumMembershipFunctionInterface trapesiumInterface,
+            Double doubleValue) {
         double alpha = trapesiumInterface.getAlpha();
         double beta = trapesiumInterface.getBeta();
         double gamma = trapesiumInterface.getGamma();

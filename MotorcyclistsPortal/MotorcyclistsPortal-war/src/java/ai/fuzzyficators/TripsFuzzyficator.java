@@ -5,19 +5,21 @@
 
 package ai.fuzzyficators;
 
+import ai.FuzzyDriver;
 import entities.Distance;
+import fuzzyelements.Fuzzyficable;
+import fuzzyelements.TrapeziumMembershipFunctionInterface;
 import entities.Trip;
 import java.util.ArrayList;
 import java.util.List;
 import utils.BeanGetter;
 import utils.MPException;
-import utils.MPUtilities;
 
 /**
  *
  * @author kalosh
  */
-public class TripsFuzzyficator extends Fuzzyficator {
+public class TripsFuzzyficator extends AbstractFuzzyficator {
 
     /**
      * Method using for computing fuzzy value for given Trip.
@@ -26,34 +28,20 @@ public class TripsFuzzyficator extends Fuzzyficator {
      * @throws java.lang.Exception
      */
     @Override
-    public final String processElement(Object object) throws Exception {
+    public final Distance processElement(Fuzzyficable object) throws Exception {
         if (!(object instanceof Trip)) {
             throw new MPException("Object passed to"
-                    + "FishierElementBridgheFuzzyficator.processElement"
+                    + "TripsFuzzyficator.processElement"
                     + "is not properly");
         }
         Trip trip = (Trip) object;
-        List distances =
-                BeanGetter.lookupDistanceFacade().findAll();
-        Distance distanceResults = (Distance) MPUtilities.getFuzzySetForValue(
+        List < TrapeziumMembershipFunctionInterface > distances =
+                //Distance objects in the list
+                new ArrayList < TrapeziumMembershipFunctionInterface > (
+                BeanGetter.lookupDistanceFacade().findAll());
+        Distance distanceResults = (Distance) FuzzyDriver.
+                getTrapeziumFuzzySetForValue(
                 distances, trip.getDistance());
-        return distanceResults.getDescription();
-    }
-
-    /**
-     * Method using for computing fuzzy value for collection.
-     * @param objects arguments for computing
-     * @return fuzzy values for given attributes
-     * @throws java.lang.Exception
-     */
-    @Override
-    public List<String> processCollection(List objects) throws Exception {
-        List < String > result = new ArrayList < String > ();
-        //this.results = new ArrayList < Double >();
-        for (int i = 0; i < objects.size(); i++) {
-            Trip trip = (Trip) objects.get(i);
-            result.add(this.processElement(trip));
-        }
-        return result;
+        return distanceResults;
     }
 }

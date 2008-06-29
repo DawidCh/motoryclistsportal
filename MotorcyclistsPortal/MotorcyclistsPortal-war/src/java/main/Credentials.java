@@ -6,9 +6,9 @@ package main;
 
 import java.util.HashMap;
 import java.util.Locale;
-import utils.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.security.AuthenticationException;
 import org.springframework.security.ui.AbstractProcessingFilter;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +37,7 @@ public class Credentials implements Controller{
                 AuthenticationException aex = (AuthenticationException) request.
                         getSession(false).getAttribute(AbstractProcessingFilter.
                         SPRING_SECURITY_LAST_EXCEPTION_KEY);
-                MPLogger.error(aex.getMessage());
+                Logger.getLogger("E").error(aex.getMessage());
                 return new ModelAndView("login", formInfo);
             }
             return new ModelAndView("login", formInfo);

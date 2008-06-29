@@ -6,11 +6,11 @@
 package security;
 
 import entities.User;
+import org.apache.log4j.Logger;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.dao.DataAccessException;
 import utils.BeanGetter;
-import utils.MPLogger;
 
 /**
  *
@@ -22,7 +22,7 @@ public class DetailedUserService implements UserDetailsService {
         DetailedUserInformation userInfo;
         User user = BeanGetter.lookupUserFacade().find(login);
         if(user == null){
-            MPLogger.error("login: "+login);
+            Logger.getLogger("E").error("login: "+login);
             throw new UsernameNotFoundException(login);
         }
         userInfo = new DetailedUserInformation(user);

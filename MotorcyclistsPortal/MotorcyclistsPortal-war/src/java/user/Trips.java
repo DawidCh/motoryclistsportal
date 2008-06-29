@@ -4,12 +4,17 @@
  */
 package user;
 
+import ai.FuzzyDriver;
 import ai.fuzzyficators.TripsFuzzyficator;
+import entities.Distance;
+import fuzzyelements.Fuzzyficable;
 import entities.Motorcycle;
 import entities.Trip;
 import entities.TripType;
+import fuzzyelements.FuzzyValue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,12 +23,12 @@ import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
-import utils.MPLogger;
 import utils.MPUtilities;
 
 /**
@@ -47,13 +52,15 @@ public class Trips {
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         HashMap < String, Object > formInfo = new HashMap < String, Object >();
         // </editor-fold>
-        List < Trip > trips = MPUtilities.findTrips();
-        List < String > fuzzyTripDistance = null;
-        fuzzyTripDistance = new TripsFuzzyficator().
+        List < Fuzzyficable > trips =
+                new ArrayList < Fuzzyficable > (MPUtilities.findTrips());
+        Distance fuzzyAverageDistance = FuzzyDriver.getFuzzyAvgDist();
+        List < FuzzyValue > fuzzyTripDistanceCollection =
+                new TripsFuzzyficator().
                     processCollection(trips);
-        formInfo.put("fuzzyTripLength", fuzzyTripDistance);
-        formInfo.put("fuzzyAverageValue", MPUtilities.getFuzzyAvgDist().
-                getDescription());
+        formInfo.put("fuzzyTripLength", fuzzyTripDistanceCollection);
+        formInfo.put("fuzzyAverageValue",
+                fuzzyAverageDistance.getDescription());
         formInfo.put("trips", trips);
         formInfo.put("pageTitle", localeProvider.
                 getMessage("trips.pageTitle", null, defaultLocale));
@@ -116,7 +123,7 @@ public class Trips {
                 }
                 if (request.getParameter(currentKey) == null
                         || request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.error("Not all fields filled in new trip: "
+                    Logger.getLogger("E").error("Not all fields filled in new trip: "
                             + currentKey);
                     message = localeProvider.
                             getMessage("notAllFilled", null, defaultLocale);
@@ -128,7 +135,7 @@ public class Trips {
             }
             Motorcycle bike = MPUtilities.findBike(bikeId);
             if (bike == null) {
-                MPLogger.error("Bike not found at Trips add: " + bikeId);
+                Logger.getLogger("E").error("Bike not found at Trips add: " + bikeId);
                 message = localeProvider.getMessage("trips.bikeNotFound",
                         null, defaultLocale);
                 formInfo.put("message", message);
@@ -144,7 +151,7 @@ public class Trips {
                 newTrip = new Trip(newDate, description, doubleDistance, title,
                         type, bike, BeanGetter.getUserInfo().getUser());
                 BeanGetter.lookupTripFacade().create(newTrip);
-                MPUtilities.recalculateAverageTripDistance();
+                FuzzyDriver.recalculateAverageTripDistance();
             } catch (ParseException parseException) {
                 formInfo.put("date", null);
                 message = localeProvider.getMessage("error.wrongDate", null,
@@ -167,7 +174,7 @@ public class Trips {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
-                MPLogger.error("Error wihle persisting in db at Trip.add: "
+                Logger.getLogger("E").error("Error wihle persisting in db at Trip.add: "
                         + exception.getMessage());
                 return new ModelAndView("trips/add", formInfo);
             }
@@ -231,7 +238,7 @@ public class Trips {
             formInfo.put("distance", trip.getDistance());
             formInfo.put("bike", trip.getBike().getId());
         } catch (Exception exception) {
-            MPLogger.error("Trip not found at trips edit: " + tripId);
+            Logger.getLogger("E").error("Trip not found at trips edit: " + tripId);
             Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("trips.tripNotFound",
                     null, defaultLocale));
@@ -265,7 +272,7 @@ public class Trips {
                 }
                 if (request.getParameter(currentKey) == null
                         || request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.error("Not all fields filled in new bike: "
+                    Logger.getLogger("E").error("Not all fields filled in new bike: "
                             + currentKey);
                     message = localeProvider.getMessage("notAllFilled", null,
                             defaultLocale);
@@ -281,7 +288,7 @@ public class Trips {
                 Date newDate = sdf.parse(date);
                 Motorcycle bike = MPUtilities.findBike(bikeId);
                 if (bike == null) {
-                    MPLogger.error("Bike not found at Trips add: " + bikeId);
+                    Logger.getLogger("E").error("Bike not found at Trips add: " + bikeId);
                     message = localeProvider.getMessage("trips.bikeNotFound",
                             null, defaultLocale);
                     formInfo.put("message", message);
@@ -300,7 +307,7 @@ public class Trips {
                 }
                 if (trip.getDistance() != doubleDistance) {
                     trip.setDistance(doubleDistance);
-                    MPUtilities.recalculateAverageTripDistance();
+                    FuzzyDriver.recalculateAverageTripDistance();
                 }
                 if (!trip.getTitle().equals(title)) {
                     trip.setTitle(title);
@@ -339,7 +346,7 @@ public class Trips {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "edit.html");
-                MPLogger.error("Error wihle persisting in db at Trip.add: "
+                Logger.getLogger("E").error("Error wihle persisting in db at Trip.add: "
                         + exception.getMessage());
                 return new ModelAndView("trips/add", formInfo);
             }
@@ -372,7 +379,7 @@ public class Trips {
                 null, defaultLocale));
         String tripId = request.getParameter("trip");
         if (tripId == null) {
-            MPLogger.error("Null trip id at Trips.deleteTrip");
+            Logger.getLogger("E").error("Null trip id at Trips.deleteTrip");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("error.otherError", null, defaultLocale));
             return new ModelAndView("unsecured/error", formInfo);
@@ -382,7 +389,7 @@ public class Trips {
         try {
             tripToDel = MPUtilities.findTrip(tripId);
             BeanGetter.lookupTripFacade().remove(tripToDel);
-            MPUtilities.recalculateAverageTripDistance();
+            FuzzyDriver.recalculateAverageTripDistance();
             map = this.showList(request, response).getModel();
         } catch (Exception mPException) {
             map = this.showList(request, response).getModel();
@@ -425,7 +432,7 @@ public class Trips {
             }
             formInfo.put("trip", trip);
         } catch (Exception ex) {
-            MPLogger.error("Trip not found");
+            Logger.getLogger("E").error("Trip not found");
             formInfo.put("errorMessage", localeProvider.getMessage(
                     "trips.tripNotFound", null, defaultLocale));
             ex.printStackTrace();

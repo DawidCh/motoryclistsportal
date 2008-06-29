@@ -12,6 +12,7 @@
         <td><fmt:message key="report.mileageChange"/></td>
         <td><fmt:message key="report.lastChange"/></td>
         <td><fmt:message key="report.usage"/></td>
+        <td><fmt:message key="report.replacement"/></td>
     </tr>
     <c:forEach var="fishierElement" items="${fishierElements}" varStatus="status">
         <tr>
@@ -21,7 +22,8 @@
             <td><fmt:message key="activity.${fishierElement.action.description}"/></td>
             <td>${fishierElement.changemileage}  ${user.mileageType}</td>
             <td>${fishierElement.changedate}</td>
-            <td><fmt:message key="fuzzyValues.usage.${fuzzyPartUsage[status.count-1]}"/></td>
+            <td><fmt:message key="fuzzyValues.usage.${fuzzyPartUsage[status.count-1].description}"/></td>
+            <td><fmt:message key="report.changeRecommended.${fuzzyReplaceAdvise[status.count-1].description}"/></td>
         </tr>
     </c:forEach>
 </table>
