@@ -17,12 +17,12 @@ import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
-import utils.MPLogger;
 import utils.MPUtilities;
 
 /**
@@ -108,7 +108,7 @@ public class Bikes {
                 }
                 if (request.getParameter(currentKey) == null
                         || request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.error("Not all fields filled in new bike: "
+                    Logger.getLogger("E").error("Not all fields filled in new bike: "
                             + currentKey);
                     message = localeProvider.
                             getMessage("notAllFilled", null, defaultLocale);
@@ -132,7 +132,7 @@ public class Bikes {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColor());
                 formInfo.put("action", "new.html");
-                MPLogger.error("Error wihle persisting in db at Bikes.add: "
+                Logger.getLogger("E").error("Error wihle persisting in db at Bikes.add: "
                         + exception.getMessage());
                 return new ModelAndView("bikes/add", formInfo);
             }
@@ -200,7 +200,7 @@ public class Bikes {
             formInfo.putAll(this.showList(request, response).getModel());
             return new ModelAndView("bikes/details", formInfo);
         } catch (Exception ex) {
-            MPLogger.error("Error while reassigning fishier to"
+            Logger.getLogger("E").error("Error while reassigning fishier to"
                     + "bike in Bikes.reassignFishier");
             message = localeProvider.getMessage("error.otherError",
                     null, defaultLocale);
@@ -236,7 +236,7 @@ public class Bikes {
                     find(new Integer(bikeId));
 
         } catch (Exception exception) {
-            MPLogger.error("Bike not found at bikes edit: " + bikeId);
+            Logger.getLogger("E").error("Bike not found at bikes edit: " + bikeId);
             Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("bikes.bikeNotFound",
                     null, defaultLocale));
@@ -274,7 +274,7 @@ public class Bikes {
                 }
                 if (request.getParameter(currentKey) == null
                         || request.getParameter(currentKey).isEmpty()) {
-                    MPLogger.error("Not all fields filled in edit bike: "
+                    Logger.getLogger("E").error("Not all fields filled in edit bike: "
                             + currentKey);
                     message = localeProvider.getMessage("notAllFilled",
                             null, defaultLocale);
@@ -313,7 +313,7 @@ public class Bikes {
                 BeanGetter.lookupMotorcycleFacade().edit(bike);
 
             } catch (Exception exception) {
-                MPLogger.error("Error while persisting bike");
+                Logger.getLogger("E").error("Error while persisting bike");
                 message = localeProvider.getMessage("error.errorWhileAdding",
                         null, defaultLocale);
                 formInfo.put("message", message);
@@ -357,7 +357,7 @@ public class Bikes {
                 getMessage("bikes.pageTitle", null, defaultLocale));
         String bikeId = request.getParameter("bike");
         if (bikeId == null) {
-            MPLogger.error("Null bike id at deleteBike");
+            Logger.getLogger("E").error("Null bike id at deleteBike");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("error.otherError", null, defaultLocale));
             return new ModelAndView("unsecured/error", formInfo);
@@ -408,7 +408,7 @@ public class Bikes {
             }
             formInfo.put("bike", bike);
         } catch (Exception ex) {
-            MPLogger.error("Bike not found");
+            Logger.getLogger("E").error("Bike not found");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("bikes.bikeNotFound", null, defaultLocale));
             ex.printStackTrace();
@@ -479,7 +479,7 @@ public class Bikes {
                 formInfo.putAll(this.showList(request, response).getModel());
                 return new ModelAndView("bikes/list", formInfo);
             } catch (Exception exception) {
-                MPLogger.error("Error while assigning fishier to bike"
+                Logger.getLogger("E").error("Error while assigning fishier to bike"
                         + "in Bikes.assignFishier");
                 message = localeProvider.getMessage("error.otherError",
                         null, defaultLocale);

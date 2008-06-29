@@ -4,23 +4,26 @@
  */
 package ai.fuzzyficators;
 
-import ai.usagecomputers.SquareUsageComputer;
-import ai.usagecomputers.UsageComputerInterface;
+import ai.FuzzyDriver;
+import ai.fuzzyficators.usagecomputers.SquareUsageComputer;
+import ai.fuzzyficators.usagecomputers.UsageComputerInterface;
 import entities.FishierElementBridge;
+import fuzzyelements.Fuzzyficable;
+import fuzzyelements.TrapeziumMembershipFunctionInterface;
 import entities.Usage;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import utils.BeanGetter;
 import utils.MPException;
-import utils.MPUtilities;
 
 /**
  *
  * @author kalosh
  */
-public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
+public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
 
     /**
      * Number of months in year.
@@ -45,7 +48,7 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
      * @return fuzzy value represented by String
      * @throws java.lang.Exception
      */
-    public String processElement(Object object) throws Exception {
+    public Usage processElement(Fuzzyficable object) throws Exception {
         if (!(object instanceof FishierElementBridge)) {
             throw new MPException("Object passed to"
                     + "FishierElementBridgheFuzzyficator.processElement"
@@ -64,7 +67,7 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
             Integer partAvailabilityMileage = fishierElBr.getPeriodlength();
             if (partMileage > partAvailabilityMileage) {
                 fuzzyUsage = BeanGetter.lookupUsageFacade().findHardest();
-                return fuzzyUsage.getDescription();
+                return fuzzyUsage;
             } else {
                 usage = this.usageComputer.computePercentageValue(partMileage,
                         partAvailabilityMileage);
@@ -84,7 +87,7 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
             Calendar now = Calendar.getInstance();
             if (usageLimitDate.before(now)) {
                 fuzzyUsage = BeanGetter.lookupUsageFacade().findHardest();
-                return fuzzyUsage.getDescription();
+                return fuzzyUsage;
             } else {
                 int partAvailabilityMonths = partAvailabilityYears
                         * FishierElementBridgeFuzzyficator.MONTH_COUNT;
@@ -93,11 +96,12 @@ public class FishierElementBridgeFuzzyficator extends Fuzzyficator {
                         partAvailabilityMonths);
             }
         }
-        List usages = BeanGetter.lookupUsageFacade().findAll();
-        Usage usageResult = (Usage) MPUtilities.
-                getFuzzySetForValue(usages, usage);
-        //this.results.add(usage);
-        return usageResult.getDescription();
+        List < TrapeziumMembershipFunctionInterface > usages =
+                new ArrayList < TrapeziumMembershipFunctionInterface >(
+                BeanGetter.lookupUsageFacade().findAll());
+        Usage usageResult = (Usage) FuzzyDriver.
+                getTrapeziumFuzzySetForValue(usages, usage);
+        return usageResult;
     }
 
     /**

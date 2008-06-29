@@ -5,14 +5,17 @@
 
 package entities;
 
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
 import fuzzyelements.FuzzyValue;
+import fuzzyelements.TrapeziumMembershipFunctionInterface;
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -20,9 +23,9 @@ import javax.persistence.Table;
  * @author kalosh
  */
 @Entity
-@Table(name = "fuzzydistance")
-@NamedQueries({@NamedQuery(name = "Distance.findById", query = "SELECT d FROM Distance d WHERE d.id = :id"), @NamedQuery(name = "Distance.findByDescription", query = "SELECT d FROM Distance d WHERE d.description = :description"), @NamedQuery(name = "Distance.findByAlpha", query = "SELECT d FROM Distance d WHERE d.alpha = :alpha"), @NamedQuery(name = "Distance.findByBeta", query = "SELECT d FROM Distance d WHERE d.beta = :beta"), @NamedQuery(name = "Distance.findByGamma", query = "SELECT d FROM Distance d WHERE d.gamma = :gamma"), @NamedQuery(name = "Distance.findByDelta", query = "SELECT d FROM Distance d WHERE d.delta = :delta")})
-public class Distance extends TrapeziumMembershipFunctionInterface
+@Table(name = "fuzzyadvise")
+@NamedQueries({@NamedQuery(name = "FuzzyAdvise.findById", query = "SELECT f FROM FuzzyAdvise f WHERE f.id = :id"), @NamedQuery(name = "FuzzyAdvise.findByDescription", query = "SELECT f FROM FuzzyAdvise f WHERE f.description = :description"), @NamedQuery(name = "FuzzyAdvise.findByAlpha", query = "SELECT f FROM FuzzyAdvise f WHERE f.alpha = :alpha"), @NamedQuery(name = "FuzzyAdvise.findByBeta", query = "SELECT f FROM FuzzyAdvise f WHERE f.beta = :beta"), @NamedQuery(name = "FuzzyAdvise.findByGamma", query = "SELECT f FROM FuzzyAdvise f WHERE f.gamma = :gamma"), @NamedQuery(name = "FuzzyAdvise.findByDelta", query = "SELECT f FROM FuzzyAdvise f WHERE f.delta = :delta")})
+public class FuzzyAdvise extends TrapeziumMembershipFunctionInterface
         implements Serializable, FuzzyValue {
     private static final long serialVersionUID = 1L;
     @Id
@@ -31,22 +34,24 @@ public class Distance extends TrapeziumMembershipFunctionInterface
     @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "alpha", nullable = false)
-    private double alpha;
+    private Double alpha;
     @Column(name = "beta", nullable = false)
-    private double beta;
+    private Double beta;
     @Column(name = "gamma", nullable = false)
-    private double gamma;
+    private Double gamma;
     @Column(name = "delta", nullable = false)
     private Double delta;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "advise")
+    private Collection<FuzzyDecision> fuzzyDecisionCollection;
 
-    public Distance() {
+    public FuzzyAdvise() {
     }
 
-    public Distance(Integer id) {
+    public FuzzyAdvise(Integer id) {
         this.id = id;
     }
 
-    public Distance(Integer id, String description, double alpha, double beta, double gamma, double delta) {
+    public FuzzyAdvise(Integer id, String description, Double alpha, Double beta, Double gamma, Double delta) {
         this.id = id;
         this.description = description;
         this.alpha = alpha;
@@ -99,8 +104,16 @@ public class Distance extends TrapeziumMembershipFunctionInterface
         return delta;
     }
 
-    public void setDelta(double delta) {
+    public void setDelta(Double delta) {
         this.delta = delta;
+    }
+
+    public Collection<FuzzyDecision> getFuzzyDecisionCollection() {
+        return fuzzyDecisionCollection;
+    }
+
+    public void setFuzzyDecisionCollection(Collection<FuzzyDecision> fuzzyDecisionCollection) {
+        this.fuzzyDecisionCollection = fuzzyDecisionCollection;
     }
 
     @Override
@@ -112,19 +125,13 @@ public class Distance extends TrapeziumMembershipFunctionInterface
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Distance)) {
+        if (!(object instanceof FuzzyAdvise)) {
             return false;
         }
-        Distance other = (Distance) object;
+        FuzzyAdvise other = (FuzzyAdvise) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return this.getDescription();
-    }
-
 }

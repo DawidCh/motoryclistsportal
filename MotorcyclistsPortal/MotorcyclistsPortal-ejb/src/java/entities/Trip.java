@@ -5,6 +5,7 @@
 
 package entities;
 
+import fuzzyelements.Fuzzyficable;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -31,7 +32,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "trips")
 @NamedQueries({@NamedQuery(name = "Trip.findById", query = "SELECT t FROM Trip t WHERE t.id = :id"), @NamedQuery(name = "Trip.findByDate", query = "SELECT t FROM Trip t WHERE t.date = :date"), @NamedQuery(name = "Trip.findByDescription", query = "SELECT t FROM Trip t WHERE t.description = :description"), @NamedQuery(name = "Trip.findByDistance", query = "SELECT t FROM Trip t WHERE t.distance = :distance"), @NamedQuery(name = "Trip.findByTitle", query = "SELECT t FROM Trip t WHERE t.title = :title")})
-public class Trip implements Serializable {
+public class Trip implements Serializable, Fuzzyficable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name="triprgenerator", sequenceName="trip_id_seq")

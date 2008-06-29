@@ -4,6 +4,7 @@
  */
 package entities;
 
+import fuzzyelements.Fuzzyficable;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "fishierselbridge")
 @NamedQueries({@NamedQuery(name = "FishierElementBridge.findById", query = "SELECT f FROM FishierElementBridge f WHERE f.id = :id"), @NamedQuery(name = "FishierElementBridge.findByPeriodlength", query = "SELECT f FROM FishierElementBridge f WHERE f.periodlength = :periodlength"), @NamedQuery(name = "FishierElementBridge.findByChangedate", query = "SELECT f FROM FishierElementBridge f WHERE f.changedate = :changedate"), @NamedQuery(name = "FishierElementBridge.findByChangemileage", query = "SELECT f FROM FishierElementBridge f WHERE f.changemileage = :changemileage")})
-public class FishierElementBridge implements Serializable {
+public class FishierElementBridge implements Serializable, Fuzzyficable {
 
     private static final long serialVersionUID = 1L;
     @Id

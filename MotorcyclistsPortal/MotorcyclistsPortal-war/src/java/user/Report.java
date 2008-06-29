@@ -5,11 +5,11 @@
 
 package user;
 
-import ai.fuzzyficators.FishierElementBridgeFuzzyficator;
-import ai.fuzzyficators.TripsFuzzyficator;
-import entities.FishierElementBridge;
+import ai.FuzzyDriver;
+import fuzzyelements.Fuzzyficable;
 import entities.Motorcycle;
-import entities.Trip;
+import fuzzyelements.FuzzyValue;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -47,26 +47,32 @@ public class Report {
         Motorcycle bike = MPUtilities.findBike(bikeid);
         String fishierid = bike.getFishier().getId().toString();
 
+        FuzzyDriver replacementAdvisor = new FuzzyDriver();
         List < Motorcycle > bikes = MPUtilities.findBikesWFishiers();
-        List < Trip > trips = MPUtilities.findTrips();
-        List < FishierElementBridge > fishierElements =
-                MPUtilities.findFishierElementBridgeByFishier(fishierid);
-        List < String > fuzzyPartUsage = null;
-        List < String > fuzzyTripDistance = null;
+        List < Fuzzyficable > trips =
+                new ArrayList < Fuzzyficable > (MPUtilities.findTrips());
+        List < Fuzzyficable > fishierElements =
+                new ArrayList < Fuzzyficable > (
+                MPUtilities.findFishierElementBridgeByFishier(fishierid));
+        List < FuzzyValue > fuzzyPartUsage = null;
+        List < FuzzyValue > fuzzyTripDistance = null;
+        List < FuzzyValue > fuzzyReplaceAdvise = null;
 
         String fuzzyAverageValue = null;
         try {
-            fuzzyPartUsage = new FishierElementBridgeFuzzyficator().
-                    processCollection(fishierElements);
-            fuzzyTripDistance = new TripsFuzzyficator().
-                    processCollection(trips);
-            fuzzyAverageValue = MPUtilities.getFuzzyAvgDist().getDescription();
+            fuzzyPartUsage = replacementAdvisor.
+                    processFishierElementBridgeCollection(fishierElements);
+            fuzzyTripDistance = replacementAdvisor.
+                    processTripCollection(trips);
+            fuzzyReplaceAdvise = replacementAdvisor.processAdvision();
+            fuzzyAverageValue = FuzzyDriver.getFuzzyAvgDist().getDescription();
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage(
                     "ai.computingError", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColor());
             exception.printStackTrace();
         }
+        formInfo.put("fuzzyReplaceAdvise", fuzzyReplaceAdvise);
         formInfo.put("fuzzyAverageValue", fuzzyAverageValue);
         formInfo.put("bikes", bikes);
         formInfo.put("fuzzyPartUsage", fuzzyPartUsage);

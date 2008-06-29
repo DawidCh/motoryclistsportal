@@ -25,7 +25,7 @@
                 <a href="<c:url value="/trips/delete.html?trip=${trip.id}"/>"><fmt:message key="trips.deletetrip"/></a>
                 <a href="<c:url value="/trips/edit.html?trip=${trip.id}"/>"><fmt:message key="trips.edittrip"/></a>
             </td>
-            <td><fmt:message key="fuzzyValues.trips.${fuzzyTripLength[status.count-1]}"/></td>
+            <td><fmt:message key="fuzzyValues.trips.${fuzzyTripLength[status.count-1].description}"/></td>
         </tr>
     </c:forEach>
 </table>
