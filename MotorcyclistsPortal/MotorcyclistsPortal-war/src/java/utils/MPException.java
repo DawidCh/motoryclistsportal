@@ -5,6 +5,8 @@
 
 package utils;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author kalosh
@@ -15,7 +17,9 @@ public class MPException extends Exception {
     public static String OTHER_ISSUE = "Other reason";
 
     public MPException(String message) {
-        //todo: zrobić żeby logowało w momencie wywalania wyjątku
         super(message);
+        //todo:przerobić logowanie: logwanie przebiegu kodu, metod,
+        //logowanie rozmytości
+        Logger.getLogger("E").error(message);
     }
 }

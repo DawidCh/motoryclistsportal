@@ -10,7 +10,7 @@ package fuzzyelements;
  * beta, gamma delta points are characteristic points of the trapesium.
  * @author kalosh
  */
-public abstract class TrapeziumMembershipFunctionInterface {
+public abstract class TrapeziumMembershipFunction {
 
     /**
      * Field which contains value of membership function.

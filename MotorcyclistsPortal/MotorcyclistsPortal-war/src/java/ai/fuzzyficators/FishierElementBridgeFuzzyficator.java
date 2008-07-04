@@ -9,7 +9,7 @@ import ai.fuzzyficators.usagecomputers.SquareUsageComputer;
 import ai.fuzzyficators.usagecomputers.UsageComputerInterface;
 import entities.FishierElementBridge;
 import fuzzyelements.Fuzzyficable;
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.TrapeziumMembershipFunction;
 import entities.Usage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,8 +96,8 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
                         partAvailabilityMonths);
             }
         }
-        List < TrapeziumMembershipFunctionInterface > usages =
-                new ArrayList < TrapeziumMembershipFunctionInterface >(
+        List < TrapeziumMembershipFunction  > usages =
+                new ArrayList < TrapeziumMembershipFunction  >(
                 BeanGetter.lookupUsageFacade().findAll());
         Usage usageResult = (Usage) FuzzyDriver.
                 getTrapeziumFuzzySetForValue(usages, usage);

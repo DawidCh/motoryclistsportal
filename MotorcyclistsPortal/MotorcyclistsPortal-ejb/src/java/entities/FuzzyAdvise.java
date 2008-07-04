@@ -6,7 +6,7 @@
 package entities;
 
 import fuzzyelements.FuzzyValue;
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.TrapeziumMembershipFunction;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.CascadeType;
@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fuzzyadvise")
 @NamedQueries({@NamedQuery(name = "FuzzyAdvise.findById", query = "SELECT f FROM FuzzyAdvise f WHERE f.id = :id"), @NamedQuery(name = "FuzzyAdvise.findByDescription", query = "SELECT f FROM FuzzyAdvise f WHERE f.description = :description"), @NamedQuery(name = "FuzzyAdvise.findByAlpha", query = "SELECT f FROM FuzzyAdvise f WHERE f.alpha = :alpha"), @NamedQuery(name = "FuzzyAdvise.findByBeta", query = "SELECT f FROM FuzzyAdvise f WHERE f.beta = :beta"), @NamedQuery(name = "FuzzyAdvise.findByGamma", query = "SELECT f FROM FuzzyAdvise f WHERE f.gamma = :gamma"), @NamedQuery(name = "FuzzyAdvise.findByDelta", query = "SELECT f FROM FuzzyAdvise f WHERE f.delta = :delta")})
-public class FuzzyAdvise extends TrapeziumMembershipFunctionInterface
+public class FuzzyAdvise extends TrapeziumMembershipFunction
         implements Serializable, FuzzyValue {
     private static final long serialVersionUID = 1L;
     @Id

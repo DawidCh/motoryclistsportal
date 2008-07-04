@@ -40,4 +40,11 @@ public class FuzzyAdviseFacade implements FuzzyAdviseFacadeLocal {
         return em.createQuery("select object(o) from FuzzyAdvise as o").getResultList();
     }
 
+    public FuzzyAdvise findHighest(){
+        return (FuzzyAdvise) em.createQuery("select object(o) from FuzzyAdvise as o where o.id=3").getSingleResult();
+    }
+
+    public FuzzyAdvise findLowest(){
+        return (FuzzyAdvise) em.createQuery("select object(o) from FuzzyAdvise as o where o.id=1").getSingleResult();
+    }
 }

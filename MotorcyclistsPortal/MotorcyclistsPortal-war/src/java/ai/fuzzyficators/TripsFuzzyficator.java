@@ -8,7 +8,7 @@ package ai.fuzzyficators;
 import ai.FuzzyDriver;
 import entities.Distance;
 import fuzzyelements.Fuzzyficable;
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.TrapeziumMembershipFunction;
 import entities.Trip;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +35,9 @@ public class TripsFuzzyficator extends AbstractFuzzyficator {
                     + "is not properly");
         }
         Trip trip = (Trip) object;
-        List < TrapeziumMembershipFunctionInterface > distances =
+        List < TrapeziumMembershipFunction  > distances =
                 //Distance objects in the list
-                new ArrayList < TrapeziumMembershipFunctionInterface > (
+                new ArrayList < TrapeziumMembershipFunction  > (
                 BeanGetter.lookupDistanceFacade().findAll());
         Distance distanceResults = (Distance) FuzzyDriver.
                 getTrapeziumFuzzySetForValue(
