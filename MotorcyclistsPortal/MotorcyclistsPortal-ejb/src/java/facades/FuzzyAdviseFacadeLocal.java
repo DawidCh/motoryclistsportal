@@ -20,4 +20,7 @@ public interface FuzzyAdviseFacadeLocal {
 
     List<FuzzyAdvise> findAll();
 
+    FuzzyAdvise findHighest();
+
+    FuzzyAdvise findLowest();
 }

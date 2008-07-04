@@ -5,7 +5,7 @@
 package ai.fuzzycomputers;
 
 import fuzzyelements.FuzzyValue;
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.TrapeziumMembershipFunction;
 import java.util.List;
 import org.apache.log4j.Logger;
 import utils.MPException;
@@ -25,7 +25,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
      * @throws MPException
      */
     @Override
-    public TrapeziumMembershipFunctionInterface extractFuzzyValue
+    public TrapeziumMembershipFunction extractFuzzyValue
             (Object collection) throws MPException {
         if (!(collection instanceof List)) {
             throw new MPException("Object passed to" +
@@ -33,26 +33,23 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
         }
         List parameters = (List) collection;
         Double percentageValue = (Double) parameters.get(0);
-        TrapeziumMembershipFunctionInterface maxValue =
-                (TrapeziumMembershipFunctionInterface) parameters.get(1);
+        TrapeziumMembershipFunction maxValue =
+                (TrapeziumMembershipFunction) parameters.get(1);
         double membershipFunctionValue = this.computeMembershipFunctionValue(
-                (TrapeziumMembershipFunctionInterface)
+                (TrapeziumMembershipFunction)
                 parameters.get(1), percentageValue);
         double tempMemFunVal = 0.0;
         for (int i = 2; i < parameters.size(); i++) {
             tempMemFunVal = this.computeMembershipFunctionValue(
-                    (TrapeziumMembershipFunctionInterface)
+                    (TrapeziumMembershipFunction)
                     parameters.get(i), percentageValue);
             if (tempMemFunVal > membershipFunctionValue) {
                 membershipFunctionValue = tempMemFunVal;
-                maxValue = (TrapeziumMembershipFunctionInterface)
+                maxValue = (TrapeziumMembershipFunction)
                         parameters.get(i);
             }
         }
         maxValue.setMembershipFunctionValue(membershipFunctionValue);
-        Logger.getLogger("E").debug(((FuzzyValue) maxValue).getDescription()
-                + ", membership function value: "
-                + maxValue.getMembershipFunctionValue().toString());
         return maxValue;
     }
 
@@ -65,7 +62,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
      * @return
      */
     private double computeMembershipFunctionValue(
-            TrapeziumMembershipFunctionInterface trapesiumInterface,
+            TrapeziumMembershipFunction trapesiumInterface,
             Double doubleValue) {
         double alpha = trapesiumInterface.getAlpha();
         double beta = trapesiumInterface.getBeta();

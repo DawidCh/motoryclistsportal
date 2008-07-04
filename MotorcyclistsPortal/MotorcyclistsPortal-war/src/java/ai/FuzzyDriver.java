@@ -14,7 +14,7 @@ import entities.FuzzyDecision;
 import entities.Trip;
 import fuzzyelements.FuzzyValue;
 import fuzzyelements.Fuzzyficable;
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.TrapeziumMembershipFunction;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +41,16 @@ public class FuzzyDriver {
      * Field for holding fishier element bridges.
      */
     private List < Fuzzyficable > fishierElements;
+
+    /**
+     * Field for holding fuzzy average distance.
+     */
+    private static Distance fuzzyAvgDist;
+
+    /**
+     * Field for holding fishier elements bridges after fuzzyfication.
+     */
+    private List<FuzzyValue> usageOfFuzzyElementBridges;
 
     /**
      * Default constructor.
@@ -86,17 +96,41 @@ public class FuzzyDriver {
      * one fishier element bridge in given fishier.
      */
     public final List < FuzzyValue > processAdvision() {
+        Logger.getLogger("E").trace("Entering to: "
+                + this.getClass().getCanonicalName() + " processAdvision");
         List < FuzzyValue > result = new ArrayList < FuzzyValue >();
-        List < FuzzyAdvise > advises =
-                BeanGetter.lookupFuzzyAdviseFacade().findAll();
         List < FuzzyDecision > decisions =
                 BeanGetter.lookupFuzzyDecisionFacade().findAll();
-        for (Iterator < Fuzzyficable > it = this.fishierElements.iterator();
-        it.hasNext(); it.next()) {
+        FuzzyValue fuzzyUsage = null;
+        FuzzyAdvise adviceResult = null;
+        Distance fuzzyAverageDistance = FuzzyDriver.getFuzzyAvgDist();
+        for (Iterator < FuzzyValue > it =
+                this.usageOfFuzzyElementBridges.iterator();
+                it.hasNext();) {
             //todo: zrobić podejmowanie decyzji.
-            result.add(advises.get(0));
-            Logger.getLogger("E").debug("list size: "+this.fishierElements.size());
+            fuzzyUsage = (FuzzyValue) it.next();
+            for (FuzzyDecision fuzzyDecision : decisions) {
+                if (fuzzyDecision.getUsage().equals(fuzzyUsage)) {
+                    if (fuzzyDecision.getDistance().
+                            equals(fuzzyAverageDistance)) {
+                        adviceResult = fuzzyDecision.getAdvise();
+                        Logger.getLogger("E").debug("Fits perfectly: "
+                                + adviceResult.getDescription());
+                    }
+                }
+            }
+            if (adviceResult == null) {
+                adviceResult = BeanGetter.
+                        lookupFuzzyAdviseFacade().findHighest();
+                Logger.getLogger("E").warn("Do not fits to any decision:\n"
+                        + "\tFuzzyUsage: " + fuzzyUsage.getDescription()
+                        + "\tFuzzyDistance: "
+                        + FuzzyDriver.fuzzyAvgDist.getDescription());
+            }
+            result.add(adviceResult);
         }
+        Logger.getLogger("E").trace("Exiting from: "
+                + this.getClass().getCanonicalName() + " processAdvision");
         return result;
     }
 
@@ -131,8 +165,9 @@ public class FuzzyDriver {
     public final List < FuzzyValue > processFishierElementBridgeCollection(
             final List < Fuzzyficable > fishierElements) throws Exception {
         this.fishierElements = fishierElements;
-        return this.fishierElementBridgeFuzzyficator.
+        this.usageOfFuzzyElementBridges = this.fishierElementBridgeFuzzyficator.
                 processCollection(fishierElements);
+        return this.usageOfFuzzyElementBridges;
     }
 
     /**
@@ -151,8 +186,11 @@ public class FuzzyDriver {
      * @return new average distance
      */
     public static Double recalculateAverageTripDistance() {
+        Logger.getLogger("E").
+                trace("Entering to: recalculateAverageTripDistance");
         Double averageResult = 0.0;
         List < Trip > trips = MPUtilities.findTrips();
+        FuzzyDriver.fuzzyAvgDist = null;
         for (Iterator < Trip > it = trips.iterator(); it.hasNext();) {
             Trip trip = it.next();
             averageResult += trip.getDistance();
@@ -167,6 +205,8 @@ public class FuzzyDriver {
                     + "MPUtilities.recalculateAverageTripDistance: "
                     + ex.getMessage());
         }
+        Logger.getLogger("E").
+                trace("Exiting from: recalculateAverageTripDistance");
         return averageResult;
     }
 
@@ -177,12 +217,12 @@ public class FuzzyDriver {
      * @param value value for fuzzyfication
      * @return Distance object
      */
-    public static TrapeziumMembershipFunctionInterface
+    public static TrapeziumMembershipFunction
             getTrapeziumFuzzySetForValue(
-        final List < TrapeziumMembershipFunctionInterface > fuzzySets,
+        final List < TrapeziumMembershipFunction  > fuzzySets,
         final Double value) {
         List parameters = new ArrayList();
-        TrapeziumMembershipFunctionInterface result = null;
+        TrapeziumMembershipFunction result = null;
         parameters.add(value);
         parameters.addAll(fuzzySets);
         try {
@@ -199,18 +239,21 @@ public class FuzzyDriver {
      * @return fuzzyfied average distance
      */
     public static Distance getFuzzyAvgDist() {
-        List distances =
-                BeanGetter.lookupDistanceFacade().findAll();
-        Distance distanceResults = null;
-        try {
-            Double avgTripDist =
-                    BeanGetter.getUserInfo().getAverageTripDistance();
-            distanceResults = (Distance) FuzzyDriver.
-                    getTrapeziumFuzzySetForValue(distances, avgTripDist);
-        } catch (MPException exception) {
-            Logger.getLogger("E").error("Exception caught in MPUtilities:"
-                    + exception.getMessage());
+        Logger.getLogger("E").trace("Entering to: getFuzzyAvgDist");
+        if (FuzzyDriver.fuzzyAvgDist == null) {
+            List distances =
+                    BeanGetter.lookupDistanceFacade().findAll();
+            try {
+                Double avgTripDist =
+                        BeanGetter.getUserInfo().getAverageTripDistance();
+                FuzzyDriver.fuzzyAvgDist = (Distance) FuzzyDriver.
+                        getTrapeziumFuzzySetForValue(distances, avgTripDist);
+            } catch (MPException exception) {
+                Logger.getLogger("E").error("Exception caught in MPUtilities:"
+                        + exception.getMessage());
+            }
         }
-        return distanceResults;
+        Logger.getLogger("E").trace("Exiting from: getFuzzyAvgDist");
+        return FuzzyDriver.fuzzyAvgDist;
     }
 }

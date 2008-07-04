@@ -4,7 +4,7 @@
  */
 package entities;
 
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.TrapeziumMembershipFunction;
 import fuzzyelements.FuzzyValue;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fuzzyusage")
 @NamedQueries({})
-public class Usage extends TrapeziumMembershipFunctionInterface
+public class Usage extends TrapeziumMembershipFunction
         implements Serializable, FuzzyValue {
 
     private static final long serialVersionUID = 1L;

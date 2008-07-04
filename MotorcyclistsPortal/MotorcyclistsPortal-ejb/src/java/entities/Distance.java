@@ -5,7 +5,7 @@
 
 package entities;
 
-import fuzzyelements.TrapeziumMembershipFunctionInterface;
+import fuzzyelements.TrapeziumMembershipFunction;
 import fuzzyelements.FuzzyValue;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fuzzydistance")
 @NamedQueries({@NamedQuery(name = "Distance.findById", query = "SELECT d FROM Distance d WHERE d.id = :id"), @NamedQuery(name = "Distance.findByDescription", query = "SELECT d FROM Distance d WHERE d.description = :description"), @NamedQuery(name = "Distance.findByAlpha", query = "SELECT d FROM Distance d WHERE d.alpha = :alpha"), @NamedQuery(name = "Distance.findByBeta", query = "SELECT d FROM Distance d WHERE d.beta = :beta"), @NamedQuery(name = "Distance.findByGamma", query = "SELECT d FROM Distance d WHERE d.gamma = :gamma"), @NamedQuery(name = "Distance.findByDelta", query = "SELECT d FROM Distance d WHERE d.delta = :delta")})
-public class Distance extends TrapeziumMembershipFunctionInterface
+public class Distance extends TrapeziumMembershipFunction
         implements Serializable, FuzzyValue {
     private static final long serialVersionUID = 1L;
     @Id

@@ -27,9 +27,23 @@ public class FuzzyDecision implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
+    @JoinColumn(name = "usage", referencedColumnName = "id")
+    @ManyToOne
+    private Usage usage;
+    @JoinColumn(name = "distance", referencedColumnName = "id")
+    @ManyToOne
+    private Distance distance;
     @JoinColumn(name = "advise", referencedColumnName = "id")
     @ManyToOne
     private FuzzyAdvise advise;
+
+    public Usage getUsage() {
+        return usage;
+    }
+
+    public Distance getDistance() {
+        return distance;
+    }
 
     public FuzzyDecision() {
     }
