@@ -19,30 +19,46 @@ import utils.DefaultValues;
 import utils.LocaleProvider;
 
 /**
- *
+ * Class used for handle login page.
  * @author kalosh
  */
-public class Credentials implements Controller{
+public class Credentials implements Controller {
 
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    /**
+     * Method used for handle login page requests.
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return ModelAndView object which contains map of object passed to page
+     * and chosen page for display
+     * @throws java.lang.Exception
+     */
+    public ModelAndView handleRequest(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: handleRequest");
+        ModelAndView result = null;
         if (null == request.getUserPrincipal()) {
             Locale defaultLocale = RequestContextUtils.getLocale(request);
-            HashMap<String, Object> formInfo = new HashMap<String, Object>();
-            LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
-            formInfo.put("pageTitle", localeProvider.getMessage("loginpage.pageTitle", null, defaultLocale));
+            HashMap < String, Object > formInfo =
+                    new HashMap < String, Object >();
+            LocaleProvider localeProvider =
+                    BeanGetter.getLocaleProvider(request);
+            formInfo.put("pageTitle", localeProvider.
+                    getMessage("loginpage.pageTitle", null, defaultLocale));
             String key = request.getParameter("error");
             if (null != key) {
-                formInfo.put("message", localeProvider.getMessage(key, null, defaultLocale));
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("message", localeProvider.getMessage(key,
+                        null, defaultLocale));
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 AuthenticationException aex = (AuthenticationException) request.
                         getSession(false).getAttribute(AbstractProcessingFilter.
                         SPRING_SECURITY_LAST_EXCEPTION_KEY);
                 Logger.getLogger("E").error(aex.getMessage());
-                return new ModelAndView("login", formInfo);
             }
-            return new ModelAndView("login", formInfo);
+            result = new ModelAndView("login", formInfo);
         } else {
-            return new ModelAndView("redirect:/secured/main.html");
+            result = new ModelAndView("redirect:/secured/main.html");
         }
+        Logger.getLogger("E").trace("Exiting from: handleRequest");
+        return result;
     }
 }

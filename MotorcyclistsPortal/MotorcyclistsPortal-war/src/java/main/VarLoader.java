@@ -62,8 +62,8 @@ public class VarLoader extends HandlerInterceptorAdapter {
             }
             map.addObject("currentLocale", RequestContextUtils.
                     getLocale(request).toString());
-            map.addObject("failColor", DefaultValues.getFailColor());
-            map.addObject("succColor", DefaultValues.getSuccColor());
+            map.addObject("failColor", DefaultValues.getFailColour());
+            map.addObject("succColor", DefaultValues.getSuccColour());
         } catch (Exception ex) {
             Logger.getLogger("E").info("User is not in the session "
                     + "in " + this.getClass().getCanonicalName()
