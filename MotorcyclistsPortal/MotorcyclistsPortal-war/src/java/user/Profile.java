@@ -6,7 +6,6 @@ package user;
 
 import entities.LoginData;
 import entities.User;
-import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +20,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
+import utils.MPUtilities;
 
 /**
  *
@@ -40,6 +40,8 @@ public class Profile extends AbstractController {
     protected ModelAndView handleRequestInternal(
             final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: handleRequestInternal");
+        ModelAndView result = null;
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -53,7 +55,7 @@ public class Profile extends AbstractController {
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage(
                     "profile.errorRecivingData", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColor());
+            formInfo.put("messColor", DefaultValues.getFailColour());
             Logger.getLogger("E").error("Error while reciving data from database"
                     + "at Profile: " + exception.getMessage());
             return new ModelAndView("user/profile", formInfo);
@@ -94,7 +96,7 @@ public class Profile extends AbstractController {
                     message = localeProvider.getMessage("profile.notAllFilled",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     return new ModelAndView("user/profile", formInfo);
                 }
             }
@@ -107,27 +109,28 @@ public class Profile extends AbstractController {
                 message = localeProvider.getMessage("profile.wrongDate", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                Logger.getLogger("E").error("Wrong date format in Register from "
+                Logger.getLogger("E").
+                        error("Wrong date format in Register from "
                         + formInfo.get("birthdate"));
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 return new ModelAndView("user/profile", formInfo);
             }
 
             if (!password.equals(new String(""))
                     || !passwordAgain.equals(new String(""))) {
                 int passCheckingRes =
-                        this.checkPassword(password, passwordAgain);
+                        MPUtilities.checkPassword(password, passwordAgain);
                 if (passCheckingRes == 1) {
                     message = localeProvider.getMessage("profile.differentPass",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     return new ModelAndView("user/profile", formInfo);
                 } else if (passCheckingRes == 2) {
                     message = localeProvider.getMessage("profile.wrongLength",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     return new ModelAndView("user/profile", formInfo);
                 }
             }
@@ -160,6 +163,11 @@ public class Profile extends AbstractController {
 
             try {
                 BeanGetter.lookupUserFacade().edit(user);
+                message = localeProvider.
+                        getMessage("success", null, defaultLocale);
+                formInfo.put("message", message);
+                formInfo.put("messColor", DefaultValues.getSuccColour());
+                result = new ModelAndView("user/profile", formInfo);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
                 Logger.getLogger("E").error("Error while setting data to"
@@ -168,50 +176,14 @@ public class Profile extends AbstractController {
                         null, defaultLocale) + localeProvider.
                         getMessage("otherError", null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
-                return new ModelAndView("user/profile", formInfo);
+                formInfo.put("messColor", DefaultValues.getFailColour());
+                result = new ModelAndView("user/profile", formInfo);
             }
-
-            message = localeProvider.getMessage("success", null, defaultLocale);
-            formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getSuccColor());
-            return new ModelAndView("user/profile", formInfo);
         }
-        return new ModelAndView("user/profile", formInfo);
-    }
-
-    /**
-     * Method for computing sha1 digest algorithm for given String.
-     * @param messageToDigest arguement to hash
-     * @return hashed value of the message
-     * @throws java.lang.Exception
-     */
-    private String computeSha(String messageToDigest) throws Exception {
-        String result = new String();
-        MessageDigest md = MessageDigest.getInstance("sha");
-        md.reset();
-        md.update(messageToDigest.getBytes());
-        for (byte b : md.digest()) {
-            result += Integer.toHexString(b & 0xff);
+        if (result == null) {
+            result = new ModelAndView("user/profile", formInfo);
         }
+        Logger.getLogger("E").trace("Exiting from: handleRequestInternal");
         return result;
-    }
-
-    /**
-     * Method used for checking if given passwords are correct.
-     * @param pass first password
-     * @param secPass second password
-     * @return 1 if passwords are not equal, 2 if length of password is
-     * incorrect, 0 if passwords are given properly
-     */
-    private int checkPassword(final String pass, final String secPass) {
-        if (!pass.equals(secPass)) {
-            return 1;
-        } else if (pass.length() > DefaultValues.getPassLength()[1]
-                || pass.length() < DefaultValues.getPassLength()[0]) {
-            return 2;
-        } else {
-            return 0;
-        }
     }
 }

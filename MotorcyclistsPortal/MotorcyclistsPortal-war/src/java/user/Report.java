@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
@@ -38,6 +39,7 @@ public class Report {
      */
     public final ModelAndView generateReport(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: generateReport");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: loc, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -69,7 +71,7 @@ public class Report {
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage(
                     "ai.computingError", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColor());
+            formInfo.put("messColor", DefaultValues.getFailColour());
             exception.printStackTrace();
         }
         formInfo.put("fuzzyReplaceAdvise", fuzzyReplaceAdvise);
@@ -81,6 +83,7 @@ public class Report {
         formInfo.put("fishierElements", fishierElements);
         formInfo.put("pageTitle", localeProvider.getMessage(
                 "report.pageTitle", null, defaultLocale));
+        Logger.getLogger("E").trace("Exiting from: generateReport");
         return new ModelAndView("secured/report", formInfo);
     }
 }
