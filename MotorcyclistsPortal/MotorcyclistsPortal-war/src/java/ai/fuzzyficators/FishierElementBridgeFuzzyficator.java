@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import org.apache.log4j.Logger;
 import utils.BeanGetter;
 import utils.MPException;
 
@@ -49,6 +50,7 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
      * @throws java.lang.Exception
      */
     public Usage processElement(Fuzzyficable object) throws Exception {
+        Logger.getLogger("E").trace("Entering to: processElement");
         if (!(object instanceof FishierElementBridge)) {
             throw new MPException("Object passed to"
                     + "FishierElementBridgheFuzzyficator.processElement"
@@ -57,8 +59,8 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
         FishierElementBridge fishierElBr = (FishierElementBridge) object;
         String activityPeriod = fishierElBr.getActivityperiod().
                 getDescription();
-        Usage fuzzyUsage = null;
-        Double usage = 0.0;
+        Usage fuzzyUsageResult = null;
+        Double doubleUsage = 0.0;
         if (activityPeriod.equals("distance")) {
             Integer changeDistance = fishierElBr.getChangemileage();
             Integer bikeMileage = new Integer(fishierElBr.getFishier().
@@ -66,10 +68,10 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
             Integer partMileage = bikeMileage - changeDistance;
             Integer partAvailabilityMileage = fishierElBr.getPeriodlength();
             if (partMileage > partAvailabilityMileage) {
-                fuzzyUsage = BeanGetter.lookupUsageFacade().findHardest();
-                return fuzzyUsage;
+                fuzzyUsageResult = BeanGetter.lookupUsageFacade().findHardest();
             } else {
-                usage = this.usageComputer.computePercentageValue(partMileage,
+                doubleUsage = this.usageComputer.
+                        computePercentageValue(partMileage,
                         partAvailabilityMileage);
             }
         } else {
@@ -86,22 +88,25 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
 
             Calendar now = Calendar.getInstance();
             if (usageLimitDate.before(now)) {
-                fuzzyUsage = BeanGetter.lookupUsageFacade().findHardest();
-                return fuzzyUsage;
+                fuzzyUsageResult = BeanGetter.lookupUsageFacade().findHardest();
             } else {
                 int partAvailabilityMonths = partAvailabilityYears
                         * FishierElementBridgeFuzzyficator.MONTH_COUNT;
                 int monthsDiff = this.getDiffInMonths(changeCalDate, now);
-                usage = this.usageComputer.computePercentageValue(monthsDiff,
+                doubleUsage = this.usageComputer.
+                        computePercentageValue(monthsDiff,
                         partAvailabilityMonths);
             }
         }
-        List < TrapeziumMembershipFunction  > usages =
-                new ArrayList < TrapeziumMembershipFunction  >(
-                BeanGetter.lookupUsageFacade().findAll());
-        Usage usageResult = (Usage) FuzzyDriver.
-                getTrapeziumFuzzySetForValue(usages, usage);
-        return usageResult;
+        if (fuzzyUsageResult == null) {
+            List < TrapeziumMembershipFunction  > usages =
+                    new ArrayList < TrapeziumMembershipFunction  >(
+                    BeanGetter.lookupUsageFacade().findAll());
+            fuzzyUsageResult = (Usage) FuzzyDriver.
+                    getTrapeziumFuzzySetForValue(usages, doubleUsage);
+        }
+        Logger.getLogger("E").trace("Exiting from: processElement");
+        return fuzzyUsageResult;
     }
 
     /**
@@ -112,11 +117,13 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
      */
     private int getDiffInMonths(final Calendar earlierDate,
             final Calendar laterDate) {
+        Logger.getLogger("E").trace("Entering to: getDiffInMonths");
         int monthsCount = -1;
         while (earlierDate.before(laterDate)) {
             earlierDate.add(Calendar.MONTH, 1);
             monthsCount++;
         }
+        Logger.getLogger("E").trace("Exiting from: getDiffInMonths");
         return monthsCount;
     }
 }

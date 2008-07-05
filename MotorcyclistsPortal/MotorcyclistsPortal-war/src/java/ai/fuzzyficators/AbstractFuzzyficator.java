@@ -11,6 +11,7 @@ import fuzzyelements.FuzzyValue;
 import fuzzyelements.Fuzzyficable;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -49,11 +50,13 @@ public abstract class AbstractFuzzyficator {
     public List < FuzzyValue > processCollection(
             final List < Fuzzyficable  > objects)
             throws Exception {
+        Logger.getLogger("E").trace("Entering to: processCollection");
         List < FuzzyValue > result = new ArrayList < FuzzyValue >();
         for (int i = 0; i < objects.size(); i++) {
             Fuzzyficable object = objects.get(i);
             result.add(this.processElement(object));
         }
+        Logger.getLogger("E").trace("Exiting from: processCollection");
         return result;
     }
 }
