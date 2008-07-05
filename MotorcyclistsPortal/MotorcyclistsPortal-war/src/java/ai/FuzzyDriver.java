@@ -50,15 +50,17 @@ public class FuzzyDriver {
     /**
      * Field for holding fishier elements bridges after fuzzyfication.
      */
-    private List<FuzzyValue> usageOfFuzzyElementBridges;
+    private List < FuzzyValue > usageOfFuzzyElementBridges;
 
     /**
      * Default constructor.
      */
     public FuzzyDriver() {
+        Logger.getLogger("E").trace("Entering to: FuzzyDriver()");
         this.tripsFuzzyficator = new TripsFuzzyficator();
         this.fishierElementBridgeFuzzyficator =
                 new FishierElementBridgeFuzzyficator();
+        Logger.getLogger("E").trace("Exiting from: FuzzyDriver()");
     }
 
     /**
@@ -69,9 +71,13 @@ public class FuzzyDriver {
      */
     public FuzzyDriver(final AbstractFuzzyficator tripsFuzzyficator,
             final AbstractFuzzyficator fishierElementBridgeFuzzyficator) {
+        Logger.getLogger("E").trace("Entering to: "
+                + "FuzzyDriver(AbstractFuzzyficator, AbstractFuzzyficator)");
         this.tripsFuzzyficator = tripsFuzzyficator;
         this.fishierElementBridgeFuzzyficator =
                 fishierElementBridgeFuzzyficator;
+        Logger.getLogger("E").trace("Exiting from: "
+                + "FuzzyDriver(AbstractFuzzyficator, AbstractFuzzyficator)");
     }
 
     /**
@@ -107,14 +113,13 @@ public class FuzzyDriver {
         for (Iterator < FuzzyValue > it =
                 this.usageOfFuzzyElementBridges.iterator();
                 it.hasNext();) {
-            //todo: zrobić podejmowanie decyzji.
             fuzzyUsage = (FuzzyValue) it.next();
             for (FuzzyDecision fuzzyDecision : decisions) {
                 if (fuzzyDecision.getUsage().equals(fuzzyUsage)) {
                     if (fuzzyDecision.getDistance().
                             equals(fuzzyAverageDistance)) {
                         adviceResult = fuzzyDecision.getAdvise();
-                        Logger.getLogger("E").debug("Fits perfectly: "
+                        Logger.getLogger("fuzzyLogger").debug("Fits perfectly: "
                                 + adviceResult.getDescription());
                     }
                 }
@@ -122,7 +127,8 @@ public class FuzzyDriver {
             if (adviceResult == null) {
                 adviceResult = BeanGetter.
                         lookupFuzzyAdviseFacade().findHighest();
-                Logger.getLogger("E").warn("Do not fits to any decision:\n"
+                Logger.getLogger("fuzzyLogger").
+                        warn("Do not fits to any decision:\n"
                         + "\tFuzzyUsage: " + fuzzyUsage.getDescription()
                         + "\tFuzzyDistance: "
                         + FuzzyDriver.fuzzyAvgDist.getDescription());
@@ -164,9 +170,13 @@ public class FuzzyDriver {
      */
     public final List < FuzzyValue > processFishierElementBridgeCollection(
             final List < Fuzzyficable > fishierElements) throws Exception {
+        Logger.getLogger("E").
+                trace("Entering to: processFishierElementBridgeCollection");
         this.fishierElements = fishierElements;
         this.usageOfFuzzyElementBridges = this.fishierElementBridgeFuzzyficator.
                 processCollection(fishierElements);
+        Logger.getLogger("E").
+                trace("Exiting from: processFishierElementBridgeCollection");
         return this.usageOfFuzzyElementBridges;
     }
 
@@ -178,7 +188,11 @@ public class FuzzyDriver {
      */
     public final List < FuzzyValue > processTripCollection(
             final List < Fuzzyficable > trips) throws Exception {
-        return this.tripsFuzzyficator.processCollection(trips);
+        Logger.getLogger("E").trace("Entering to: processTripCollection");
+        List < FuzzyValue > result =
+                this.tripsFuzzyficator.processCollection(trips);
+        Logger.getLogger("E").trace("Exiting from: processTripCollection");
+        return result;
     }
 
     /**
@@ -221,6 +235,8 @@ public class FuzzyDriver {
             getTrapeziumFuzzySetForValue(
         final List < TrapeziumMembershipFunction  > fuzzySets,
         final Double value) {
+        Logger.getLogger("E").
+                trace("Entering to: getTrapeziumFuzzySetForValue");
         List parameters = new ArrayList();
         TrapeziumMembershipFunction result = null;
         parameters.add(value);
@@ -231,6 +247,8 @@ public class FuzzyDriver {
             Logger.getLogger("E").error("Exception caught in MPUtilities:"
                     + exception.getMessage());
         }
+        Logger.getLogger("E").
+                trace("Exiting from: getTrapeziumFuzzySetForValue");
         return result;
     }
 
