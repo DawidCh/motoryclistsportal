@@ -128,7 +128,7 @@ public class Trips {
                     message = localeProvider.
                             getMessage("notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     formInfo.put("action", "new.html");
                     return new ModelAndView("trips/add", formInfo);
                 }
@@ -139,7 +139,7 @@ public class Trips {
                 message = localeProvider.getMessage("trips.bikeNotFound",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "new.html");
                 return new ModelAndView("trips/add", formInfo);
             }
@@ -157,7 +157,7 @@ public class Trips {
                 message = localeProvider.getMessage("error.wrongDate", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "new.html");
                 return new ModelAndView("trips/add", formInfo);
             } catch (NumberFormatException numberFormatException) {
@@ -165,14 +165,14 @@ public class Trips {
                 message = localeProvider.getMessage("error.parsingError", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "new.html");
                 return new ModelAndView("trips/add", formInfo);
             } catch (Exception exception) {
                 message = localeProvider.getMessage("error.errorWhileAdding",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "new.html");
                 Logger.getLogger("E").error("Error wihle persisting in db at Trip.add: "
                         + exception.getMessage());
@@ -192,7 +192,7 @@ public class Trips {
                     getMessage("trips.formTitle.edit", null, defaultLocale));
             formInfo.put("message", message);
             formInfo.put("action", "edit.html");
-            formInfo.put("messColor", DefaultValues.getSuccColor());
+            formInfo.put("messColor", DefaultValues.getSuccColour());
             return new ModelAndView("trips/add", formInfo);
         }
         formInfo.put("action", "new.html");
@@ -242,7 +242,7 @@ public class Trips {
             Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("trips.tripNotFound",
                     null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColor());
+            map.put("messColor", DefaultValues.getFailColour());
             exception.printStackTrace();
             return new ModelAndView("trips/list", map);
         }
@@ -277,7 +277,7 @@ public class Trips {
                     message = localeProvider.getMessage("notAllFilled", null,
                             defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     formInfo.put("action", "edit.html");
                     return new ModelAndView("bikes/add", formInfo);
                 }
@@ -292,7 +292,7 @@ public class Trips {
                     message = localeProvider.getMessage("trips.bikeNotFound",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     formInfo.put("action", "edit.html");
                     return new ModelAndView("trips/add", formInfo);
                 }
@@ -329,7 +329,7 @@ public class Trips {
                 message = localeProvider.getMessage("error.parsingError", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "edit.html");
                 return new ModelAndView("trips/add", formInfo);
             } catch (ParseException ex) {
@@ -337,14 +337,14 @@ public class Trips {
                 message = localeProvider.getMessage("error.wrongDate", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "edit.html");
                 return new ModelAndView("trips/add", formInfo);
             } catch (Exception exception) {
                 message = localeProvider.getMessage("error.errorWhileAdding",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "edit.html");
                 Logger.getLogger("E").error("Error wihle persisting in db at Trip.add: "
                         + exception.getMessage());
@@ -353,7 +353,7 @@ public class Trips {
             message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("action", "edit.html");
-            formInfo.put("messColor", DefaultValues.getSuccColor());
+            formInfo.put("messColor", DefaultValues.getSuccColour());
             return new ModelAndView("trips/add", formInfo);
         }
         formInfo.put("action", "edit.html");
@@ -396,13 +396,13 @@ public class Trips {
             map.put("message", localeProvider.
                     getMessage("error.errorWhileDeleting",
                     null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColor());
+            map.put("messColor", DefaultValues.getFailColour());
             mPException.printStackTrace();
             return new ModelAndView("/trips/list", map);
         }
         map.put("message", localeProvider.
                 getMessage("success", null, defaultLocale));
-        map.put("messColor", DefaultValues.getSuccColor());
+        map.put("messColor", DefaultValues.getSuccColour());
         return new ModelAndView("/trips/list", map);
     }
 

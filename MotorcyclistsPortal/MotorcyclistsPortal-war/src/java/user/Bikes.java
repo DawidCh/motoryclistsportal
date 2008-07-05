@@ -113,7 +113,7 @@ public class Bikes {
                     message = localeProvider.
                             getMessage("notAllFilled", null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     formInfo.put("action", "new.html");
                     return new ModelAndView("bikes/add", formInfo);
                 }
@@ -130,7 +130,7 @@ public class Bikes {
                 message = localeProvider.getMessage("error.errorWhileAdding",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.put("action", "new.html");
                 Logger.getLogger("E").error("Error wihle persisting in db at Bikes.add: "
                         + exception.getMessage());
@@ -150,7 +150,7 @@ public class Bikes {
             formInfo.put("mileage", mileage);
             formInfo.put("displacement", displacement);
             formInfo.put("action", "edit.html");
-            formInfo.put("messColor", DefaultValues.getSuccColor());
+            formInfo.put("messColor", DefaultValues.getSuccColour());
             formInfo.put("bike", newBike.getId());
             return new ModelAndView("bikes/add", formInfo);
         }
@@ -196,7 +196,7 @@ public class Bikes {
             BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
             message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getSuccColor());
+            formInfo.put("messColor", DefaultValues.getSuccColour());
             formInfo.putAll(this.showList(request, response).getModel());
             return new ModelAndView("bikes/details", formInfo);
         } catch (Exception ex) {
@@ -205,7 +205,7 @@ public class Bikes {
             message = localeProvider.getMessage("error.otherError",
                     null, defaultLocale);
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getFailColor());
+            formInfo.put("messColor", DefaultValues.getFailColour());
             formInfo.putAll(this.showList(request, response).getModel());
             ex.printStackTrace();
             return new ModelAndView("bikes/details", formInfo);
@@ -240,7 +240,7 @@ public class Bikes {
             Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("bikes.bikeNotFound",
                     null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColor());
+            map.put("messColor", DefaultValues.getFailColour());
             exception.printStackTrace();
             return new ModelAndView("bikes/list", map);
         }
@@ -279,7 +279,7 @@ public class Bikes {
                     message = localeProvider.getMessage("notAllFilled",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColor());
+                    formInfo.put("messColor", DefaultValues.getFailColour());
                     formInfo.put("action", "edit.html");
                     return new ModelAndView("bikes/add", formInfo);
                 }
@@ -317,12 +317,12 @@ public class Bikes {
                 message = localeProvider.getMessage("error.errorWhileAdding",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 exception.printStackTrace();
             }
             message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getSuccColor());
+            formInfo.put("messColor", DefaultValues.getSuccColour());
         }
         formInfo.put("nickname", nickname);
         formInfo.put("manufacturer", manufacturer);
@@ -372,13 +372,13 @@ public class Bikes {
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage(
                     "error.errorWhileDeleting", null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColor());
+            map.put("messColor", DefaultValues.getFailColour());
             mPException.printStackTrace();
             return new ModelAndView("/bikes/list", map);
         }
         map.put("message", localeProvider.
                 getMessage("success", null, defaultLocale));
-        map.put("messColor", DefaultValues.getSuccColor());
+        map.put("messColor", DefaultValues.getSuccColour());
         return new ModelAndView("/bikes/list", map);
     }
 
@@ -475,7 +475,7 @@ public class Bikes {
                 message = localeProvider.getMessage("success",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getSuccColor());
+                formInfo.put("messColor", DefaultValues.getSuccColour());
                 formInfo.putAll(this.showList(request, response).getModel());
                 return new ModelAndView("bikes/list", formInfo);
             } catch (Exception exception) {
@@ -484,7 +484,7 @@ public class Bikes {
                 message = localeProvider.getMessage("error.otherError",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColor());
+                formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.putAll(this.showList(request, response).getModel());
                 return new ModelAndView("bikes/list", formInfo);
             }

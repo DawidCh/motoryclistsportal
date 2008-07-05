@@ -9,18 +9,28 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- *
+ * Class for providing application settings.
  * @author kalosh
  */
 public class ApplicationSettings {
-    private List<Locale> availableLanguages;
+    /**
+     * Filed which is holding available locales in the application.
+     */
+    private List < Locale > availableLanguages;
 
+    /**
+     * Constructor.
+     */
     public ApplicationSettings() {
-        this.availableLanguages = BeanGetter.lookupAvailableLangsFacade().findAll();
-        
+        this.availableLanguages =
+                BeanGetter.lookupAvailableLangsFacade().findAll();
     }
 
-    public List<Locale> getAvailableLanguages() {
+    /**
+     * Method provides available languages.
+     * @return List of Locale objects
+     */
+    public List < Locale > getAvailableLanguages() {
         return availableLanguages;
     }
 }

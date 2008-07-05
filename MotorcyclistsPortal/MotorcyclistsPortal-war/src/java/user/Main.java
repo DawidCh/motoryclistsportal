@@ -7,6 +7,7 @@ package user;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -31,12 +32,14 @@ public class Main extends AbstractController {
     protected final ModelAndView handleRequestInternal(
             final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: handleRequestInternal");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         HashMap < String, Object > info = new HashMap < String, Object >();
         info.put("pageTitle", localeProvider.getMessage("main.pageTitle", null,
                 RequestContextUtils.getLocale(request)));
         // </editor-fold>
+        Logger.getLogger("E").trace("Exiting from: handleRequestInternal");
         return new ModelAndView("secured/main", info);
     }
 }
