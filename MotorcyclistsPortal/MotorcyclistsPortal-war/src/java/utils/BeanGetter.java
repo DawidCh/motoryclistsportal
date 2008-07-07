@@ -32,7 +32,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import security.DetailedUserInformation;
 
 /**
- *
+ * Utility class, used for providing varius beans from varius scopes.
  * @author kalosh
  */
 public class BeanGetter {
@@ -87,7 +87,7 @@ public class BeanGetter {
     public static ApplicationSettings getApplicationSettings(
             HttpServletRequest request){
         return (ApplicationSettings)
-                BeanGetter. getObjectFromSessionScope("settings", request);
+                BeanGetter.getObjectFromSessionScope("settings", request);
     }
 
     /**
