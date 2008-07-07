@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
+import utils.MPException;
 import utils.MPUtilities;
 
 /**
@@ -41,6 +42,7 @@ public class Bikes {
      */
     public final ModelAndView showList(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: showList");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -53,6 +55,7 @@ public class Bikes {
         formInfo.put("bikes", bikes);
         formInfo.put("pageTitle", localeProvider.
                 getMessage("bikes.pageTitle", null, defaultLocale));
+        Logger.getLogger("E").trace("Exiting from: showList");
         return new ModelAndView("bikes/list", formInfo);
     }
 
@@ -66,6 +69,7 @@ public class Bikes {
      */
     public final ModelAndView addBike(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: addBike");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -76,85 +80,57 @@ public class Bikes {
         formInfo.put("formTitle", localeProvider.
                 getMessage("bikes.formTitle.add", null, defaultLocale));
         String form = request.getParameter("form");
-        String message;
+        formInfo.put("form", form);
+        formInfo.put("action", "new.html");
+        String message = null;
+        ModelAndView result = null;
 
-        //validation
         Motorcycle newBike;
         if (form != null) {
-            //<editor-fold default-state="collapsed" desc="Obtaining info from request">
-            String nickname = request.getParameter("nickname");
-            String manufacturer = request.getParameter("manufacturer");
-            String model = request.getParameter("model");
-            String year = request.getParameter("year");
-            String torque = request.getParameter("torque");
-            String power = request.getParameter("power");
-            String mileage = request.getParameter("mileage");
-            String displacement = request.getParameter("displacement");
-            formInfo.put("nickname", nickname);
-            formInfo.put("manufacturer", manufacturer);
-            formInfo.put("model", model);
-            formInfo.put("year", year);
-            formInfo.put("torque", torque);
-            formInfo.put("power", power);
-            formInfo.put("mileage", mileage);
-            formInfo.put("displacement", displacement);
-            formInfo.put("form", form);
-            //</editor-fold>
-            for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
-                String currentKey = (String) it.next();
-                if (currentKey.equals(new String("pageTitle"))
-                        || currentKey.equals(new String("formTitle"))) {
-                    continue;
-                }
-                if (request.getParameter(currentKey) == null
-                        || request.getParameter(currentKey).isEmpty()) {
-                    Logger.getLogger("E").error("Not all fields filled in new bike: "
-                            + currentKey);
-                    message = localeProvider.
-                            getMessage("notAllFilled", null, defaultLocale);
-                    formInfo.put("message", message);
+            boolean wellValidated = this.validateInputForm(request, formInfo);
+            if (wellValidated) {
+                try {
+                    newBike = new Motorcycle(
+                        (String) formInfo.get("manufacturer"),
+                        (String) formInfo.get("model"),
+                        new Integer((String) formInfo.get("year")),
+                        new Integer((String) formInfo.get("torque")),
+                        new Integer((String) formInfo.get("power")),
+                        new Double((String) formInfo.get("mileage")),
+                        new Integer((String) formInfo.get("displacement")),
+                        (String) formInfo.get("nickname"),
+                        BeanGetter.getUserInfo().getUser());
+                    BeanGetter.lookupMotorcycleFacade().create(newBike);
+                    message = localeProvider.getMessage(
+                            "success", null, defaultLocale);
+                    formInfo.put("formTitle", localeProvider.
+                    getMessage(
+                    "bikes.formTitle.edit", null, defaultLocale));
+                    formInfo.put("action", "edit.html");
+                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    formInfo.put("bike", newBike.getId());
+                    formInfo.putAll(this.createHashMapFromBike(newBike));
+                } catch (Exception exception) {
+                    message = localeProvider.getMessage(
+                            "error.errorWhileAdding",
+                            null, defaultLocale);
                     formInfo.put("messColor", DefaultValues.getFailColour());
-                    formInfo.put("action", "new.html");
-                    return new ModelAndView("bikes/add", formInfo);
+                    Logger.getLogger("E").
+                            error(
+                            "Error while persisting in db at Bikes.add: ");
+                    exception.printStackTrace();
+                } finally {
+                    formInfo.put("message", message);
+                    result = new ModelAndView("bikes/add", formInfo);
                 }
+            } else {
+                formInfo.put("form", form);
             }
-            newBike = new Motorcycle(
-                    manufacturer, model, new Integer(year), new Integer(torque),
-                    new Integer(power), new Double(mileage),
-                    new Integer(displacement), nickname,
-                    BeanGetter.getUserInfo().getUser());
-            try {
-                BeanGetter.lookupMotorcycleFacade().create(newBike);
-
-            } catch (Exception exception) {
-                message = localeProvider.getMessage("error.errorWhileAdding",
-                        null, defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "new.html");
-                Logger.getLogger("E").error("Error wihle persisting in db at Bikes.add: "
-                        + exception.getMessage());
-                return new ModelAndView("bikes/add", formInfo);
-            }
-            message = localeProvider.getMessage("success", null, defaultLocale);
-            formInfo = new HashMap < String, Object >();
-            formInfo.put("formTitle", localeProvider.
-                    getMessage("bikes.formTitle.edit", null, defaultLocale));
-            formInfo.put("message", message);
-            formInfo.put("nickname", nickname);
-            formInfo.put("manufacturer", manufacturer);
-            formInfo.put("model", model);
-            formInfo.put("year", year);
-            formInfo.put("torque", torque);
-            formInfo.put("power", power);
-            formInfo.put("mileage", mileage);
-            formInfo.put("displacement", displacement);
-            formInfo.put("action", "edit.html");
-            formInfo.put("messColor", DefaultValues.getSuccColour());
-            formInfo.put("bike", newBike.getId());
-            return new ModelAndView("bikes/add", formInfo);
         }
-        formInfo.put("action", "new.html");
+        if (result == null) {
+            result = new ModelAndView("bikes/add", formInfo);
+        }
+        Logger.getLogger("E").trace("Exiting from: addBike");
         return new ModelAndView("bikes/add", formInfo);
     }
 
@@ -168,6 +144,7 @@ public class Bikes {
      */
     public final ModelAndView reassignFishier(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: reassignFishier");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -198,7 +175,6 @@ public class Bikes {
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getSuccColour());
             formInfo.putAll(this.showList(request, response).getModel());
-            return new ModelAndView("bikes/details", formInfo);
         } catch (Exception ex) {
             Logger.getLogger("E").error("Error while reassigning fishier to"
                     + "bike in Bikes.reassignFishier");
@@ -207,9 +183,9 @@ public class Bikes {
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getFailColour());
             formInfo.putAll(this.showList(request, response).getModel());
-            ex.printStackTrace();
-            return new ModelAndView("bikes/details", formInfo);
         }
+        Logger.getLogger("E").trace("Exiting from: reassignFishier");
+        return new ModelAndView("bikes/details", formInfo);
     }
 
     /**
@@ -222,6 +198,7 @@ public class Bikes {
      */
     public final ModelAndView editBike(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: editBike");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -230,112 +207,85 @@ public class Bikes {
         formInfo.put("formTitle", localeProvider.
                 getMessage("bikes.formTitle.edit", null, defaultLocale));
         String bikeId = request.getParameter("bike");
+        String form = null;
         Motorcycle bike = null;
+        String message = null;
+        ModelAndView result = null;
+        
         try {
             bike = BeanGetter.lookupMotorcycleFacade().
                     find(new Integer(bikeId));
-
-        } catch (Exception exception) {
-            Logger.getLogger("E").error("Bike not found at bikes edit: " + bikeId);
-            Map map = this.showList(request, response).getModel();
-            map.put("message", localeProvider.getMessage("bikes.bikeNotFound",
-                    null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColour());
-            exception.printStackTrace();
-            return new ModelAndView("bikes/list", map);
-        }
-        //<editor-fold default-state="collapsed" desc="Obtaining info from request">
-        String nickname = bike.getNickname();
-        String manufacturer = bike.getManufacturer();
-        String model = bike.getModel();
-        String year = new Integer(bike.getYear()).toString();
-        String torque = new Integer(bike.getTorque()).toString();
-        String power = new Integer(bike.getPower()).toString();
-        String mileage = new Double(bike.getMileage()).toString();
-        String displacement = new Integer(bike.getYear()).toString();
-        String form = request.getParameter("form");
-        //</editor-fold>
-        String message;
-        if (form != null) {
-            nickname = request.getParameter("nickname");
-            manufacturer = request.getParameter("manufacturer");
-            model = request.getParameter("model");
-            year = request.getParameter("year");
-            torque = request.getParameter("torque");
-            power = request.getParameter("power");
-            mileage = request.getParameter("mileage");
-            displacement = request.getParameter("displacement");
             form = request.getParameter("form");
-            for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
-                String currentKey = (String) it.next();
-                if (currentKey.equals(new String("pageTitle"))
-                        || currentKey.equals(new String("formTitle"))) {
-                    continue;
-                }
-                if (request.getParameter(currentKey) == null
-                        || request.getParameter(currentKey).isEmpty()) {
-                    Logger.getLogger("E").error("Not all fields filled in edit bike: "
-                            + currentKey);
-                    message = localeProvider.getMessage("notAllFilled",
-                            null, defaultLocale);
-                    formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
-                    formInfo.put("action", "edit.html");
-                    return new ModelAndView("bikes/add", formInfo);
-                }
-            }
-            if (!nickname.equals(bike.getNickname())) {
-                bike.setNickname(nickname);
-            }
-            if (!manufacturer.equals(bike.getManufacturer())) {
-                bike.setManufacturer(manufacturer);
-            }
-            if (!model.equals(bike.getModel())) {
-                bike.setModel(model);
-            }
-            if (Integer.parseInt(year) != bike.getYear()) {
-                bike.setYear(Integer.parseInt(year));
-            }
-            if (Integer.parseInt(torque) != bike.getTorque()) {
-                bike.setTorque(Integer.parseInt(torque));
-            }
-            if (Integer.parseInt(power) != bike.getPower()) {
-                bike.setPower(Integer.parseInt(power));
-            }
-            if (Integer.parseInt(displacement) != bike.getEnginecapacity()) {
-                bike.setEnginecapacity(Integer.parseInt(displacement));
-            }
-            if (Double.parseDouble(mileage) != bike.getMileage()) {
-                bike.setMileage(Double.parseDouble(mileage));
-            }
-
-            try {
-                BeanGetter.lookupMotorcycleFacade().edit(bike);
-
-            } catch (Exception exception) {
-                Logger.getLogger("E").error("Error while persisting bike");
-                message = localeProvider.getMessage("error.errorWhileAdding",
-                        null, defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                exception.printStackTrace();
-            }
-            message = localeProvider.getMessage("success", null, defaultLocale);
-            formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getSuccColour());
+            formInfo.put("bike", bike.getId());
+            formInfo.put("action", "edit.html");
+            formInfo.putAll(this.createHashMapFromBike(bike));
+        } catch (Exception exception) {
+            Logger.getLogger("E").
+                    error("Bike not found at bikes edit: " + bikeId);
+            formInfo.clear();
+            formInfo.putAll(this.showList(request, response).getModel());
+            message = localeProvider.getMessage("bikes.bikeNotFound",
+                    null, defaultLocale);
+            formInfo.put("messColor", DefaultValues.getFailColour());
+            result = new ModelAndView("bikes/list", formInfo);
+            exception.printStackTrace();
         }
-        formInfo.put("nickname", nickname);
-        formInfo.put("manufacturer", manufacturer);
-        formInfo.put("model", model);
-        formInfo.put("year", year);
-        formInfo.put("torque", torque);
-        formInfo.put("power", power);
-        formInfo.put("mileage", mileage);
-        formInfo.put("displacement", displacement);
-        formInfo.put("form", form);
-        formInfo.put("action", "edit.html");
-        formInfo.put("bike", bike.getId());
-        return new ModelAndView("bikes/add", formInfo);
+        if (form != null) {
+            boolean wellValidated = this.validateInputForm(request, formInfo);
+            if (wellValidated) {
+                Motorcycle fromRequest =
+                        this.createMotorcycleFromValidatedRequets(request);
+                if (!fromRequest.getNickname().equals(bike.getNickname())) {
+                    bike.setNickname(fromRequest.getNickname());
+                }
+                if (!fromRequest.getManufacturer().equals(
+                        bike.getManufacturer())) {
+                    bike.setManufacturer(fromRequest.getManufacturer());
+                }
+                if (!fromRequest.getModel().equals(bike.getModel())) {
+                    bike.setModel(fromRequest.getModel());
+                }
+                if (fromRequest.getYear() != bike.getYear()) {
+                    bike.setYear(fromRequest.getYear());
+                }
+                if (fromRequest.getTorque() != bike.getTorque()) {
+                    bike.setTorque(fromRequest.getTorque());
+                }
+                if (fromRequest.getPower() != bike.getPower()) {
+                    bike.setPower(fromRequest.getPower());
+                }
+                if (fromRequest.getEnginecapacity() != bike.
+                        getEnginecapacity()) {
+                    bike.setEnginecapacity(
+                            fromRequest.getEnginecapacity());
+                }
+                if (fromRequest.getMileage() != bike.getMileage()) {
+                    bike.setMileage(fromRequest.getMileage());
+                }
+                try {
+                    BeanGetter.lookupMotorcycleFacade().edit(bike);
+                    message = localeProvider.
+                        getMessage("success", null, defaultLocale);
+                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    formInfo.putAll(this.createHashMapFromBike(bike));
+                } catch (Exception exception) {
+                    Logger.getLogger("E").error("Error while persisting bike");
+                    message = localeProvider.
+                            getMessage("error.errorWhileAdding",
+                            null, defaultLocale);
+                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    exception.printStackTrace();
+                }
+            } else {
+                formInfo.put("form", form);
+            }
+        }
+        formInfo.put("message", message);
+        if (result == null) {
+            result = new ModelAndView("bikes/add", formInfo);
+        }
+        Logger.getLogger("E").trace("Exiting from: editBike");
+        return result;
     }
 
     /**
@@ -348,6 +298,7 @@ public class Bikes {
      */
     public final ModelAndView deleteBike(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: deleteBike");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -356,30 +307,34 @@ public class Bikes {
         formInfo.put("pageTitle", localeProvider.
                 getMessage("bikes.pageTitle", null, defaultLocale));
         String bikeId = request.getParameter("bike");
+        ModelAndView result = null;
+        Map map = null;
         if (bikeId == null) {
             Logger.getLogger("E").error("Null bike id at deleteBike");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("error.otherError", null, defaultLocale));
-            return new ModelAndView("unsecured/error", formInfo);
+            result = new ModelAndView("unsecured/error", formInfo);
+        } else {
+            Motorcycle bikeToDel = null;
+            try {
+                bikeToDel = MPUtilities.findBike(bikeId);
+                BeanGetter.lookupMotorcycleFacade().remove(bikeToDel);
+                map = this.showList(request, response).getModel();
+                map.put("message", localeProvider.
+                    getMessage("success", null, defaultLocale));
+                map.put("messColor", DefaultValues.getSuccColour());
+            } catch (Exception mPException) {
+                map = this.showList(request, response).getModel();
+                map.put("message", localeProvider.getMessage(
+                        "error.errorWhileDeleting", null, defaultLocale));
+                map.put("messColor", DefaultValues.getFailColour());
+                mPException.printStackTrace();
+            } finally {
+                result = new ModelAndView("/bikes/list", map);
+            }
         }
-        Map map = null;
-        Motorcycle bikeToDel = null;
-        try {
-            bikeToDel = MPUtilities.findBike(bikeId);
-            BeanGetter.lookupMotorcycleFacade().remove(bikeToDel);
-            map = this.showList(request, response).getModel();
-        } catch (Exception mPException) {
-            map = this.showList(request, response).getModel();
-            map.put("message", localeProvider.getMessage(
-                    "error.errorWhileDeleting", null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColour());
-            mPException.printStackTrace();
-            return new ModelAndView("/bikes/list", map);
-        }
-        map.put("message", localeProvider.
-                getMessage("success", null, defaultLocale));
-        map.put("messColor", DefaultValues.getSuccColour());
-        return new ModelAndView("/bikes/list", map);
+        Logger.getLogger("E").trace("Exiting from: deleteBike");
+        return result;
     }
 
     /**
@@ -392,6 +347,7 @@ public class Bikes {
      */
     public final ModelAndView details(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: details");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -401,20 +357,25 @@ public class Bikes {
                 getMessage("bikes.pageTitle", null, defaultLocale));
         String bikeId = request.getParameter("bike");
         Motorcycle bike = null;
+        ModelAndView result = null;
         try {
             bike = MPUtilities.findBike(bikeId);
             if (bike == null) {
-                throw new Exception("Bike not found at details");
+                throw new MPException("Bike not found at details");
             }
             formInfo.put("bike", bike);
-        } catch (Exception ex) {
+        } catch (MPException exception) {
             Logger.getLogger("E").error("Bike not found");
+            exception.printStackTrace();
             formInfo.put("errorMessage", localeProvider.
                     getMessage("bikes.bikeNotFound", null, defaultLocale));
-            ex.printStackTrace();
-            return new ModelAndView("unsecured/error", formInfo);
+            result = new ModelAndView("unsecured/error", formInfo);
         }
-        return new ModelAndView("bikes/details", formInfo);
+        if (result == null) {
+            result = new ModelAndView("bikes/details", formInfo);
+        }
+        Logger.getLogger("E").trace("Exiting from: details");
+        return result;
     }
 
     /**
@@ -452,23 +413,9 @@ public class Bikes {
                 Fishier fish = MPUtilities.findFishier(fishier);
                 Fishier newFishier = new Fishier(fish);
                 newFishier.setMotorcycle(bikeObject);
-
                 BeanGetter.lookupFishierFacade().create(newFishier);
-                List < FishierElementBridge > fishElBridgeColl =
-                        new ArrayList < FishierElementBridge >();
-                FishierElementBridge element;
-                for (Iterator it = fish.getFishierElementBridgeCollection().
-                        iterator(); it.hasNext();) {
-                    element = new FishierElementBridge((FishierElementBridge)
-                            it.next());
-                    element.setChangemileage(bikeObject.getMileage());
-                    element.setFishier(newFishier);
-                    element.setChangedate(Calendar.getInstance().getTime());
-                    BeanGetter.lookupFishierElementBridgeFacade().
-                            create(element);
-                    fishElBridgeColl.add(element);
-                }
-                newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
+                this.assignFishierElementBridgesToFishier(
+                        newFishier, bikeObject, fish);
                 bikeObject.setFishier(newFishier);
                 BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
 
@@ -479,7 +426,8 @@ public class Bikes {
                 formInfo.putAll(this.showList(request, response).getModel());
                 return new ModelAndView("bikes/list", formInfo);
             } catch (Exception exception) {
-                Logger.getLogger("E").error("Error while assigning fishier to bike"
+                Logger.getLogger("E").
+                        error("Error while assigning fishier to bike"
                         + "in Bikes.assignFishier");
                 message = localeProvider.getMessage("error.otherError",
                         null, defaultLocale);
@@ -493,5 +441,129 @@ public class Bikes {
             formInfo.put("fishiers", fishiers);
         }
         return new ModelAndView("bikes/selectFishier", formInfo);
+    }
+
+    /**
+     * Method used for validating user input data.
+     * @param request HTTP request
+     * @param formInfo form with user data
+     * @return true if form is well validated, false otherwise
+     */
+    private boolean validateInputForm(
+            HttpServletRequest request, HashMap < String, Object > formInfo) {
+        String message;
+        boolean result = true;
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+        Locale defaultLocale = RequestContextUtils.getLocale(request);
+        //<editor-fold default-state="collapsed" desc="Obtaining info from request">
+        String action = request.getParameter("action");
+        String nickname = request.getParameter("nickname");
+        String manufacturer = request.getParameter("manufacturer");
+        String model = request.getParameter("model");
+        String year = request.getParameter("year");
+        String torque = request.getParameter("torque");
+        String power = request.getParameter("power");
+        String mileage = request.getParameter("mileage");
+        String displacement = request.getParameter("displacement");
+        formInfo.put("nickname", nickname);
+        formInfo.put("manufacturer", manufacturer);
+        formInfo.put("model", model);
+        formInfo.put("year", year);
+        formInfo.put("torque", torque);
+        formInfo.put("power", power);
+        formInfo.put("mileage", mileage);
+        formInfo.put("displacement", displacement);
+        //</editor-fold>
+        try {
+            for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
+                String currentKey = (String) it.next();
+                if (currentKey.equals(new String("pageTitle"))
+                        || currentKey.equals(new String("formTitle"))) {
+                    continue;
+                }
+                //todo:sprawdzać czy podawane są liczby
+                if (request.getParameter(currentKey) == null
+                        || request.getParameter(currentKey).isEmpty()) {
+                    formInfo.put(currentKey, null);
+                    Logger.getLogger("E").
+                    error("Not all fields filled in new bike: "
+                    + currentKey);
+                    throw new MPException("Not all fields filled in "
+                            + action + " bike: "
+                    + currentKey);
+                }
+            }
+        } catch (MPException mpException) {
+            message = localeProvider.
+                    getMessage("notAllFilled", null, defaultLocale);
+            formInfo.put("message", message);
+            formInfo.put("messColor", DefaultValues.getFailColour());
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Method used for creating hashmap from Motorcycle object.
+     * @param bike object to convert
+     * @return HashMap with bike fields
+     */
+    private HashMap < String, Object > createHashMapFromBike(Motorcycle bike) {
+        HashMap < String, Object > result = new HashMap < String, Object >();
+        result.put("nickname", bike.getNickname());
+        result.put("manufacturer", bike.getManufacturer());
+        result.put("model", bike.getModel());
+        result.put("year", bike.getYear());
+        result.put("torque", bike.getTorque());
+        result.put("power", bike.getPower());
+        result.put("mileage", bike.getMileage());
+        result.put("displacement", bike.getEnginecapacity());
+        return result;
+    }
+
+    /**
+     * Method used for creating Motorcycle object from http request.
+     * @param request HTTP request objecy
+     * @return Motorcycle object newly created
+     */
+    private Motorcycle createMotorcycleFromValidatedRequets(HttpServletRequest
+            request) {
+        Motorcycle result = new Motorcycle();
+        result.setNickname(request.getParameter("nickname"));
+        result.setManufacturer(request.getParameter("manufacturer"));
+        result.setModel(request.getParameter("model"));
+        result.setYear(Integer.parseInt(request.getParameter("year")));
+        result.setTorque(Integer.parseInt(request.getParameter("torque")));
+        result.setPower(Integer.parseInt(request.getParameter("power")));
+        result.setMileage(Double.parseDouble(request.getParameter("mileage")));
+        result.setEnginecapacity(Integer.parseInt(
+                request.getParameter("displacement")));
+        return result;
+    }
+
+    /**
+     * Method used for assigning and creating new fishier element bridges
+     * (taken from existing fishier) to new fishier.
+     * @param newFishier fishier to which elements bridges will be assigned
+     * @param bike bike connected with fishier
+     * @param oldFishier fishier from fishier elements bridges will be taken
+     */
+    private void assignFishierElementBridgesToFishier(Fishier newFishier,
+            Motorcycle bike,  Fishier oldFishier) {
+        List < FishierElementBridge > fishElBridgeColl =
+                new ArrayList < FishierElementBridge >();
+        FishierElementBridge element;
+        for (Iterator it = oldFishier.getFishierElementBridgeCollection().
+                iterator(); it.hasNext();) {
+            element = new FishierElementBridge((FishierElementBridge)
+                    it.next());
+            element.setChangemileage(bike.getMileage());
+            element.setFishier(newFishier);
+            element.setChangedate(Calendar.getInstance().getTime());
+            BeanGetter.lookupFishierElementBridgeFacade().
+                    create(element);
+            fishElBridgeColl.add(element);
+        }
+        newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
     }
 }

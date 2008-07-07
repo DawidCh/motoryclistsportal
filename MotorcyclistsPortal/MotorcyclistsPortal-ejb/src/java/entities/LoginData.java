@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +59,8 @@ public class LoginData implements Serializable {
     public LoginData(String login, String password) {
         this.login = login;
         this.password = password;
+        this.currentlogindate = Calendar.getInstance().getTime();
+        this.lastlogindate = Calendar.getInstance().getTime();
     }
 
     public LoginData(String login, String password, Date lastlogindate, Date currentlogindate, boolean enabled) {

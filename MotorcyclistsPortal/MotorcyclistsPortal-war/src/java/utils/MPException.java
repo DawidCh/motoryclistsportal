@@ -36,6 +36,6 @@ public class MPException extends Exception {
      */
     public MPException(String message) {
         super(message);
-        Logger.getLogger("E").error(message);
+        Logger.getLogger("E").error("From exception: "+message);
     }
 }

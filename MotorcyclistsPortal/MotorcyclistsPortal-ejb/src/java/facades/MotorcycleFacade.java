@@ -45,7 +45,6 @@ public class MotorcycleFacade implements MotorcycleFacadeLocal {
         return em.createQuery("select object(o) from Motorcycle as o where o.fishier.id='"+fishier.getId()+"'").getResultList();
     }
 
-    //TODO: zrobić tak żeby szukało tylko po użytkowniku
     public List<Motorcycle> findAll() {
         return em.createQuery("select object(o) from Motorcycle as o").getResultList();
     }
