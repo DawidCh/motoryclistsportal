@@ -32,4 +32,6 @@ public interface MotorcycleFacadeLocal {
 
     public java.util.List<entities.Motorcycle> findByFishier(entities.Fishier fishier);
 
+    public java.util.List<entities.Motorcycle> findWithFishier(java.lang.String login);
+
 }

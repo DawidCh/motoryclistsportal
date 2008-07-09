@@ -29,6 +29,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
+import utils.MPException;
 import utils.MPUtilities;
 
 /**
@@ -36,7 +37,7 @@ import utils.MPUtilities;
  * @author kalosh
  */
 public class Trips {
-
+//edycja motocykli i trips jak nie podam wartości to nic sie nie dzieje
     /**
      * Method used for showing list of trips which are owned by logged user.
      * @param request HTTP request object
@@ -47,6 +48,7 @@ public class Trips {
      */
     public final ModelAndView showList(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: showList");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -64,6 +66,7 @@ public class Trips {
         formInfo.put("trips", trips);
         formInfo.put("pageTitle", localeProvider.
                 getMessage("trips.pageTitle", null, defaultLocale));
+        Logger.getLogger("E").trace("Exiting from: showList");
         return new ModelAndView("trips/list", formInfo);
     }
 
@@ -77,6 +80,7 @@ public class Trips {
      */
     public final ModelAndView addTrip(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: addTrip");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -87,115 +91,61 @@ public class Trips {
         formInfo.put("formTitle", localeProvider.
                 getMessage("trips.formTitle.add", null, defaultLocale));
         String form = request.getParameter("form");
-        String message;
+        formInfo.put("form", form);
+        String message = null;
 
-        Trip newTrip;
         List < TripType > tripTypes =
                 BeanGetter.lookupTripTypeFacade().findAll();
         List < Motorcycle > bikes = BeanGetter.lookupMotorcycleFacade().
                 findByLogin(BeanGetter.getUserInfo().getUsername());
         formInfo.put("types", tripTypes);
         formInfo.put("bikes", bikes);
-        if (form != null) {
-            //<editor-fold default-state="collapsed" desc="Obtaining info from request">
-            String title = request.getParameter("title");
-            String type = request.getParameter("type");
-            String description = request.getParameter("description");
-            String bikeId = request.getParameter("bike");
-            String date = request.getParameter("date");
-            String distance = request.getParameter("distance");
-            formInfo.put("title", title);
-            formInfo.put("type", type);
-            formInfo.put("description", description);
-            formInfo.put("distance", distance);
-            formInfo.put("date", date);
-            formInfo.put("bike", bikeId);
-
-            formInfo.put("form", form);
-            //</editor-fold>
-            for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
-                String currentKey = (String) it.next();
-                if (currentKey.equals(new String("pageTitle"))
-                        || currentKey.equals(new String("formTitle"))
-                        || currentKey.equals("bikes")
-                        || currentKey.equals("types")) {
-                    continue;
-                }
-                if (request.getParameter(currentKey) == null
-                        || request.getParameter(currentKey).isEmpty()) {
-                    Logger.getLogger("E").error("Not all fields filled in new trip: "
-                            + currentKey);
-                    message = localeProvider.
-                            getMessage("notAllFilled", null, defaultLocale);
-                    formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
-                    formInfo.put("action", "new.html");
-                    return new ModelAndView("trips/add", formInfo);
-                }
-            }
-            Motorcycle bike = MPUtilities.findBike(bikeId);
-            if (bike == null) {
-                Logger.getLogger("E").error("Bike not found at Trips add: " + bikeId);
-                message = localeProvider.getMessage("trips.bikeNotFound",
-                        null, defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "new.html");
-                return new ModelAndView("trips/add", formInfo);
-            }
-            try {
-                double doubleDistance = Double.parseDouble(distance);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                Date newDate = sdf.parse(date);
-
-                newTrip = new Trip(newDate, description, doubleDistance, title,
-                        type, bike, BeanGetter.getUserInfo().getUser());
-                BeanGetter.lookupTripFacade().create(newTrip);
-                FuzzyDriver.recalculateAverageTripDistance();
-            } catch (ParseException parseException) {
-                formInfo.put("date", null);
-                message = localeProvider.getMessage("error.wrongDate", null,
-                        defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "new.html");
-                return new ModelAndView("trips/add", formInfo);
-            } catch (NumberFormatException numberFormatException) {
-                formInfo.put("distance", null);
-                message = localeProvider.getMessage("error.parsingError", null,
-                        defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "new.html");
-                return new ModelAndView("trips/add", formInfo);
-            } catch (Exception exception) {
-                message = localeProvider.getMessage("error.errorWhileAdding",
-                        null, defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "new.html");
-                Logger.getLogger("E").error("Error wihle persisting in db at Trip.add: "
-                        + exception.getMessage());
-                return new ModelAndView("trips/add", formInfo);
-            }
-            message = localeProvider.getMessage("success", null, defaultLocale);
-            formInfo = new HashMap < String, Object >();
-            formInfo.put("title", newTrip.getTitle());
-            formInfo.put("type", newTrip.getType().getDescription());
-            formInfo.put("description", newTrip.getDescription());
-            formInfo.put("date", newTrip.getDate());
-            formInfo.put("distance", newTrip.getDistance());
-            formInfo.put("bike", newTrip.getBike().getId());
-            formInfo.put("types", tripTypes);
-            formInfo.put("bikes", bikes);
-            formInfo.put("formTitle", localeProvider.
-                    getMessage("trips.formTitle.edit", null, defaultLocale));
-            formInfo.put("message", message);
-            formInfo.put("action", "edit.html");
-            formInfo.put("messColor", DefaultValues.getSuccColour());
-            return new ModelAndView("trips/add", formInfo);
-        }
         formInfo.put("action", "new.html");
+        if (form != null) {
+            boolean wellValidated = this.validateForm(formInfo, request);
+            if (wellValidated) {
+                Motorcycle bike = MPUtilities.findBike(
+                        (String) formInfo.get("bike"));
+                if (bike == null) {
+                    Logger.getLogger("E").
+                            error("Bike not found at Trips add: "
+                            + (String) formInfo.get("bike"));
+                    message = localeProvider.getMessage("trips.bikeNotFound",
+                            null, defaultLocale);
+                    formInfo.put("messColor", DefaultValues.getFailColour());
+                } else {
+                    try {
+                        this.createTrip(formInfo, request, bike);
+                    } catch (ParseException parseException) {
+                        formInfo.put("date", null);
+                        message = localeProvider.
+                                getMessage("error.wrongDate", null,
+                                defaultLocale);
+                        formInfo.put("messColor",
+                                DefaultValues.getFailColour());
+                    } catch (NumberFormatException numberFormatException) {
+                        formInfo.put("distance", null);
+                        message = localeProvider.
+                                getMessage("error.parsingError", null,
+                                defaultLocale);
+                        formInfo.put("messColor",
+                                DefaultValues.getFailColour());
+                    } catch (Exception exception) {
+                        message = localeProvider.
+                                getMessage("error.errorWhileAdding",
+                                null, defaultLocale);
+                        formInfo.put("messColor",
+                                DefaultValues.getFailColour());
+                        Logger.getLogger("E").
+                                error("Error wihle persisting in db "
+                                + "at Trip.add: "
+                                + exception.getMessage());
+                    }
+                }
+            }
+            formInfo.put("message", message);
+        }
+        Logger.getLogger("E").trace("Exiting from: addTrip");
         return new ModelAndView("trips/add", formInfo);
     }
 
@@ -209,6 +159,7 @@ public class Trips {
      */
     public final ModelAndView editTrip(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: editTrip");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -220,16 +171,62 @@ public class Trips {
                 getMessage("trips.formTitle.edit", null, defaultLocale));
         String form = request.getParameter("form");
         String tripId = request.getParameter("trip");
-        String message;
-        Trip trip;
+        String message = null;
+        Trip trip = null;
+        ModelAndView result = null;
         List < TripType > tripTypes =
                 BeanGetter.lookupTripTypeFacade().findAll();
         List < Motorcycle > bikes = BeanGetter.lookupMotorcycleFacade().
                 findByLogin(BeanGetter.getUserInfo().getUsername());
         formInfo.put("types", tripTypes);
         formInfo.put("bikes", bikes);
+        formInfo.put("form", form);
         try {
             trip = BeanGetter.lookupTripFacade().find(new Integer(tripId));
+        } catch (Exception exception) {
+            Logger.getLogger("E").
+                    error("Trip not found at trips edit: " + tripId);
+            Map map = this.showList(request, response).getModel();
+            map.put("message", localeProvider.getMessage("trips.tripNotFound",
+                    null, defaultLocale));
+            map.put("messColor", DefaultValues.getFailColour());
+            exception.printStackTrace();
+            form = null;
+            result = new ModelAndView("trips/list", map);
+        }
+        if (form != null) {
+            boolean wellValidated = this.validateForm(formInfo, request);
+            if (wellValidated) {
+                try {
+                    this.editTrip(trip, formInfo, request);
+                    BeanGetter.lookupTripFacade().edit(trip);
+                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    message = localeProvider.getMessage("success",
+                            null, defaultLocale);
+                } catch (NumberFormatException ex) {
+                    formInfo.put("distance", null);
+                    message = localeProvider.
+                            getMessage("error.parsingError", null,
+                            defaultLocale);
+                    formInfo.put("messColor", DefaultValues.getFailColour());
+                } catch (ParseException ex) {
+                    formInfo.put("date", null);
+                    message = localeProvider.getMessage("error.wrongDate", null,
+                            defaultLocale);
+                    formInfo.put("messColor", DefaultValues.getFailColour());
+                } catch (Exception exception) {
+                    message = localeProvider.
+                            getMessage("error.errorWhileAdding",
+                            null, defaultLocale);
+                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    Logger.getLogger("E").
+                            error("Error wihle persisting in db at Trip.add: "
+                            + exception.getMessage());
+                }
+            }
+            formInfo.put("message", message);
+        }
+        if (result == null) {
             formInfo.put("trip", trip.getId());
             formInfo.put("title", trip.getTitle());
             formInfo.put("type", trip.getType().getDescription());
@@ -237,127 +234,11 @@ public class Trips {
             formInfo.put("date", trip.getDate());
             formInfo.put("distance", trip.getDistance());
             formInfo.put("bike", trip.getBike().getId());
-        } catch (Exception exception) {
-            Logger.getLogger("E").error("Trip not found at trips edit: " + tripId);
-            Map map = this.showList(request, response).getModel();
-            map.put("message", localeProvider.getMessage("trips.tripNotFound",
-                    null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColour());
-            exception.printStackTrace();
-            return new ModelAndView("trips/list", map);
-        }
-        if (form != null) {
-            //<editor-fold default-state="collapsed" desc="Obtaining info from request">
-            String title = request.getParameter("title");
-            String type = request.getParameter("type");
-            String description = request.getParameter("description");
-            String bikeId = request.getParameter("bike");
-            String date = request.getParameter("date");
-            String distance = request.getParameter("distance");
-            formInfo.put("title", title);
-            formInfo.put("type", type);
-            formInfo.put("description", description);
-            formInfo.put("distance", distance);
-            formInfo.put("date", date);
-            formInfo.put("bike", bikeId);
-            formInfo.put("form", form);
-            //</editor-fold>
-            for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
-                String currentKey = (String) it.next();
-                if (currentKey.equals(new String("pageTitle"))
-                        || currentKey.equals(new String("formTitle"))
-                        || currentKey.equals("bikes")
-                        || currentKey.equals("types")) {
-                    continue;
-                }
-                if (request.getParameter(currentKey) == null
-                        || request.getParameter(currentKey).isEmpty()) {
-                    Logger.getLogger("E").error("Not all fields filled in new bike: "
-                            + currentKey);
-                    message = localeProvider.getMessage("notAllFilled", null,
-                            defaultLocale);
-                    formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
-                    formInfo.put("action", "edit.html");
-                    return new ModelAndView("bikes/add", formInfo);
-                }
-            }
-            try {
-                double doubleDistance = Double.parseDouble(distance);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                Date newDate = sdf.parse(date);
-                Motorcycle bike = MPUtilities.findBike(bikeId);
-                if (bike == null) {
-                    Logger.getLogger("E").error("Bike not found at Trips add: " + bikeId);
-                    message = localeProvider.getMessage("trips.bikeNotFound",
-                            null, defaultLocale);
-                    formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
-                    formInfo.put("action", "edit.html");
-                    return new ModelAndView("trips/add", formInfo);
-                }
-                if (!trip.getBike().getId().equals(bikeId)) {
-                    trip.setBike(bike);
-                }
-                if (!trip.getDate().equals(newDate)) {
-                    trip.setDate(newDate);
-                }
-                if (!trip.getDescription().equals(description)) {
-                    trip.setDescription(description);
-                }
-                if (trip.getDistance() != doubleDistance) {
-                    trip.setDistance(doubleDistance);
-                    FuzzyDriver.recalculateAverageTripDistance();
-                }
-                if (!trip.getTitle().equals(title)) {
-                    trip.setTitle(title);
-                }
-                if (!trip.getType().getDescription().equals(type)) {
-                    trip.setType(BeanGetter.
-                            lookupTripTypeFacade().toTripType(type));
-                }
-                BeanGetter.lookupTripFacade().edit(trip);
-                formInfo.put("title", title);
-                formInfo.put("type", type);
-                formInfo.put("description", description);
-                formInfo.put("bike", bikeId);
-                formInfo.put("date", date);
-                formInfo.put("distance", distance);
-                formInfo.put("bike", bikeId);
-            } catch (NumberFormatException ex) {
-                formInfo.put("distance", null);
-                message = localeProvider.getMessage("error.parsingError", null,
-                        defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "edit.html");
-                return new ModelAndView("trips/add", formInfo);
-            } catch (ParseException ex) {
-                formInfo.put("date", null);
-                message = localeProvider.getMessage("error.wrongDate", null,
-                        defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "edit.html");
-                return new ModelAndView("trips/add", formInfo);
-            } catch (Exception exception) {
-                message = localeProvider.getMessage("error.errorWhileAdding",
-                        null, defaultLocale);
-                formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
-                formInfo.put("action", "edit.html");
-                Logger.getLogger("E").error("Error wihle persisting in db at Trip.add: "
-                        + exception.getMessage());
-                return new ModelAndView("trips/add", formInfo);
-            }
-            message = localeProvider.getMessage("success", null, defaultLocale);
-            formInfo.put("message", message);
             formInfo.put("action", "edit.html");
-            formInfo.put("messColor", DefaultValues.getSuccColour());
-            return new ModelAndView("trips/add", formInfo);
+            result = new ModelAndView("trips/add", formInfo);
         }
-        formInfo.put("action", "edit.html");
-        return new ModelAndView("trips/add", formInfo);
+        Logger.getLogger("E").trace("Exiting from: editTrip");
+        return result;
     }
 
     /**
@@ -370,6 +251,7 @@ public class Trips {
      */
     public final ModelAndView deleteTrip(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: deleteTrip");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -378,11 +260,12 @@ public class Trips {
         formInfo.put("pageTitle", localeProvider.getMessage("trips.pageTitle",
                 null, defaultLocale));
         String tripId = request.getParameter("trip");
+        ModelAndView result = null;
         if (tripId == null) {
             Logger.getLogger("E").error("Null trip id at Trips.deleteTrip");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("error.otherError", null, defaultLocale));
-            return new ModelAndView("unsecured/error", formInfo);
+            result = new ModelAndView("unsecured/error", formInfo);
         }
         Map map = null;
         Trip tripToDel = null;
@@ -391,6 +274,9 @@ public class Trips {
             BeanGetter.lookupTripFacade().remove(tripToDel);
             FuzzyDriver.recalculateAverageTripDistance();
             map = this.showList(request, response).getModel();
+            map.put("message", localeProvider.
+                getMessage("success", null, defaultLocale));
+            map.put("messColor", DefaultValues.getSuccColour());
         } catch (Exception mPException) {
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.
@@ -398,12 +284,12 @@ public class Trips {
                     null, defaultLocale));
             map.put("messColor", DefaultValues.getFailColour());
             mPException.printStackTrace();
-            return new ModelAndView("/trips/list", map);
         }
-        map.put("message", localeProvider.
-                getMessage("success", null, defaultLocale));
-        map.put("messColor", DefaultValues.getSuccColour());
-        return new ModelAndView("/trips/list", map);
+        if (result == null) {
+            result = new ModelAndView("/trips/list", map);
+        }
+        Logger.getLogger("E").trace("Exiting from: deleteTrip");
+        return result;
     }
 
     /**
@@ -416,6 +302,7 @@ public class Trips {
      */
     public final ModelAndView details(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: details");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -424,6 +311,7 @@ public class Trips {
         formInfo.put("pageTitle", localeProvider.getMessage("trips.pageTitle",
                 null, defaultLocale));
         String tripId = request.getParameter("trip");
+        ModelAndView result = null;
         Trip trip = null;
         try {
             trip = MPUtilities.findTrip(tripId);
@@ -436,9 +324,167 @@ public class Trips {
             formInfo.put("errorMessage", localeProvider.getMessage(
                     "trips.tripNotFound", null, defaultLocale));
             ex.printStackTrace();
-            return new ModelAndView(this.showList(request, response).
+            result = new ModelAndView(this.showList(request, response).
                     getView(), formInfo);
         }
-        return new ModelAndView("trips/details", formInfo);
+        if (result == null) {
+            result = new ModelAndView("trips/details", formInfo);
+        }
+        Logger.getLogger("E").trace("Exiting from: details");
+        return result;
+    }
+
+    /**
+     * Method used for editing trip and persisting in db.
+     * @param trip trip to edit
+     * @param formInfo data from user
+     * @param request HTTP request
+     * @throws java.text.ParseException
+     * @throws utils.MPException
+     */
+    private void editTrip(Trip trip, HashMap < String, Object > formInfo,
+            HttpServletRequest request) throws ParseException, MPException {
+        Logger.getLogger("E").trace("Entering to: editTrip");
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+        Locale defaultLocale = RequestContextUtils.getLocale(request);
+        String message = null;
+        double doubleDistance = Double.parseDouble((String)
+                formInfo.get("distance"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date newDate = sdf.parse((String) formInfo.get("date"));
+        Motorcycle bike = MPUtilities.findBike((String) formInfo.get("bikeId"));
+        if (bike == null) {
+            Logger.getLogger("E").
+                    error("Bike not found at Trips add: "
+                    + (String) formInfo.get("bikeId"));
+            message = localeProvider.getMessage("trips.bikeNotFound",
+                    null, defaultLocale);
+            formInfo.put("message", message);
+            formInfo.put("messColor", DefaultValues.getFailColour());
+        }
+        if (!trip.getBike().getId().equals((String) formInfo.get("bikeId"))) {
+            trip.setBike(bike);
+        }
+        if (!trip.getDate().equals(newDate)) {
+            trip.setDate(newDate);
+        }
+        if (!trip.getDescription().equals((String)
+                formInfo.get("description"))) {
+            trip.setDescription((String) formInfo.get("description"));
+        }
+        if (trip.getDistance() != doubleDistance) {
+            trip.setDistance(doubleDistance);
+            FuzzyDriver.recalculateAverageTripDistance();
+        }
+        if (!trip.getTitle().equals((String) formInfo.get("title"))) {
+            trip.setTitle((String) formInfo.get("title"));
+        }
+        if (!trip.getType().getDescription().
+                equals((String) formInfo.get("type"))) {
+            trip.setType(BeanGetter.
+                    lookupTripTypeFacade().
+                    toTripType((String) formInfo.get("type")));
+        }
+        Logger.getLogger("E").trace("Exiting from: editTrip");
+    }
+
+    /**
+     * Method used for validating user input data.
+     * @param formInfo form with user data
+     * @param request HTTP request
+     * @return true if form is well validated, false otherwise
+     */
+    private boolean validateForm(HashMap < String, Object > formInfo,
+            HttpServletRequest request) {
+        Logger.getLogger("E").trace("Entering to: validateForm");
+        String message;
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+        Locale defaultLocale = RequestContextUtils.getLocale(request);
+        boolean result = true;
+        //<editor-fold default-state="collapsed" desc="Obtaining info from request">
+
+        formInfo.put("title", request.getParameter("title"));
+        formInfo.put("type", request.getParameter("type"));
+        formInfo.put("description", request.getParameter("description"));
+        formInfo.put("distance", request.getParameter("distance"));
+        formInfo.put("date", request.getParameter("date"));
+        formInfo.put("bike", request.getParameter("bike"));
+
+        //</editor-fold>
+       try {
+            for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
+                String currentKey = (String) it.next();
+                if (currentKey.equals(new String("pageTitle"))
+                        || currentKey.equals(new String("formTitle"))
+                        || currentKey.equals("bikes")
+                        || currentKey.equals("types")) {
+                    continue;
+                }
+                if (request.getParameter(currentKey) == null
+                        || request.getParameter(currentKey).isEmpty()) {
+                    formInfo.put(currentKey, null);
+                    Logger.getLogger("E").
+                            error("Not all fields filled in new trip: "
+                            + currentKey);
+                    message = localeProvider.getMessage("notAllFilled", null,
+                            defaultLocale);
+                    throw new MPException(message);
+                }
+            }
+        } catch (Exception exception) {
+            formInfo.put("message", exception.getMessage());
+            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("action", "new.html");
+            result = false;
+        }
+        Logger.getLogger("E").trace("Exiting from: validateForm");
+        return result;
+    }
+
+    /**
+     * Method used for creating new Trip object.
+     * @param formInfo user data from form
+     * @param request HTTP request
+     * @param bike Motorcycle object
+     */
+    private void createTrip(HashMap < String, Object > formInfo,
+            HttpServletRequest request, Motorcycle bike) throws ParseException,
+            MPException {
+        Logger.getLogger("E").trace("Entering to: createTrip");
+        String message;
+        Trip newTrip;
+        LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
+        Locale defaultLocale = RequestContextUtils.getLocale(request);
+        double doubleDistance = Double.parseDouble(
+                (String) formInfo.get("distance"));
+        SimpleDateFormat sdf =
+                new SimpleDateFormat("dd-MM-yyyy");
+        Date newDate = sdf.parse((String) formInfo.get("date"));
+
+        newTrip = new Trip(newDate, (String)
+                formInfo.get("description"), doubleDistance,
+                (String) formInfo.get("title"),
+                (String) formInfo.get("type"), bike,
+                BeanGetter.getUserInfo().getUser());
+        BeanGetter.lookupTripFacade().create(newTrip);
+        FuzzyDriver.recalculateAverageTripDistance();
+        formInfo = new HashMap < String, Object >();
+        formInfo.put("title", newTrip.getTitle());
+        formInfo.put("type",
+                newTrip.getType().getDescription());
+        formInfo.put("description", newTrip.getDescription());
+        formInfo.put("date", newTrip.getDate());
+        formInfo.put("distance", newTrip.getDistance());
+        formInfo.put("bike", newTrip.getBike().getId());
+        formInfo.put("formTitle", localeProvider.
+                getMessage("trips.formTitle.edit", null,
+                defaultLocale));
+        formInfo.put("action", "edit.html");
+        message = localeProvider.getMessage("success", null,
+                defaultLocale);
+        formInfo.put("message", message);
+        formInfo.put("messColor",
+                DefaultValues.getSuccColour());
+        Logger.getLogger("E").trace("Exiting from: createTrip");
     }
 }

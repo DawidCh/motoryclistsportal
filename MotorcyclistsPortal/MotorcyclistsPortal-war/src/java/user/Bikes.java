@@ -4,6 +4,7 @@
  */
 package user;
 
+import com.sun.tools.xjc.generator.bean.BeanGenerator;
 import entities.Fishier;
 import entities.FishierElementBridge;
 import security.DetailedUserInformation;
@@ -110,6 +111,13 @@ public class Bikes {
                     formInfo.put("messColor", DefaultValues.getSuccColour());
                     formInfo.put("bike", newBike.getId());
                     formInfo.putAll(this.createHashMapFromBike(newBike));
+                } catch (NumberFormatException numberFormatException) {
+                    message = localeProvider.
+                            getMessage("error.parsingError", null,
+                            defaultLocale);
+                    formInfo.put("messColor",
+                            DefaultValues.getFailColour());
+                    Logger.getLogger("E").debug("Error while number parsing");
                 } catch (Exception exception) {
                     message = localeProvider.getMessage(
                             "error.errorWhileAdding",
@@ -164,13 +172,15 @@ public class Bikes {
             Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().
                     find(Integer.parseInt(bikeId));
             formInfo.put("bike", bikeObject);
-            Fishier fish = MPUtilities.findFishier(fishier);
+            Fishier fish = bikeObject.getFishier();
             if (fish == null || !fish.getId().equals(new Integer(fishier))) {
                 throw new Exception(
                         "Fishier not found at Bikes.reaasignFishier");
             }
+            fish.setMotorcycle(null);
             bikeObject.setFishier(null);
             BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
+            BeanGetter.lookupFishierFacade().edit(fish);
             message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getSuccColour());
@@ -211,7 +221,7 @@ public class Bikes {
         Motorcycle bike = null;
         String message = null;
         ModelAndView result = null;
-        
+
         try {
             bike = BeanGetter.lookupMotorcycleFacade().
                     find(new Integer(bikeId));
@@ -233,41 +243,21 @@ public class Bikes {
         if (form != null) {
             boolean wellValidated = this.validateInputForm(request, formInfo);
             if (wellValidated) {
-                Motorcycle fromRequest =
-                        this.createMotorcycleFromValidatedRequets(request);
-                if (!fromRequest.getNickname().equals(bike.getNickname())) {
-                    bike.setNickname(fromRequest.getNickname());
-                }
-                if (!fromRequest.getManufacturer().equals(
-                        bike.getManufacturer())) {
-                    bike.setManufacturer(fromRequest.getManufacturer());
-                }
-                if (!fromRequest.getModel().equals(bike.getModel())) {
-                    bike.setModel(fromRequest.getModel());
-                }
-                if (fromRequest.getYear() != bike.getYear()) {
-                    bike.setYear(fromRequest.getYear());
-                }
-                if (fromRequest.getTorque() != bike.getTorque()) {
-                    bike.setTorque(fromRequest.getTorque());
-                }
-                if (fromRequest.getPower() != bike.getPower()) {
-                    bike.setPower(fromRequest.getPower());
-                }
-                if (fromRequest.getEnginecapacity() != bike.
-                        getEnginecapacity()) {
-                    bike.setEnginecapacity(
-                            fromRequest.getEnginecapacity());
-                }
-                if (fromRequest.getMileage() != bike.getMileage()) {
-                    bike.setMileage(fromRequest.getMileage());
-                }
                 try {
+                    Motorcycle fromRequest =
+                        this.createMotorcycleFromValidatedRequets(request);
+                    this.prepareBike(fromRequest, bike);
                     BeanGetter.lookupMotorcycleFacade().edit(bike);
                     message = localeProvider.
                         getMessage("success", null, defaultLocale);
                     formInfo.put("messColor", DefaultValues.getSuccColour());
                     formInfo.putAll(this.createHashMapFromBike(bike));
+                } catch (NumberFormatException numberFormatException) {
+                    message = localeProvider.
+                            getMessage("error.parsingError", null,
+                            defaultLocale);
+                    formInfo.put("messColor",
+                            DefaultValues.getFailColour());
                 } catch (Exception exception) {
                     Logger.getLogger("E").error("Error while persisting bike");
                     message = localeProvider.
@@ -389,6 +379,7 @@ public class Bikes {
      */
     public final ModelAndView assignFishier(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        Logger.getLogger("E").trace("Entering to: assignFishier");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -400,23 +391,33 @@ public class Bikes {
         String message = new String();
         String bike = request.getParameter("bike");
         formInfo.put("bike", bike);
+        ModelAndView result = null;
         if (form != null) {
             try {
                 String fishier = request.getParameter("fishier");
                 formInfo.put("fishier", fishier);
                 if (bike == null || bike.isEmpty()
                         || fishier == null || fishier.isEmpty()) {
+                    Logger.getLogger("E").
+                            debug("Bike not found at Bikes.assignFishier");
                     throw new Exception();
                 }
                 Motorcycle bikeObject = BeanGetter.lookupMotorcycleFacade().
                         find(Integer.parseInt(bike));
                 Fishier fish = MPUtilities.findFishier(fishier);
-                Fishier newFishier = new Fishier(fish);
-                newFishier.setMotorcycle(bikeObject);
-                BeanGetter.lookupFishierFacade().create(newFishier);
-                this.assignFishierElementBridgesToFishier(
-                        newFishier, bikeObject, fish);
-                bikeObject.setFishier(newFishier);
+                Fishier fishierToAssign;
+                if (fish.getMotorcycle() != null) {
+                    fishierToAssign = new Fishier(fish);
+                    fishierToAssign.setMotorcycle(bikeObject);
+                    BeanGetter.lookupFishierFacade().create(fishierToAssign);
+                    this.assignFishierElementBridgesToFishier(
+                            fishierToAssign, bikeObject, fish);
+                } else {
+                    fishierToAssign = fish;
+                    fishierToAssign.setMotorcycle(bikeObject);
+                    BeanGetter.lookupFishierFacade().edit(fishierToAssign);
+                }
+                bikeObject.setFishier(fishierToAssign);
                 BeanGetter.lookupMotorcycleFacade().edit(bikeObject);
 
                 message = localeProvider.getMessage("success",
@@ -424,7 +425,6 @@ public class Bikes {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getSuccColour());
                 formInfo.putAll(this.showList(request, response).getModel());
-                return new ModelAndView("bikes/list", formInfo);
             } catch (Exception exception) {
                 Logger.getLogger("E").
                         error("Error while assigning fishier to bike"
@@ -434,13 +434,55 @@ public class Bikes {
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColour());
                 formInfo.putAll(this.showList(request, response).getModel());
-                return new ModelAndView("bikes/list", formInfo);
+            } finally {
+                result = new ModelAndView("bikes/list", formInfo);
             }
         } else {
             List < Fishier > fishiers = MPUtilities.findFishiers();
             formInfo.put("fishiers", fishiers);
         }
-        return new ModelAndView("bikes/selectFishier", formInfo);
+        if (result == null) {
+            result = new ModelAndView("bikes/selectFishier", formInfo);
+        }
+        Logger.getLogger("E").trace("Exiting from: assignFishier");
+        return result;
+    }
+
+    /**
+     * Method used for process changes in the existing bike object.
+     * @param fromRequest Motorcycle object with validated data from user form
+     * @param bike bike existing in the db
+     */
+    private void prepareBike(Motorcycle fromRequest, Motorcycle bike) {
+        Logger.getLogger("E").trace("Entering to: prepareBike");
+        if (!fromRequest.getNickname().equals(bike.getNickname())) {
+            bike.setNickname(fromRequest.getNickname());
+        }
+        if (!fromRequest.getManufacturer().equals(
+                bike.getManufacturer())) {
+            bike.setManufacturer(fromRequest.getManufacturer());
+        }
+        if (!fromRequest.getModel().equals(bike.getModel())) {
+            bike.setModel(fromRequest.getModel());
+        }
+        if (fromRequest.getYear() != bike.getYear()) {
+            bike.setYear(fromRequest.getYear());
+        }
+        if (fromRequest.getTorque() != bike.getTorque()) {
+            bike.setTorque(fromRequest.getTorque());
+        }
+        if (fromRequest.getPower() != bike.getPower()) {
+            bike.setPower(fromRequest.getPower());
+        }
+        if (fromRequest.getEnginecapacity() != bike.
+                getEnginecapacity()) {
+            bike.setEnginecapacity(
+                    fromRequest.getEnginecapacity());
+        }
+        if (fromRequest.getMileage() != bike.getMileage()) {
+            bike.setMileage(fromRequest.getMileage());
+        }
+        Logger.getLogger("E").trace("Exiting from: prepareBike");
     }
 
     /**
@@ -451,6 +493,7 @@ public class Bikes {
      */
     private boolean validateInputForm(
             HttpServletRequest request, HashMap < String, Object > formInfo) {
+        Logger.getLogger("E").trace("Entering to: validateInputForm");
         String message;
         boolean result = true;
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -500,6 +543,7 @@ public class Bikes {
             formInfo.put("messColor", DefaultValues.getFailColour());
             result = false;
         }
+        Logger.getLogger("E").trace("Exiting from: validateInputForm");
         return result;
     }
 
@@ -509,6 +553,7 @@ public class Bikes {
      * @return HashMap with bike fields
      */
     private HashMap < String, Object > createHashMapFromBike(Motorcycle bike) {
+        Logger.getLogger("E").trace("Entering to: createHashMapFromBike");
         HashMap < String, Object > result = new HashMap < String, Object >();
         result.put("nickname", bike.getNickname());
         result.put("manufacturer", bike.getManufacturer());
@@ -518,6 +563,7 @@ public class Bikes {
         result.put("power", bike.getPower());
         result.put("mileage", bike.getMileage());
         result.put("displacement", bike.getEnginecapacity());
+        Logger.getLogger("E").trace("Exiting from: createHashMapFromBike");
         return result;
     }
 
@@ -527,7 +573,9 @@ public class Bikes {
      * @return Motorcycle object newly created
      */
     private Motorcycle createMotorcycleFromValidatedRequets(HttpServletRequest
-            request) {
+            request) throws NumberFormatException {
+        Logger.getLogger("E").
+                trace("Entering to: createMotorcycleFromValidatedRequets");
         Motorcycle result = new Motorcycle();
         result.setNickname(request.getParameter("nickname"));
         result.setManufacturer(request.getParameter("manufacturer"));
@@ -538,6 +586,8 @@ public class Bikes {
         result.setMileage(Double.parseDouble(request.getParameter("mileage")));
         result.setEnginecapacity(Integer.parseInt(
                 request.getParameter("displacement")));
+        Logger.getLogger("E").
+                trace("Exiting from: createMotorcycleFromValidatedRequets");
         return result;
     }
 
@@ -550,6 +600,8 @@ public class Bikes {
      */
     private void assignFishierElementBridgesToFishier(Fishier newFishier,
             Motorcycle bike,  Fishier oldFishier) {
+        Logger.getLogger("E").
+                trace("Entering to: assignFishierElementBridgesToFishier");
         List < FishierElementBridge > fishElBridgeColl =
                 new ArrayList < FishierElementBridge >();
         FishierElementBridge element;
@@ -565,5 +617,7 @@ public class Bikes {
             fishElBridgeColl.add(element);
         }
         newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
+        Logger.getLogger("E").
+                trace("Exiting from: assignFishierElementBridgesToFishier");
     }
 }

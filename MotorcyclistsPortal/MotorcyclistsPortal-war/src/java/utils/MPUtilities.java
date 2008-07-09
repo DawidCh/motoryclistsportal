@@ -6,11 +6,10 @@ package utils;
 
 import entities.Fishier;
 import entities.FishierElementBridge;
+import entities.FishiersElement;
 import entities.Motorcycle;
 import entities.Trip;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 
@@ -43,7 +42,8 @@ public class MPUtilities {
             }
         }
         if (result == null) {
-            throw new MPException("Bike not found at Utilities.findBike");
+            throw new MPException("Bike not found at Utilities.findBike: "
+                    + bikeId);
         }
         Logger.getLogger("E").trace("Exiting from: findBike");
         return result;
@@ -135,24 +135,17 @@ public class MPUtilities {
      */
     public static List < Motorcycle > findBikesWFishiers() {
         Logger.getLogger("E").trace("Entering to: findBikesWFishiers");
-        List < Motorcycle > result = null;
         List < Motorcycle > bikes = null;
         try {
             bikes = BeanGetter.lookupMotorcycleFacade().
-                    findByLogin(BeanGetter.getUserInfo().getUsername());
-            for (Iterator < Motorcycle > it = bikes.iterator(); it.hasNext();) {
-                Motorcycle motorcycle = it.next();
-                if (motorcycle.getFishier() != null) {
-                    result.add(motorcycle);
-                }
-            }
+                    findWithFishier(BeanGetter.getUserInfo().getUsername());
         } catch (MPException mpException) {
             Logger.getLogger("E").
                     error("Exception cautght in Report.findBikesWFishiers: "
                     + mpException.getMessage());
         }
         Logger.getLogger("E").trace("Exiting from: findBikesWFishiers");
-        return result;
+        return bikes;
     }
 
     /**
@@ -209,5 +202,54 @@ public class MPUtilities {
         }
         Logger.getLogger("E").trace("Exiting from: checkPassword");
         return result;
+    }
+
+    /**
+     * Method used for finding all Motorcycles for logged user
+     * @return List of Motorcycle objects
+     */
+    public static List<Motorcycle> findBikesWithoutFishier() {
+        List < Motorcycle > bikes = null;
+        try {
+            bikes = BeanGetter.lookupMotorcycleFacade().
+                    findWithoutFishier(BeanGetter.getUserInfo().getUsername());
+        } catch (MPException mpException) {
+            Logger.getLogger("E").
+                    error("Exception caught in"
+                    + " MPUtilities.findBikesWithoutFishier: "
+                    + mpException.getMessage());
+        }
+        return bikes;
+    }
+
+    /**
+     * Method used for finding all FishierElementBridge.
+     * @return List of FishierElementBridge objects
+     */
+    public static List <FishierElementBridge> findFishierElementBridges() {
+        return BeanGetter.lookupFishierElementBridgeFacade().findAll();
+    }
+
+    /**
+     * Methods used for finding FishierElementBridge by given id
+     * @param elementId id number of FishierElementBridge to find
+     * @return FishierElementBridge element if found
+     */
+    public static FishierElementBridge findFishierElementBridge(
+            String elementId) {
+        return BeanGetter.lookupFishierElementBridgeFacade().
+                find(Integer.parseInt(elementId));
+    }
+
+    /**
+     * Method used for finding FishierElement objects NOT connected
+     * with specified fishier
+     * @param fishierId fishier's id number
+     * @return List of FishierElement objects
+     */
+    public static List<FishiersElement> findElementsNotConnWithFisher(
+            String fishierId) {
+        return BeanGetter.lookupFishiersElementFacade().
+                findAllNotConnWithFishier(fishierId);
     }
 }
