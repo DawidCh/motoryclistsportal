@@ -5,6 +5,7 @@
 <form action="${action}" method="post">
     <input type="hidden" name="form" value="submitted"/>
     <input type="hidden" name="trip" value="${trip}"/>
+    <input type="hidden" name="action" value="${action}"/>
     <table>
         <th>${formTitle}</th>
         <tr><td<c:if test='${(title == null || title=="") && form != null}'>
