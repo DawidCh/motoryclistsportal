@@ -37,7 +37,6 @@ import utils.MPUtilities;
  * @author kalosh
  */
 public class Trips {
-//edycja motocykli i trips jak nie podam wartości to nic sie nie dzieje
     /**
      * Method used for showing list of trips which are owned by logged user.
      * @param request HTTP request object
@@ -223,8 +222,10 @@ public class Trips {
                             error("Error wihle persisting in db at Trip.add: "
                             + exception.getMessage());
                 }
+                formInfo.put("message", message);
+            } else {
+                result = new ModelAndView("trips/add", formInfo);
             }
-            formInfo.put("message", message);
         }
         if (result == null) {
             formInfo.put("trip", trip.getId());
@@ -426,8 +427,8 @@ public class Trips {
                     Logger.getLogger("E").
                             error("Not all fields filled in new trip: "
                             + currentKey);
-                    message = localeProvider.getMessage("notAllFilled", null,
-                            defaultLocale);
+                    message = localeProvider.getMessage("error.notAllFilled",
+                            null, defaultLocale);
                     throw new MPException(message);
                 }
             }

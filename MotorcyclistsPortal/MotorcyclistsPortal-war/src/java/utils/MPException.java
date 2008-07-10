@@ -27,7 +27,7 @@ public class MPException extends Exception {
      * Default constructor whithout message and without logging.
      */
     public MPException() {
-
+        super();
     }
 
     /**

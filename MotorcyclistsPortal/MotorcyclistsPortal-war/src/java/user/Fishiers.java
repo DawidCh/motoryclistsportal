@@ -479,7 +479,6 @@ public class Fishiers {
         } catch (Exception ex) {
             Logger.getLogger("E").
                     error("Fishier not found at fishiers edit: " + fishierId);
-            ex.printStackTrace();
             formInfo.put("message",
                     localeProvider.getMessage("fishiers.fishierNotFound",
                     null, defaultLocale));
@@ -570,7 +569,8 @@ public class Fishiers {
             formInfo.put("messColor", DefaultValues.getFailColour());
         } finally {
             formInfo.put("fishierElementBridges",
-                    MPUtilities.findFishierElementBridges());
+                    MPUtilities.findFishierElementBridgeByFishier(
+                    fishier.getId().toString()));
         }
         Logger.getLogger("E").trace("Exiting from: editElement");
         return new ModelAndView("fishiers/details", formInfo);
@@ -594,7 +594,7 @@ public class Fishiers {
             Logger.getLogger("E").
                     error("Not all fields filled in Fishiers.add");
             message = localeProvider.getMessage(
-                    "notAllFilled", null, defaultLocale);
+                    "error.notAllFilled", null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", DefaultValues.getFailColour());
             formInfo.put("action", "new.html");

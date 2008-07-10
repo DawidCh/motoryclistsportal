@@ -93,7 +93,7 @@ public class Profile extends AbstractController {
             for (int i = 0; i < keyList.length; i++) {
                 if (null == formInfo.get(keyList[i])
                         || formInfo.get(keyList[i]).equals(new String(""))) {
-                    message = localeProvider.getMessage("profile.notAllFilled",
+                    message = localeProvider.getMessage("profile.error.notAllFilled",
                             null, defaultLocale);
                     formInfo.put("message", message);
                     formInfo.put("messColor", DefaultValues.getFailColour());

@@ -102,7 +102,7 @@ public class Register implements Controller {
         for (int i = 0; i < keyList.length; i++) {
             if (null == formInfo.get(keyList[i])
                     || formInfo.get(keyList[i]).equals(new String(""))) {
-                message = localeProvider.getMessage("notAllFilled",
+                message = localeProvider.getMessage("error.notAllFilled",
                         null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", DefaultValues.getFailColour());
