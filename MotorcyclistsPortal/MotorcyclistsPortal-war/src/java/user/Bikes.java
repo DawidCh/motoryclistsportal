@@ -268,6 +268,7 @@ public class Bikes {
                 }
             } else {
                 formInfo.put("form", form);
+                result = new ModelAndView("bikes/add", formInfo);
             }
         }
         formInfo.put("message", message);
@@ -356,7 +357,7 @@ public class Bikes {
             formInfo.put("bike", bike);
         } catch (MPException exception) {
             Logger.getLogger("E").error("Bike not found");
-            exception.printStackTrace();
+            formInfo.put("messColor", DefaultValues.getFailColour());
             formInfo.put("errorMessage", localeProvider.
                     getMessage("bikes.bikeNotFound", null, defaultLocale));
             result = new ModelAndView("unsecured/error", formInfo);
@@ -494,55 +495,58 @@ public class Bikes {
     private boolean validateInputForm(
             HttpServletRequest request, HashMap < String, Object > formInfo) {
         Logger.getLogger("E").trace("Entering to: validateInputForm");
-        String message;
+        String message = null;
         boolean result = true;
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         //<editor-fold default-state="collapsed" desc="Obtaining info from request">
         String action = request.getParameter("action");
-        String nickname = request.getParameter("nickname");
-        String manufacturer = request.getParameter("manufacturer");
-        String model = request.getParameter("model");
-        String year = request.getParameter("year");
-        String torque = request.getParameter("torque");
-        String power = request.getParameter("power");
-        String mileage = request.getParameter("mileage");
-        String displacement = request.getParameter("displacement");
-        formInfo.put("nickname", nickname);
-        formInfo.put("manufacturer", manufacturer);
-        formInfo.put("model", model);
-        formInfo.put("year", year);
-        formInfo.put("torque", torque);
-        formInfo.put("power", power);
-        formInfo.put("mileage", mileage);
-        formInfo.put("displacement", displacement);
+        HashMap < String, Object > formData = new HashMap < String, Object >();
+        formData.put("nickname", request.getParameter("nickname"));
+        formData.put("manufacturer", request.getParameter("manufacturer"));
+        formData.put("model", request.getParameter("model"));
+        formData.put("year", request.getParameter("year"));
+        formData.put("torque", request.getParameter("torque"));
+        formData.put("power", request.getParameter("power"));
+        formData.put("mileage", request.getParameter("mileage"));
+        formData.put("displacement", request.getParameter("displacement"));
         //</editor-fold>
         try {
-            for (Iterator it = formInfo.keySet().iterator(); it.hasNext();) {
+            for (Iterator it = formData.keySet().iterator(); it.hasNext();) {
                 String currentKey = (String) it.next();
-                if (currentKey.equals(new String("pageTitle"))
-                        || currentKey.equals(new String("formTitle"))) {
-                    continue;
+                String requestKey = request.getParameter(currentKey);
+                if (!currentKey.equals("nickname")
+                        && !currentKey.equals("model")
+                        && !currentKey.equals("manufacturer")) {
+                    try {
+                        Double.parseDouble(requestKey);
+                    } catch (NumberFormatException numberFormatException) {
+                        formData.put(currentKey, null);
+                        message = localeProvider.
+                            getMessage("error.parsingError",
+                            null, defaultLocale);
+                        throw new MPException("Error while parsing "
+                            + action + " bike: "
+                            + currentKey);
+                    }
                 }
-                //todo:sprawdzać czy podawane są liczby
-                if (request.getParameter(currentKey) == null
-                        || request.getParameter(currentKey).isEmpty()) {
-                    formInfo.put(currentKey, null);
-                    Logger.getLogger("E").
-                    error("Not all fields filled in new bike: "
-                    + currentKey);
+                if (requestKey == null
+                        || requestKey.isEmpty()) {
+                    formData.put(currentKey, null);
+                    message = localeProvider.
+                    getMessage("error.notAllFilled", null, defaultLocale);
                     throw new MPException("Not all fields filled in "
                             + action + " bike: "
-                    + currentKey);
+                            + currentKey);
                 }
             }
         } catch (MPException mpException) {
-            message = localeProvider.
-                    getMessage("notAllFilled", null, defaultLocale);
-            formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formData.put("message", message);
+            formData.put("messColor", DefaultValues.getFailColour());
             result = false;
+            Logger.getLogger("E").debug(mpException.getMessage());
         }
+        formInfo.putAll(formData);
         Logger.getLogger("E").trace("Exiting from: validateInputForm");
         return result;
     }
