@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
 import utils.DefaultValues;
 import utils.LocaleProvider;
+import utils.MPException;
 import utils.MPUtilities;
 
 /**
@@ -61,6 +62,7 @@ public class Report {
         List < FuzzyValue > fuzzyReplaceAdvise = null;
 
         String fuzzyAverageValue = null;
+        ModelAndView result = null;
         try {
             fuzzyPartUsage = replacementAdvisor.
                     processFishierElementBridgeCollection(fishierElements);
@@ -68,11 +70,21 @@ public class Report {
                     processTripCollection(trips);
             fuzzyReplaceAdvise = replacementAdvisor.processAdvision();
             fuzzyAverageValue = FuzzyDriver.getFuzzyAvgDist().getDescription();
+            result = new ModelAndView("secured/report", formInfo);
+        } catch (MPException mpException) {
+            formInfo.put("errorMessage", localeProvider.
+                    getMessage(mpException.getMessage(), null, defaultLocale));
+            formInfo.put("messColor", DefaultValues.getFailColour());
+            Logger.getLogger("E").debug("Empty list given");
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage(
                     "ai.computingError", null, defaultLocale));
             formInfo.put("messColor", DefaultValues.getFailColour());
-            exception.printStackTrace();
+            Logger.getLogger("E").error(exception);
+        } finally {
+            if (result == null) {
+                result = new ModelAndView("unsecured/error", formInfo);
+            }
         }
         formInfo.put("fuzzyReplaceAdvise", fuzzyReplaceAdvise);
         formInfo.put("fuzzyAverageValue", fuzzyAverageValue);
@@ -84,6 +96,6 @@ public class Report {
         formInfo.put("pageTitle", localeProvider.getMessage(
                 "report.pageTitle", null, defaultLocale));
         Logger.getLogger("E").trace("Exiting from: generateReport");
-        return new ModelAndView("secured/report", formInfo);
+        return result;
     }
 }

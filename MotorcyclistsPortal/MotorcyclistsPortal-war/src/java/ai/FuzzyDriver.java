@@ -172,6 +172,9 @@ public class FuzzyDriver {
             final List < Fuzzyficable > fishierElements) throws Exception {
         Logger.getLogger("E").
                 trace("Entering to: processFishierElementBridgeCollection");
+        if (fishierElements == null || fishierElements.size() == 0) {
+            throw new MPException("error.partListEmpty");
+        }
         this.fishierElements = fishierElements;
         this.usageOfFuzzyElementBridges = this.fishierElementBridgeFuzzyficator.
                 processCollection(fishierElements);
@@ -189,6 +192,9 @@ public class FuzzyDriver {
     public final List < FuzzyValue > processTripCollection(
             final List < Fuzzyficable > trips) throws Exception {
         Logger.getLogger("E").trace("Entering to: processTripCollection");
+        if (trips == null || trips.size() == 0) {
+            throw new MPException("error.tripListEmpty");
+        }
         List < FuzzyValue > result =
                 this.tripsFuzzyficator.processCollection(trips);
         Logger.getLogger("E").trace("Exiting from: processTripCollection");
