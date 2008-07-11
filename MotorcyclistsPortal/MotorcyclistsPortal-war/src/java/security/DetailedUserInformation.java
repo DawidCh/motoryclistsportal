@@ -18,7 +18,7 @@ import utils.BeanGetter;
 
 /**
  * Class represents current logged in user's information.
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class DetailedUserInformation extends User {
 

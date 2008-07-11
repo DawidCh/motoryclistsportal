@@ -39,12 +39,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     </bean>
     
     <!-- controllers -->
-    <bean id="index" class="main.IndexController"/>
-    <bean id="main" class="user.Main"/>
-    <bean id="profile" class="user.Profile"/>
-    <bean id="error" class="main.Error"/>
-    <bean id="register" class="main.Register"/>
-    <bean id="credentials" class="main.Credentials"/>
+    <bean id="index" class="navigation.controllers.IndexController"/>
+    <bean id="main" class="navigation.controllers.secured.Main"/>
+    <bean id="profile" class="navigation.controllers.secured.Profile"/>
+    <bean id="error" class="navigation.controllers.Error"/>
+    <bean id="register" class="navigation.controllers.Register"/>
+    <bean id="credentials" class="navigation.controllers.Credentials"/>
     
     <!--multicontrollers-->
     <!--reports-->
@@ -59,7 +59,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             </bean>
         </property>
         <property name="delegate">
-            <bean class="user.Report"/>
+            <bean class="navigation.controllers.secured.Report"/>
         </property>
     </bean>
     <!--fishiers-->
@@ -82,7 +82,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             </bean>
         </property>
         <property name="delegate">
-            <bean class="user.Fishiers"/>
+            <bean class="navigation.controllers.secured.Fishiers"/>
         </property>
     </bean>
     <!--motorcycle-->
@@ -104,7 +104,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             </bean>
         </property>
         <property name="delegate">
-            <bean class="user.Bikes"/>
+            <bean class="navigation.controllers.secured.Bikes"/>
         </property>
     </bean>
     <!--trips-->
@@ -124,12 +124,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
             </bean>
         </property>
         <property name="delegate">
-            <bean class="user.Trips"/>
+            <bean class="navigation.controllers.secured.Trips"/>
         </property>
     </bean>
     
     <!--interceptors-->
-    <bean id="varLoaderInterceptor" class="main.VarLoader"/>
+    <bean id="varLoaderInterceptor" class="navigation.VarLoader"/>
     
     <!-- scoped beans-->
     <bean id="settings" class="utils.ApplicationSettings" scope="singleton"/>

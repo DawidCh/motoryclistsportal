@@ -18,7 +18,7 @@ import utils.MPException;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class TripsFuzzyficator extends AbstractFuzzyficator {
 

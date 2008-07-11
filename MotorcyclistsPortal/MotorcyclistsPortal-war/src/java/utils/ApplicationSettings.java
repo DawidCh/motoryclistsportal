@@ -10,7 +10,7 @@ import java.util.Locale;
 
 /**
  * Class for providing application settings.
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class ApplicationSettings {
     /**

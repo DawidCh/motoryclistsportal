@@ -22,7 +22,7 @@ import utils.MPException;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
 

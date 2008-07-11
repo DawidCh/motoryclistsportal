@@ -15,15 +15,28 @@ import utils.BeanGetter;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
-public class MPAuthenticationProcessingFilter extends AuthenticationProcessingFilter{
+public class MPAuthenticationProcessingFilter
+        extends AuthenticationProcessingFilter {
 
+    /**
+     * Custom AuthenticationProcessingFilter class. It sets user's default
+     * locale after log in.
+     * @param request HTTP request
+     * @param response HTTP response
+     * @param authentication Authentication object
+     * @throws java.io.IOException
+     */
     @Override
-    protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    protected void onSuccessfulAuthentication(HttpServletRequest request,
+            HttpServletResponse response, Authentication authentication)
+            throws IOException {
         super.onSuccessfulAuthentication(request, response, authentication);
-        SessionLocaleResolver slr = BeanGetter.getSessionLocaleResolver(request);
-        slr.setLocale(request, response, ((DetailedUserInformation)authentication.getPrincipal()).getLocale());
+        SessionLocaleResolver slr =
+                BeanGetter.getSessionLocaleResolver(request);
+        slr.setLocale(request, response,
+                ((DetailedUserInformation) authentication.
+                getPrincipal()).getLocale());
     }
-    
 }

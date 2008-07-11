@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Custom exception class with logging enabled.
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class MPException extends Exception {
 
@@ -36,6 +36,6 @@ public class MPException extends Exception {
      */
     public MPException(String message) {
         super(message);
-        Logger.getLogger("E").error("From exception: "+message);
+        Logger.getLogger("E").error("From exception: " + message);
     }
 }

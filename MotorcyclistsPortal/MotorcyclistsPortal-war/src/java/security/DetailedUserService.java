@@ -14,11 +14,20 @@ import utils.BeanGetter;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class DetailedUserService implements UserDetailsService {
 
-    public DetailedUserInformation loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException {
+    /**
+     * Method used for providing details about logged in user.
+     * @param login user's login
+     * @return DetailedUserInformation object.
+     * @throws org.springframework.security.userdetails.
+     * UsernameNotFoundException
+     * @throws org.springframework.dao.DataAccessException
+     */
+    public DetailedUserInformation loadUserByUsername(String login)
+            throws UsernameNotFoundException, DataAccessException {
         DetailedUserInformation userInfo;
         User user = BeanGetter.lookupUserFacade().find(login);
         if(user == null){

@@ -11,7 +11,7 @@ import utils.MPException;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class TrapeziumComputer implements FuzzyComputerInterface {
 

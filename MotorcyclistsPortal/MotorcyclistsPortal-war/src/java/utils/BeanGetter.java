@@ -33,7 +33,7 @@ import security.DetailedUserInformation;
 
 /**
  * Utility class, used for providing varius beans from varius scopes.
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class BeanGetter {
 
