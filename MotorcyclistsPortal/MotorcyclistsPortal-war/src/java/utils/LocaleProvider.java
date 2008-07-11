@@ -10,7 +10,7 @@ import org.springframework.context.MessageSource;
 
 /**
  * Class which holds current locales for user.
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class LocaleProvider {
 
@@ -28,7 +28,7 @@ public class LocaleProvider {
 
     /**
      * Set current locales.
-     * @param locales current locales for user
+     * @param messages current locales for user
      */
     public void setLocales(MessageSource messages) {
         this.messages = messages;
@@ -39,7 +39,7 @@ public class LocaleProvider {
      * @param key message key
      * @param objects argument of the message
      * @param locale source locale for message
-     * @return
+     * @return message from resource bundle file (localized message)
      */
     public String getMessage(String key, Object[] objects, Locale locale) {
         return this.messages.getMessage(key, objects, locale);

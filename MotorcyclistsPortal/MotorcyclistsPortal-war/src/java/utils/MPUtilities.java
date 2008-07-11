@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class MPUtilities {
 

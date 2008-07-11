@@ -7,7 +7,7 @@ package ai.fuzzyficators.usagecomputers;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public interface UsageComputerInterface {
     /**

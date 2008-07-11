@@ -7,7 +7,7 @@ package ai.fuzzycomputers;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public interface FuzzyComputerInterface {
 

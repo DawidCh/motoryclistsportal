@@ -25,7 +25,7 @@ import utils.MPUtilities;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class FuzzyDriver {
 
@@ -156,7 +156,7 @@ public class FuzzyDriver {
      * Setter for trips fuzzyficator.
      * @param tripsFuzzyficator new value of tripsFuzzyficator
      */
-    private final void setTripsFuzzyficator(final AbstractFuzzyficator
+    private void setTripsFuzzyficator(final AbstractFuzzyficator
             tripsFuzzyficator) {
         this.tripsFuzzyficator = tripsFuzzyficator;
     }
@@ -164,7 +164,7 @@ public class FuzzyDriver {
     /**
      * Method used for processing fishier element bridge collection to proper
      * fuzzyficator.
-     * @param fishierElements
+     * @param fishierElements List with FishierElementBridge objects
      * @return list of FuzzyValue objects
      * @throws java.lang.Exception
      */
@@ -185,7 +185,7 @@ public class FuzzyDriver {
 
     /**
      * Method used for processing trip collection to proper fuzzyficator.
-     * @param fishierElements
+     * @param trips List of Trip objects
      * @return list of FuzzyValue objects
      * @throws java.lang.Exception
      */

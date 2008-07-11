@@ -9,7 +9,7 @@ import java.util.Locale;
 
 /**
  * Class wich contains default values of many variables for all application.
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class DefaultValues {
 
@@ -21,7 +21,7 @@ public class DefaultValues {
     /**
      * Password length (min, max).
      */
-    private static int[] passLength = {5,10};
+    private static int[] passLength = {5, 10};
 
     /**
      * Colour of successed message.
