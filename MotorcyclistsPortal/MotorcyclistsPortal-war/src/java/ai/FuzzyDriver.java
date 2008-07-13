@@ -211,8 +211,8 @@ public class FuzzyDriver {
                 trace("Entering to: recalculateAverageTripDistance");
         Double averageResult = 0.0;
         List < Trip > trips = MPUtilities.findTrips();
+        FuzzyDriver.fuzzyAvgDist = null;
         if (trips != null && trips.size() != 0) {
-            FuzzyDriver.fuzzyAvgDist = null;
             for (Iterator < Trip > it = trips.iterator(); it.hasNext();) {
                 Trip trip = it.next();
                 averageResult += trip.getDistance();
@@ -221,10 +221,11 @@ public class FuzzyDriver {
         }
         try {
             User user = BeanGetter.getUserInfo().getUser();
-            user.setName("Pupusia");
             user.setAverageTripDistance(averageResult);
             BeanGetter.lookupUserFacade().
                     edit(BeanGetter.getUserInfo().getUser());
+            Logger.getLogger("fuzzyLogger").info("Avg trip distance: "
+                    + averageResult);
         } catch (MPException ex) {
             Logger.getLogger("E").error("Exception caught in"
                     + "MPUtilities.recalculateAverageTripDistance: "
@@ -277,6 +278,9 @@ public class FuzzyDriver {
                         BeanGetter.getUserInfo().getAverageTripDistance();
                 FuzzyDriver.fuzzyAvgDist = (Distance) FuzzyDriver.
                         getTrapeziumFuzzySetForValue(distances, avgTripDist);
+                Logger.getLogger("fuzzyLogger").info("Avg trip distance: "
+                        + avgTripDist + " fuzzy value: "
+                        + FuzzyDriver.fuzzyAvgDist);
             } catch (MPException exception) {
                 Logger.getLogger("E").error("Exception caught in MPUtilities:"
                         + exception.getMessage());
