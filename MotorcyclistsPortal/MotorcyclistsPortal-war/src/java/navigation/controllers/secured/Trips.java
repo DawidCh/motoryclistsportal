@@ -115,6 +115,11 @@ public class Trips {
                 } else {
                     try {
                         this.createTrip(formInfo, request, bike);
+                        message = localeProvider.getMessage("success", null,
+                                defaultLocale);
+                        formInfo.put("messColor",
+                                DefaultValues.getSuccColour());
+                        formInfo.put("action", "edit.html");
                     } catch (ParseException parseException) {
                         formInfo.put("date", null);
                         message = localeProvider.
@@ -480,12 +485,6 @@ public class Trips {
         formInfo.put("formTitle", localeProvider.
                 getMessage("trips.formTitle.edit", null,
                 defaultLocale));
-        formInfo.put("action", "edit.html");
-        message = localeProvider.getMessage("success", null,
-                defaultLocale);
-        formInfo.put("message", message);
-        formInfo.put("messColor",
-                DefaultValues.getSuccColour());
         Logger.getLogger("E").trace("Exiting from: createTrip");
     }
 }

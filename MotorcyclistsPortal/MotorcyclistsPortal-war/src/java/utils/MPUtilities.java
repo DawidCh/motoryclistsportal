@@ -58,6 +58,9 @@ public class MPUtilities {
         List<Trip> trips = null;
         try {
             trips = BeanGetter.getUserInfo().getTripCollection();
+            if (trips == null || trips.size() == 0) {
+                Logger.getLogger("E").warn("No trips found");
+            }
         } catch (MPException mpException) {
             Logger.getLogger("E").
                     error("Exception caught in MPUtilities.findTrips: "
@@ -133,18 +136,21 @@ public class MPUtilities {
      * specified user.
      * @return List of Motorcycle objects or null if user is not logged in
      */
-    public static List < Motorcycle > findBikesWFishiers() {
-        Logger.getLogger("E").trace("Entering to: findBikesWFishiers");
+    public static List < Motorcycle > findBikesWithFishiers() {
+        Logger.getLogger("E").trace("Entering to: findBikesWithFishiers");
         List < Motorcycle > bikes = null;
         try {
             bikes = BeanGetter.lookupMotorcycleFacade().
                     findWithFishier(BeanGetter.getUserInfo().getUsername());
+            if (bikes == null || bikes.size() == 0) {
+                Logger.getLogger("E").warn("No bikes found");
+            }
         } catch (MPException mpException) {
             Logger.getLogger("E").
-                    error("Exception cautght in Report.findBikesWFishiers: "
+                    error("Exception cautght in Report.findBikesWithFishiers: "
                     + mpException.getMessage());
         }
-        Logger.getLogger("E").trace("Exiting from: findBikesWFishiers");
+        Logger.getLogger("E").trace("Exiting from: findBikesWithFishiers");
         return bikes;
     }
 
@@ -160,6 +166,9 @@ public class MPUtilities {
         List < FishierElementBridge > result =
                 BeanGetter.lookupFishierElementBridgeFacade().
                 findAllByFishier(fishierId);
+        if (result == null || result.size() == 0) {
+            Logger.getLogger("E").warn("No elements found");
+        }
         Logger.getLogger("E").
                 trace("Exiting from: findFishierElementBridgeByFishier");
         return result;

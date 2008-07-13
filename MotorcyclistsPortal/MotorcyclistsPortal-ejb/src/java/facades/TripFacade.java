@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 @Stateless
 public class TripFacade implements TripFacadeLocal {

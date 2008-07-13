@@ -21,7 +21,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 @Entity
 @Table(name = "fishierselements")

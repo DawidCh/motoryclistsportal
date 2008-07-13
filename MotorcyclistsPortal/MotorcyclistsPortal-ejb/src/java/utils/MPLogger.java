@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class MPLogger {
 

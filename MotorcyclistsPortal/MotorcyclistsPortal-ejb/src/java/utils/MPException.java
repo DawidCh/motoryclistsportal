@@ -7,7 +7,7 @@ package utils;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public class MPException extends Exception{
     

@@ -51,7 +51,7 @@ public class Report {
         String fishierid = bike.getFishier().getId().toString();
 
         FuzzyDriver replacementAdvisor = new FuzzyDriver();
-        List < Motorcycle > bikes = MPUtilities.findBikesWFishiers();
+        List < Motorcycle > bikes = MPUtilities.findBikesWithFishiers();
         List < Fuzzyficable > trips =
                 new ArrayList < Fuzzyficable > (MPUtilities.findTrips());
         List < Fuzzyficable > fishierElements =
@@ -60,6 +60,12 @@ public class Report {
         List < FuzzyValue > fuzzyPartUsage = null;
         List < FuzzyValue > fuzzyTripDistance = null;
         List < FuzzyValue > fuzzyReplaceAdvise = null;
+        
+        formInfo.put("bikes", bikes);
+        formInfo.put("bike", bike);
+        formInfo.put("fishierElements", fishierElements);
+        formInfo.put("pageTitle", localeProvider.getMessage(
+                "report.pageTitle", null, defaultLocale));
 
         String fuzzyAverageValue = null;
         ModelAndView result = null;
@@ -70,6 +76,10 @@ public class Report {
                     processTripCollection(trips);
             fuzzyReplaceAdvise = replacementAdvisor.processAdvision();
             fuzzyAverageValue = FuzzyDriver.getFuzzyAvgDist().getDescription();
+            formInfo.put("fuzzyPartUsage", fuzzyPartUsage);
+            formInfo.put("fuzzyTripLength", fuzzyTripDistance);
+            formInfo.put("fuzzyReplaceAdvise", fuzzyReplaceAdvise);
+            formInfo.put("fuzzyAverageValue", fuzzyAverageValue);
             result = new ModelAndView("secured/report", formInfo);
         } catch (MPException mpException) {
             formInfo.put("errorMessage", localeProvider.
@@ -86,15 +96,6 @@ public class Report {
                 result = new ModelAndView("unsecured/error", formInfo);
             }
         }
-        formInfo.put("fuzzyReplaceAdvise", fuzzyReplaceAdvise);
-        formInfo.put("fuzzyAverageValue", fuzzyAverageValue);
-        formInfo.put("bikes", bikes);
-        formInfo.put("fuzzyPartUsage", fuzzyPartUsage);
-        formInfo.put("fuzzyTripLength", fuzzyTripDistance);
-        formInfo.put("bike", bike);
-        formInfo.put("fishierElements", fishierElements);
-        formInfo.put("pageTitle", localeProvider.getMessage(
-                "report.pageTitle", null, defaultLocale));
         Logger.getLogger("E").trace("Exiting from: generateReport");
         return result;
     }
