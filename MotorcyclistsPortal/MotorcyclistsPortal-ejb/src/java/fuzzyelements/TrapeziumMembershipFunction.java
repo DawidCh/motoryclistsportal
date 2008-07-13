@@ -8,7 +8,7 @@ package fuzzyelements;
 /**
  * Interface used when object represents trapesium membership function. Alpha,
  * beta, gamma delta points are characteristic points of the trapesium.
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 public abstract class TrapeziumMembershipFunction {
 

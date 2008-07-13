@@ -15,7 +15,7 @@ import utils.MPException;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 @Stateless
 public class TripTypeFacade implements TripTypeFacadeLocal {

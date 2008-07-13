@@ -11,6 +11,7 @@ import entities.Trip;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.userdetails.User;
@@ -47,7 +48,12 @@ public class DetailedUserInformation extends User {
      * @return Double value of average trips distance
      */
     public final Double getAverageTripDistance() {
-        return this.user.getAverageTripDistance();
+        Double result = this.user.getAverageTripDistance();
+        if (result == null) {
+            result = 0.0;
+            Logger.getLogger("E").error("Average trip distance");
+        }
+        return result;
     }
 
     /**

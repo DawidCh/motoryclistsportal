@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author kalosh
+ * @author Dawid Chojnacki
  */
 @Entity
 @Table(name = "trips")

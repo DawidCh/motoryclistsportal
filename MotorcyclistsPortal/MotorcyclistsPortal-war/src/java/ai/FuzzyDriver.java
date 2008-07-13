@@ -12,6 +12,7 @@ import entities.Distance;
 import entities.FuzzyAdvise;
 import entities.FuzzyDecision;
 import entities.Trip;
+import entities.User;
 import fuzzyelements.FuzzyValue;
 import fuzzyelements.Fuzzyficable;
 import fuzzyelements.TrapeziumMembershipFunction;
@@ -210,14 +211,18 @@ public class FuzzyDriver {
                 trace("Entering to: recalculateAverageTripDistance");
         Double averageResult = 0.0;
         List < Trip > trips = MPUtilities.findTrips();
-        FuzzyDriver.fuzzyAvgDist = null;
-        for (Iterator < Trip > it = trips.iterator(); it.hasNext();) {
-            Trip trip = it.next();
-            averageResult += trip.getDistance();
+        if (trips != null && trips.size() != 0) {
+            FuzzyDriver.fuzzyAvgDist = null;
+            for (Iterator < Trip > it = trips.iterator(); it.hasNext();) {
+                Trip trip = it.next();
+                averageResult += trip.getDistance();
+            }
+            averageResult /= trips.size();
         }
-        averageResult /= trips.size();
         try {
-            BeanGetter.getUserInfo().setAverageTripDistance(averageResult);
+            User user = BeanGetter.getUserInfo().getUser();
+            user.setName("Pupusia");
+            user.setAverageTripDistance(averageResult);
             BeanGetter.lookupUserFacade().
                     edit(BeanGetter.getUserInfo().getUser());
         } catch (MPException ex) {
