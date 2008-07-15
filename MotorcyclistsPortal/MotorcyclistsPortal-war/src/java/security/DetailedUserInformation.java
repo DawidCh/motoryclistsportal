@@ -47,8 +47,8 @@ public class DetailedUserInformation extends User {
      * Method used for retrieving average trip distance.
      * @return Double value of average trips distance
      */
-    public final Double getAverageTripDistance() {
-        Double result = this.user.getAverageTripDistance();
+    public final Double getUserDistance() {
+        Double result = this.user.getUserDistance();
         if (result == null) {
             result = 0.0;
             Logger.getLogger("E").error("Average trip distance");
@@ -60,8 +60,8 @@ public class DetailedUserInformation extends User {
      * Method used for setting average trip distance.
      * @param distance new average trip distance
      */
-    public final void setAverageTripDistance(final Double distance) {
-        this.user.setAverageTripDistance(distance);
+    public final void setUserDistance(final Double distance) {
+        this.user.setUserDistance(distance);
     }
 
     /**
