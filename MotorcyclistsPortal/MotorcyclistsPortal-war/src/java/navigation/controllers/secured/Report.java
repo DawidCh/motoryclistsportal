@@ -75,7 +75,7 @@ public class Report {
             fuzzyTripDistance = replacementAdvisor.
                     processTripCollection(trips);
             fuzzyReplaceAdvise = replacementAdvisor.processAdvision();
-            fuzzyAverageValue = FuzzyDriver.getFuzzyAvgDist().getDescription();
+            fuzzyAverageValue = FuzzyDriver.getFuzzyUserDistance().getDescription();
             formInfo.put("fuzzyPartUsage", fuzzyPartUsage);
             formInfo.put("fuzzyTripLength", fuzzyTripDistance);
             formInfo.put("fuzzyReplaceAdvise", fuzzyReplaceAdvise);

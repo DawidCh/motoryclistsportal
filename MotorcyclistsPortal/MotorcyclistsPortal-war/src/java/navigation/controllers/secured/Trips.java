@@ -55,7 +55,7 @@ public class Trips {
         // </editor-fold>
         List < Fuzzyficable > trips =
                 new ArrayList < Fuzzyficable > (MPUtilities.findTrips());
-        Distance fuzzyAverageDistance = FuzzyDriver.getFuzzyAvgDist();
+        Distance fuzzyAverageDistance = FuzzyDriver.getFuzzyUserDistance();
         List < FuzzyValue > fuzzyTripDistanceCollection =
                 new TripsFuzzyficator().
                     processCollection(trips);
@@ -278,7 +278,7 @@ public class Trips {
         try {
             tripToDel = MPUtilities.findTrip(tripId);
             BeanGetter.lookupTripFacade().remove(tripToDel);
-            FuzzyDriver.recalculateAverageTripDistance();
+            FuzzyDriver.recalculateUserDistance();
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.
                 getMessage("success", null, defaultLocale));
@@ -380,7 +380,7 @@ public class Trips {
         }
         if (trip.getDistance() != doubleDistance) {
             trip.setDistance(doubleDistance);
-            FuzzyDriver.recalculateAverageTripDistance();
+            FuzzyDriver.recalculateUserDistance();
         }
         if (!trip.getTitle().equals((String) formInfo.get("title"))) {
             trip.setTitle((String) formInfo.get("title"));
@@ -473,7 +473,7 @@ public class Trips {
                 (String) formInfo.get("type"), bike,
                 BeanGetter.getUserInfo().getUser());
         BeanGetter.lookupTripFacade().create(newTrip);
-        FuzzyDriver.recalculateAverageTripDistance();
+        FuzzyDriver.recalculateUserDistance();
         formInfo = new HashMap < String, Object >();
         formInfo.put("title", newTrip.getTitle());
         formInfo.put("type",

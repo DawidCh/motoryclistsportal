@@ -8,6 +8,8 @@ import ai.fuzzycomputers.TrapeziumComputer;
 import ai.fuzzyficators.AbstractFuzzyficator;
 import ai.fuzzyficators.FishierElementBridgeFuzzyficator;
 import ai.fuzzyficators.TripsFuzzyficator;
+import ai.userdistance.AverageUserDistanceComputer;
+import ai.userdistance.UserDistanceComputerInterface;
 import entities.Distance;
 import entities.FuzzyAdvise;
 import entities.FuzzyDecision;
@@ -46,12 +48,21 @@ public class FuzzyDriver {
     /**
      * Field for holding fuzzy average distance.
      */
-    private static Distance fuzzyAvgDist;
+    private static Distance fuzzyUserDistance;
+
+    /**
+     * Field which holds computer of user distance.
+     */
+    private static UserDistanceComputerInterface userDistComputer;
 
     /**
      * Field for holding fishier elements bridges after fuzzyfication.
      */
     private List < FuzzyValue > usageOfFuzzyElementBridges;
+
+    static {
+        FuzzyDriver.userDistComputer = new AverageUserDistanceComputer();
+    }
 
     /**
      * Default constructor.
@@ -110,7 +121,7 @@ public class FuzzyDriver {
                 BeanGetter.lookupFuzzyDecisionFacade().findAll();
         FuzzyValue fuzzyUsage = null;
         FuzzyAdvise adviceResult = null;
-        Distance fuzzyAverageDistance = FuzzyDriver.getFuzzyAvgDist();
+        Distance fuzzyAverageDistance = FuzzyDriver.getFuzzyUserDistance();
         for (Iterator < FuzzyValue > it =
                 this.usageOfFuzzyElementBridges.iterator();
                 it.hasNext();) {
@@ -132,7 +143,7 @@ public class FuzzyDriver {
                         warn("Do not fits to any decision:\n"
                         + "\tFuzzyUsage: " + fuzzyUsage.getDescription()
                         + "\tFuzzyDistance: "
-                        + FuzzyDriver.fuzzyAvgDist.getDescription());
+                        + FuzzyDriver.fuzzyUserDistance.getDescription());
             }
             result.add(adviceResult);
         }
@@ -206,33 +217,30 @@ public class FuzzyDriver {
      * Method used for refreshing average distance in db.
      * @return new average distance
      */
-    public static Double recalculateAverageTripDistance() {
+    public static Double recalculateUserDistance() {
         Logger.getLogger("E").
-                trace("Entering to: recalculateAverageTripDistance");
+                trace("Entering to: recalculateUserDistance");
         Double averageResult = 0.0;
         List < Trip > trips = MPUtilities.findTrips();
-        FuzzyDriver.fuzzyAvgDist = null;
+        FuzzyDriver.fuzzyUserDistance = null;
         if (trips != null && trips.size() != 0) {
-            for (Iterator < Trip > it = trips.iterator(); it.hasNext();) {
-                Trip trip = it.next();
-                averageResult += trip.getDistance();
-            }
-            averageResult /= trips.size();
+            averageResult =
+                    FuzzyDriver.userDistComputer.computeUserDistance(trips);
         }
         try {
             User user = BeanGetter.getUserInfo().getUser();
-            user.setAverageTripDistance(averageResult);
+            user.setUserDistance(averageResult);
             BeanGetter.lookupUserFacade().
                     edit(BeanGetter.getUserInfo().getUser());
-            Logger.getLogger("fuzzyLogger").info("Avg trip distance: "
+            Logger.getLogger("fuzzyLogger").info("User trip distance: "
                     + averageResult);
         } catch (MPException ex) {
             Logger.getLogger("E").error("Exception caught in"
-                    + "MPUtilities.recalculateAverageTripDistance: "
+                    + "MPUtilities.recalculateUserDistance: "
                     + ex.getMessage());
         }
         Logger.getLogger("E").
-                trace("Exiting from: recalculateAverageTripDistance");
+                trace("Exiting from: recalculateUserDistance");
         return averageResult;
     }
 
@@ -268,25 +276,25 @@ public class FuzzyDriver {
      * Method used for computing fuzzy average trips distance value.
      * @return fuzzyfied average distance
      */
-    public static Distance getFuzzyAvgDist() {
-        Logger.getLogger("E").trace("Entering to: getFuzzyAvgDist");
-        if (FuzzyDriver.fuzzyAvgDist == null) {
+    public static Distance getFuzzyUserDistance() {
+        Logger.getLogger("E").trace("Entering to: getFuzzyUserDistance");
+        if (FuzzyDriver.fuzzyUserDistance == null) {
             List distances =
                     BeanGetter.lookupDistanceFacade().findAll();
             try {
                 Double avgTripDist =
-                        BeanGetter.getUserInfo().getAverageTripDistance();
-                FuzzyDriver.fuzzyAvgDist = (Distance) FuzzyDriver.
+                        BeanGetter.getUserInfo().getUserDistance();
+                FuzzyDriver.fuzzyUserDistance = (Distance) FuzzyDriver.
                         getTrapeziumFuzzySetForValue(distances, avgTripDist);
                 Logger.getLogger("fuzzyLogger").info("Avg trip distance: "
                         + avgTripDist + " fuzzy value: "
-                        + FuzzyDriver.fuzzyAvgDist);
+                        + FuzzyDriver.fuzzyUserDistance);
             } catch (MPException exception) {
                 Logger.getLogger("E").error("Exception caught in MPUtilities:"
                         + exception.getMessage());
             }
         }
-        Logger.getLogger("E").trace("Exiting from: getFuzzyAvgDist");
-        return FuzzyDriver.fuzzyAvgDist;
+        Logger.getLogger("E").trace("Exiting from: getFuzzyUserDistance");
+        return FuzzyDriver.fuzzyUserDistance;
     }
 }
