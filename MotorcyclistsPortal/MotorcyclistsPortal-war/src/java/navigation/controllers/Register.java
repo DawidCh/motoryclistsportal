@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPUtilities;
@@ -60,7 +60,7 @@ public class Register implements Controller {
                 message += ", " + localeProvider.getMessage("register.lognowin",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getSuccColour());
+                formInfo.put("messColor", ApplicationSettings.getSuccColour());
             } catch (MPException mPException) {
                 Logger.getLogger("E").error("Error while registering user.");
             }
@@ -105,7 +105,7 @@ public class Register implements Controller {
                 message = localeProvider.getMessage("error.notAllFilled",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
+                formInfo.put("messColor", ApplicationSettings.getFailColour());
                 throw new MPException("Not all fields are filled.");
             }
         }
@@ -120,7 +120,7 @@ public class Register implements Controller {
             Logger.getLogger("E").
                     error("Wrong date format in Register from "
                     + formInfo.get("birthdate"));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             throw new MPException("Wrong date format.");
         }
 
@@ -133,7 +133,7 @@ public class Register implements Controller {
             formInfo.put("message", message);
             formInfo.put("password", null);
             formInfo.put("passwordAgain", null);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             throw new MPException("Passwords are not equal.");
         } else if (passCheckingRes == 2) {
             message = localeProvider.getMessage("register.wrongLength",
@@ -141,7 +141,7 @@ public class Register implements Controller {
             formInfo.put("message", message);
             formInfo.put("password", null);
             formInfo.put("passwordAgain", null);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             throw new MPException("Wrong password length.");
         }
         Logger.getLogger("E").trace("Exiting from: verifyForm");
@@ -173,7 +173,7 @@ public class Register implements Controller {
                     error("Error while creating LoginData object");
             formInfo.put("message", localeProvider.getMessage(
                     "register.shaerror", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             throw new MPException("Error while creating login data");
         }
         Privileges choosenPriv = BeanGetter.lookupPrivilegesFacade().
@@ -207,7 +207,7 @@ public class Register implements Controller {
                         getMessage("error.otherError", null, defaultLocale);
             }
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             throw new MPException("Error while creating user.");
         }
         Logger.getLogger("E").trace("Exiting from: createUserObject");

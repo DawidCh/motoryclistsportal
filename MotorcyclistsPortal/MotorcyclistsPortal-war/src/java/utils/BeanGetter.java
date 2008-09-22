@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package utils;
 
 import facades.ActionFacadeLocal;
@@ -106,7 +101,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting PrivilegesFacadeLocal.
-     * @param request HTTP request
      * @return PrivilegesFacadeLocal object
      */
     public static PrivilegesFacadeLocal lookupPrivilegesFacade() {
@@ -123,7 +117,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting UserFacadeLocal.
-     * @param request HTTP request
      * @return UserFacadeLocal object
      */
     public static UserFacadeLocal lookupUserFacade() {
@@ -139,7 +132,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting LoginDataFacadeLocal.
-     * @param request HTTP request
      * @return LoginDataFacadeLocal object
      */
     public static LoginDataFacadeLocal lookupLoginDataFacade() {
@@ -156,7 +148,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting AvailableLangsFacadeLocal.
-     * @param request HTTP request
      * @return AvailableLangsFacadeLocal object
      */
     public static AvailableLangsFacadeLocal lookupAvailableLangsFacade() {
@@ -173,7 +164,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting MotorcycleFacadeLocal.
-     * @param request HTTP request
      * @return MotorcycleFacadeLocal object
      */
     public static MotorcycleFacadeLocal lookupMotorcycleFacade() {
@@ -190,7 +180,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting FishierFacadeLocal.
-     * @param request HTTP request
      * @return FishierFacadeLocal object
      */
     public static FishierFacadeLocal lookupFishierFacade() {
@@ -206,7 +195,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting ActivityPeriodFacadeLocal.
-     * @param request HTTP request
      * @return ActivityPeriodFacadeLocal object
      */
     public static ActivityPeriodFacadeLocal lookupActivityPeriodFacade() {
@@ -223,7 +211,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting FishiersElementFacadeLocal.
-     * @param request HTTP request
      * @return FishiersElementFacadeLocal object
      */
     public static FishiersElementFacadeLocal lookupFishiersElementFacade() {
@@ -240,7 +227,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting FishierElementBridgeFacadeLocal.
-     * @param request HTTP request
      * @return FishierElementBridgeFacadeLocal object
      */
     public static FishierElementBridgeFacadeLocal
@@ -258,7 +244,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting ActionFacadeLocal.
-     * @param request HTTP request
      * @return ActionFacadeLocal object
      */
     public static ActionFacadeLocal lookupActionFacade() {
@@ -274,7 +259,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting TripFacadeLocal.
-     * @param request HTTP request
      * @return TripFacadeLocal object
      */
     public static TripFacadeLocal lookupTripFacade() {
@@ -291,7 +275,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting TripTypeFacadeLocal.
-     * @param request HTTP request
      * @return TripTypeFacadeLocal object
      */
     public static TripTypeFacadeLocal lookupTripTypeFacade() {
@@ -308,7 +291,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting UsageFacadeLocal.
-     * @param request HTTP request
      * @return UsageFacadeLocal object
      */
     public static UsageFacadeLocal lookupUsageFacade() {
@@ -324,7 +306,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting DistanceFacadeLocal.
-     * @param request HTTP request
      * @return DistanceFacadeLocal object
      */
     public static DistanceFacadeLocal lookupDistanceFacade() {
@@ -341,7 +322,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting FuzzyAdviseFacadeLocal.
-     * @param request HTTP request
      * @return FuzzyAdviseFacadeLocal object
      */
     public static FuzzyAdviseFacadeLocal lookupFuzzyAdviseFacade() {
@@ -358,7 +338,6 @@ public class BeanGetter {
 
     /**
      * Method used for getting FuzzyDecisionFacadeLocal.
-     * @param request HTTP request
      * @return FuzzyDecisionFacadeLocal object
      */
     public static FuzzyDecisionFacadeLocal lookupFuzzyDecisionFacade() {

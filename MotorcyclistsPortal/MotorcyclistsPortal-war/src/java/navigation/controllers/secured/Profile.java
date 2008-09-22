@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 import utils.MPUtilities;
 
@@ -55,7 +55,7 @@ public class Profile extends AbstractController {
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage(
                     "profile.errorRecivingData", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             Logger.getLogger("E").error("Error while reciving data from database"
                     + "at Profile: " + exception.getMessage());
             return new ModelAndView("user/profile", formInfo);
@@ -96,7 +96,7 @@ public class Profile extends AbstractController {
                     message = localeProvider.getMessage("profile.error.notAllFilled",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     return new ModelAndView("user/profile", formInfo);
                 }
             }
@@ -112,7 +112,7 @@ public class Profile extends AbstractController {
                 Logger.getLogger("E").
                         error("Wrong date format in Register from "
                         + formInfo.get("birthdate"));
-                formInfo.put("messColor", DefaultValues.getFailColour());
+                formInfo.put("messColor", ApplicationSettings.getFailColour());
                 return new ModelAndView("user/profile", formInfo);
             }
 
@@ -124,13 +124,13 @@ public class Profile extends AbstractController {
                     message = localeProvider.getMessage("profile.differentPass",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     return new ModelAndView("user/profile", formInfo);
                 } else if (passCheckingRes == 2) {
                     message = localeProvider.getMessage("profile.wrongLength",
                             null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     return new ModelAndView("user/profile", formInfo);
                 }
             }
@@ -166,7 +166,7 @@ public class Profile extends AbstractController {
                 message = localeProvider.
                         getMessage("success", null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getSuccColour());
+                formInfo.put("messColor", ApplicationSettings.getSuccColour());
                 result = new ModelAndView("user/profile", formInfo);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
@@ -176,7 +176,7 @@ public class Profile extends AbstractController {
                         null, defaultLocale) + localeProvider.
                         getMessage("otherError", null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
+                formInfo.put("messColor", ApplicationSettings.getFailColour());
                 result = new ModelAndView("user/profile", formInfo);
             }
         }

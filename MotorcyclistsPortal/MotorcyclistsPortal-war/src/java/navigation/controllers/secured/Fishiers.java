@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPUtilities;
@@ -112,14 +112,14 @@ public class Fishiers {
                     message = localeProvider.
                             getMessage("success", null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    formInfo.put("messColor", ApplicationSettings.getSuccColour());
                     formInfo.put("formTitle", localeProvider.getMessage(
                             "fishiers.formTitle.edit", null, defaultLocale));
                 } catch (Exception exception) {
                     message = localeProvider.getMessage(
                             "error.errorWhileAdding", null, defaultLocale);
                     formInfo.put("message", message);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     formInfo.put("action", "new.html");
                     Logger.getLogger("E").
                             error("Error wihle persisting in db at "
@@ -171,7 +171,7 @@ public class Fishiers {
             HashMap < String, Object > map = new HashMap < String, Object >();
             map.put("message", localeProvider.getMessage(
                     "fishiers.fishierNotFound", null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColour());
+            map.put("messColor", ApplicationSettings.getFailColour());
             ex.printStackTrace();
             result = new ModelAndView(this.showList(request, response).
                     getView(), map);
@@ -189,12 +189,12 @@ public class Fishiers {
                     }
                     message = localeProvider.
                             getMessage("success", null, defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    formInfo.put("messColor", ApplicationSettings.getSuccColour());
                 } catch (Exception exception) {
                     message = localeProvider.
                             getMessage("error.errorWhileAdding",
                             null, defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     Logger.getLogger("E").error("Error wihle persisting"
                             + "in db at Fishiers.edit: "
                             + exception.getMessage());
@@ -250,7 +250,7 @@ public class Fishiers {
                 BeanGetter.lookupFishierFacade().remove(fishier);
                 formInfo.put("message", localeProvider.getMessage(
                         "success", null, defaultLocale));
-                formInfo.put("messColor", DefaultValues.getSuccColour());
+                formInfo.put("messColor", ApplicationSettings.getSuccColour());
                 if (bikeId != null) {
                     formInfo.put("bike", bikeId);
                     result = new ModelAndView("redirect:/bikes/details.html",
@@ -263,7 +263,7 @@ public class Fishiers {
                 message = localeProvider.getMessage(
                         "error.errorWhileDeleting", null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
+                formInfo.put("messColor", ApplicationSettings.getFailColour());
                 Logger.getLogger("E").
                         error("Error wihle deleting in db at Fishiers.delete: "
                         + exception.getMessage());
@@ -280,7 +280,7 @@ public class Fishiers {
             Logger.getLogger("E").error("Fishier not found at fishiers edit: ");
             formInfo.put("message", localeProvider.getMessage(
                     "fishiers.fishierNotFound", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             ex.printStackTrace();
             if (bikeId != null) {
                 formInfo.put("bike", bikeId);
@@ -324,7 +324,7 @@ public class Fishiers {
             BeanGetter.lookupFishierElementBridgeFacade().remove(elementToDel);
             formInfo.put("message", localeProvider.getMessage(
                     "success", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getSuccColour());
+            formInfo.put("messColor", ApplicationSettings.getSuccColour());
         } catch (Exception exception) {
             Logger.getLogger("E").
                     error("Error while deleting fishier element at"
@@ -333,7 +333,7 @@ public class Fishiers {
             formInfo.put(
                     "message", localeProvider.getMessage(
                     "error.errorWhileDeleting", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
         }
         formInfo = ( HashMap < String, Object > ) this.details(
                 request, response).getModel();
@@ -408,7 +408,7 @@ public class Fishiers {
             formInfo.put("message",
                     localeProvider.getMessage("success", null, defaultLocale));
             formInfo.put("messColor",
-                    DefaultValues.getSuccColour());
+                    ApplicationSettings.getSuccColour());
             formInfo.put("fishierElementBridges",
                     MPUtilities.findFishierElementBridges());
         } catch (NumberFormatException nfe) {
@@ -418,21 +418,21 @@ public class Fishiers {
             formInfo.put("message",
                     localeProvider.getMessage(
                     "error.parsingError", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.put("periodLength", periodLength);
         } catch (ParseException ex) {
             formInfo.put("date", null);
             formInfo.put("message",
                     localeProvider.getMessage(
                     "error.wrongDate", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
         } catch (Exception exception) {
             Logger.getLogger("E").error("Error while adding fishier"
                     + "element at Fishiers.addElement");
             exception.printStackTrace();
             formInfo.put("message", localeProvider.
                     getMessage("error.errorWhileAdding", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.put("periodLength", periodLength);
         }
         Logger.getLogger("E").trace("Exiting from: addElement");
@@ -484,7 +484,7 @@ public class Fishiers {
             formInfo.put("message",
                     localeProvider.getMessage("fishiers.fishierNotFound",
                     null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             result = new ModelAndView(this.showList(request, response).
                     getView(), formInfo);
         }
@@ -551,24 +551,24 @@ public class Fishiers {
                     fishier.getId().toString()));
             formInfo.put("message",
                     localeProvider.getMessage("success", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getSuccColour());
+            formInfo.put("messColor", ApplicationSettings.getSuccColour());
         } catch (NumberFormatException nfe) {
             formInfo.put("message",
                     localeProvider.
                     getMessage("error.parsingError", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
         } catch (ParseException ex) {
             formInfo.put("message",
                     localeProvider.
                     getMessage("error.wrongDate", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
         } catch (Exception exception) {
             Logger.getLogger("E").error("Error while editing fishier"
                     + "element at Fishiers.editElement");
             exception.printStackTrace();
             formInfo.put("message", localeProvider.
                     getMessage("error.errorWhileEditing", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
         } finally {
             formInfo.put("fishierElementBridges",
                     MPUtilities.findFishierElementBridgeByFishier(
@@ -598,7 +598,7 @@ public class Fishiers {
             message = localeProvider.getMessage(
                     "error.notAllFilled", null, defaultLocale);
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.put("action", "new.html");
             result = false;
         }

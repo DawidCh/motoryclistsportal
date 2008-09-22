@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPUtilities;
@@ -111,14 +111,14 @@ public class Trips {
                             + (String) formInfo.get("bike"));
                     message = localeProvider.getMessage("trips.bikeNotFound",
                             null, defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                 } else {
                     try {
                         this.createTrip(formInfo, request, bike);
                         message = localeProvider.getMessage("success", null,
                                 defaultLocale);
                         formInfo.put("messColor",
-                                DefaultValues.getSuccColour());
+                                ApplicationSettings.getSuccColour());
                         formInfo.put("action", "edit.html");
                     } catch (ParseException parseException) {
                         formInfo.put("date", null);
@@ -126,20 +126,20 @@ public class Trips {
                                 getMessage("error.wrongDate", null,
                                 defaultLocale);
                         formInfo.put("messColor",
-                                DefaultValues.getFailColour());
+                                ApplicationSettings.getFailColour());
                     } catch (NumberFormatException numberFormatException) {
                         formInfo.put("distance", null);
                         message = localeProvider.
                                 getMessage("error.parsingError", null,
                                 defaultLocale);
                         formInfo.put("messColor",
-                                DefaultValues.getFailColour());
+                                ApplicationSettings.getFailColour());
                     } catch (Exception exception) {
                         message = localeProvider.
                                 getMessage("error.errorWhileAdding",
                                 null, defaultLocale);
                         formInfo.put("messColor",
-                                DefaultValues.getFailColour());
+                                ApplicationSettings.getFailColour());
                         Logger.getLogger("E").
                                 error("Error wihle persisting in db "
                                 + "at Trip.add: "
@@ -193,7 +193,7 @@ public class Trips {
             Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("trips.tripNotFound",
                     null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColour());
+            map.put("messColor", ApplicationSettings.getFailColour());
             exception.printStackTrace();
             form = null;
             result = new ModelAndView("trips/list", map);
@@ -204,7 +204,7 @@ public class Trips {
                 try {
                     this.editTrip(trip, formInfo, request);
                     BeanGetter.lookupTripFacade().edit(trip);
-                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    formInfo.put("messColor", ApplicationSettings.getSuccColour());
                     message = localeProvider.getMessage("success",
                             null, defaultLocale);
                 } catch (NumberFormatException ex) {
@@ -212,17 +212,17 @@ public class Trips {
                     message = localeProvider.
                             getMessage("error.parsingError", null,
                             defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                 } catch (ParseException ex) {
                     formInfo.put("date", null);
                     message = localeProvider.getMessage("error.wrongDate", null,
                             defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                 } catch (Exception exception) {
                     message = localeProvider.
                             getMessage("error.errorWhileAdding",
                             null, defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     Logger.getLogger("E").
                             error("Error wihle persisting in db at Trip.add: "
                             + exception.getMessage());
@@ -282,13 +282,13 @@ public class Trips {
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.
                 getMessage("success", null, defaultLocale));
-            map.put("messColor", DefaultValues.getSuccColour());
+            map.put("messColor", ApplicationSettings.getSuccColour());
         } catch (Exception mPException) {
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.
                     getMessage("error.errorWhileDeleting",
                     null, defaultLocale));
-            map.put("messColor", DefaultValues.getFailColour());
+            map.put("messColor", ApplicationSettings.getFailColour());
             mPException.printStackTrace();
         }
         if (result == null) {
@@ -366,7 +366,7 @@ public class Trips {
             message = localeProvider.getMessage("trips.bikeNotFound",
                     null, defaultLocale);
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
         }
         if (!trip.getBike().getId().equals((String) formInfo.get("bikeId"))) {
             trip.setBike(bike);
@@ -439,7 +439,7 @@ public class Trips {
             }
         } catch (Exception exception) {
             formInfo.put("message", exception.getMessage());
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.put("action", "new.html");
             result = false;
         }
