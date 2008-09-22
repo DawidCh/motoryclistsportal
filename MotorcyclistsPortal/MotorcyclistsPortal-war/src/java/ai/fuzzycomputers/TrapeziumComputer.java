@@ -60,7 +60,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
      * @param trapesiumInterface
      * TrapesiumInterface object representing fuzzy set
      * @param doubleValue value to compute
-     * @return
+     * @return value from 0 to 1.
      */
     private double computeMembershipFunctionValue(
             TrapeziumMembershipFunction trapesiumInterface,

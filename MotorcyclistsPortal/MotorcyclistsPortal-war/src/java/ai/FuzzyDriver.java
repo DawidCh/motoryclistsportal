@@ -27,7 +27,7 @@ import utils.MPException;
 import utils.MPUtilities;
 
 /**
- *
+ * Class used for providing processing and fuzzyficating data.
  * @author Dawid Chojnacki
  */
 public class FuzzyDriver {

@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * Class wich provides many services (mostly searchers) for other classes.
  * @author Dawid Chojnacki
  */
 public class MPUtilities {
@@ -205,8 +205,8 @@ public class MPUtilities {
         int result = 0;
         if (!pass.equals(secPass)) {
             result = 1;
-        } else if (pass.length() > DefaultValues.getPassLength()[1]
-                || pass.length() < DefaultValues.getPassLength()[0]) {
+        } else if (pass.length() > ApplicationSettings.getPassLength()[1]
+                || pass.length() < ApplicationSettings.getPassLength()[0]) {
             result = 2;
         }
         Logger.getLogger("E").trace("Exiting from: checkPassword");

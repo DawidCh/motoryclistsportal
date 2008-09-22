@@ -135,8 +135,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="settings" class="utils.ApplicationSettings" scope="singleton"/>
     
     <!-- locales configuration -->
-    <bean id="localeProvider" class="utils.LocaleProvider" scope="singleton">
-        <property name="locales" ref="messageSource"/>
+    <bean id="localeProvider" class="utils.LocaleProvider" scope="session">
+        <property name="messages" ref="messageSource"/>
     </bean>
     
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

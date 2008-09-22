@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 
 /**
@@ -48,7 +48,7 @@ public class Credentials implements Controller {
             if (null != key) {
                 formInfo.put("message", localeProvider.getMessage(key,
                         null, defaultLocale));
-                formInfo.put("messColor", DefaultValues.getFailColour());
+                formInfo.put("messColor", ApplicationSettings.getFailColour());
                 AuthenticationException aex = (AuthenticationException) request.
                         getSession(false).getAttribute(AbstractProcessingFilter.
                         SPRING_SECURITY_LAST_EXCEPTION_KEY);

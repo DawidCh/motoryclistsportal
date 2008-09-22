@@ -26,11 +26,15 @@ public class LocaleProvider {
 
     }
 
+    public MessageSource getMessages() {
+        return messages;
+    }
+
     /**
      * Set current locales.
      * @param messages current locales for user
      */
-    public void setLocales(MessageSource messages) {
+    public void setMessages(MessageSource messages) {
         this.messages = messages;
     }
 

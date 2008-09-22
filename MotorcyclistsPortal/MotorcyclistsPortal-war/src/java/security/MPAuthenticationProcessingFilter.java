@@ -14,15 +14,15 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import utils.BeanGetter;
 
 /**
- *
+ * Custom AuthenticationProcessingFilter class. It sets user's default
+ * locale after log in.
  * @author Dawid Chojnacki
  */
 public class MPAuthenticationProcessingFilter
         extends AuthenticationProcessingFilter {
 
     /**
-     * Custom AuthenticationProcessingFilter class. It sets user's default
-     * locale after log in.
+     * Method for setting user's default locale after log in.
      * @param request HTTP request
      * @param response HTTP response
      * @param authentication Authentication object

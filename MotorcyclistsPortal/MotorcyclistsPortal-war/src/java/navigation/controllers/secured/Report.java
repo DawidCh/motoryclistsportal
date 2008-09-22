@@ -19,13 +19,13 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPUtilities;
 
 /**
- *
+ * Class used as report requests handling.
  * @author Dawid Chojnacki
  */
 public class Report {
@@ -84,12 +84,12 @@ public class Report {
         } catch (MPException mpException) {
             formInfo.put("errorMessage", localeProvider.
                     getMessage(mpException.getMessage(), null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             Logger.getLogger("E").debug("Empty list given");
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage(
                     "ai.computingError", null, defaultLocale));
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             Logger.getLogger("E").error(exception);
         } finally {
             if (result == null) {

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 import utils.MPException;
 import utils.MPUtilities;
@@ -108,7 +108,7 @@ public class Bikes {
                     getMessage(
                     "bikes.formTitle.edit", null, defaultLocale));
                     formInfo.put("action", "edit.html");
-                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    formInfo.put("messColor", ApplicationSettings.getSuccColour());
                     formInfo.put("bike", newBike.getId());
                     formInfo.putAll(this.createHashMapFromBike(newBike));
                 } catch (NumberFormatException numberFormatException) {
@@ -116,13 +116,13 @@ public class Bikes {
                             getMessage("error.parsingError", null,
                             defaultLocale);
                     formInfo.put("messColor",
-                            DefaultValues.getFailColour());
+                            ApplicationSettings.getFailColour());
                     Logger.getLogger("E").debug("Error while number parsing");
                 } catch (Exception exception) {
                     message = localeProvider.getMessage(
                             "error.errorWhileAdding",
                             null, defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     Logger.getLogger("E").
                             error(
                             "Error while persisting in db at Bikes.add: ");
@@ -183,7 +183,7 @@ public class Bikes {
             BeanGetter.lookupFishierFacade().edit(fish);
             message = localeProvider.getMessage("success", null, defaultLocale);
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getSuccColour());
+            formInfo.put("messColor", ApplicationSettings.getSuccColour());
             formInfo.putAll(this.showList(request, response).getModel());
         } catch (Exception ex) {
             Logger.getLogger("E").error("Error while reassigning fishier to"
@@ -191,7 +191,7 @@ public class Bikes {
             message = localeProvider.getMessage("error.otherError",
                     null, defaultLocale);
             formInfo.put("message", message);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.putAll(this.showList(request, response).getModel());
         }
         Logger.getLogger("E").trace("Exiting from: reassignFishier");
@@ -236,7 +236,7 @@ public class Bikes {
             formInfo.putAll(this.showList(request, response).getModel());
             message = localeProvider.getMessage("bikes.bikeNotFound",
                     null, defaultLocale);
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             result = new ModelAndView("bikes/list", formInfo);
             exception.printStackTrace();
         }
@@ -250,20 +250,20 @@ public class Bikes {
                     BeanGetter.lookupMotorcycleFacade().edit(bike);
                     message = localeProvider.
                         getMessage("success", null, defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getSuccColour());
+                    formInfo.put("messColor", ApplicationSettings.getSuccColour());
                     formInfo.putAll(this.createHashMapFromBike(bike));
                 } catch (NumberFormatException numberFormatException) {
                     message = localeProvider.
                             getMessage("error.parsingError", null,
                             defaultLocale);
                     formInfo.put("messColor",
-                            DefaultValues.getFailColour());
+                            ApplicationSettings.getFailColour());
                 } catch (Exception exception) {
                     Logger.getLogger("E").error("Error while persisting bike");
                     message = localeProvider.
                             getMessage("error.errorWhileAdding",
                             null, defaultLocale);
-                    formInfo.put("messColor", DefaultValues.getFailColour());
+                    formInfo.put("messColor", ApplicationSettings.getFailColour());
                     exception.printStackTrace();
                 }
             } else {
@@ -313,12 +313,12 @@ public class Bikes {
                 map = this.showList(request, response).getModel();
                 map.put("message", localeProvider.
                     getMessage("success", null, defaultLocale));
-                map.put("messColor", DefaultValues.getSuccColour());
+                map.put("messColor", ApplicationSettings.getSuccColour());
             } catch (Exception mPException) {
                 map = this.showList(request, response).getModel();
                 map.put("message", localeProvider.getMessage(
                         "error.errorWhileDeleting", null, defaultLocale));
-                map.put("messColor", DefaultValues.getFailColour());
+                map.put("messColor", ApplicationSettings.getFailColour());
                 mPException.printStackTrace();
             } finally {
                 result = new ModelAndView("/bikes/list", map);
@@ -357,7 +357,7 @@ public class Bikes {
             formInfo.put("bike", bike);
         } catch (MPException exception) {
             Logger.getLogger("E").error("Bike not found");
-            formInfo.put("messColor", DefaultValues.getFailColour());
+            formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.put("errorMessage", localeProvider.
                     getMessage("bikes.bikeNotFound", null, defaultLocale));
             result = new ModelAndView("unsecured/error", formInfo);
@@ -424,7 +424,7 @@ public class Bikes {
                 message = localeProvider.getMessage("success",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getSuccColour());
+                formInfo.put("messColor", ApplicationSettings.getSuccColour());
                 formInfo.putAll(this.showList(request, response).getModel());
             } catch (Exception exception) {
                 Logger.getLogger("E").
@@ -433,7 +433,7 @@ public class Bikes {
                 message = localeProvider.getMessage("error.otherError",
                         null, defaultLocale);
                 formInfo.put("message", message);
-                formInfo.put("messColor", DefaultValues.getFailColour());
+                formInfo.put("messColor", ApplicationSettings.getFailColour());
                 formInfo.putAll(this.showList(request, response).getModel());
             } finally {
                 result = new ModelAndView("bikes/list", formInfo);
@@ -542,7 +542,7 @@ public class Bikes {
             }
         } catch (MPException mpException) {
             formData.put("message", message);
-            formData.put("messColor", DefaultValues.getFailColour());
+            formData.put("messColor", ApplicationSettings.getFailColour());
             result = false;
             Logger.getLogger("E").debug(mpException.getMessage());
         }

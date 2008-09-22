@@ -15,12 +15,13 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import security.DetailedUserInformation;
 import utils.BeanGetter;
-import utils.DefaultValues;
+import utils.ApplicationSettings;
 import utils.LocaleProvider;
 import utils.MPException;
 
 /**
- *
+ * Interceptor class used for setting available languages and storing selected
+ * in database.
  * @author Dawid Chojnacki
  */
 public class VarLoader extends HandlerInterceptorAdapter {
@@ -79,8 +80,8 @@ public class VarLoader extends HandlerInterceptorAdapter {
             }
             map.addObject("currentLocale", RequestContextUtils.
                     getLocale(request).toString());
-            map.addObject("failColor", DefaultValues.getFailColour());
-            map.addObject("succColor", DefaultValues.getSuccColour());
+            map.addObject("failColor", ApplicationSettings.getFailColour());
+            map.addObject("succColor", ApplicationSettings.getSuccColour());
         } catch (Exception ex) {
             Logger.getLogger("E").info("User is not in the session "
                     + "in " + this.getClass().getCanonicalName()
