@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import utils.MPException;
 
 /**
- *
+ * Class which computes fuzzy value in trapezium scope.
  * @author Dawid Chojnacki
  */
 public class TrapeziumComputer implements FuzzyComputerInterface {

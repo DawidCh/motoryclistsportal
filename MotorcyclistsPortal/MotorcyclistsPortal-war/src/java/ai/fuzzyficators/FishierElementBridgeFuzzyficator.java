@@ -21,7 +21,7 @@ import utils.BeanGetter;
 import utils.MPException;
 
 /**
- *
+ * Class wich computes Usage of motorbike parts given in FishierElementBridge.
  * @author Dawid Chojnacki
  */
 public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {

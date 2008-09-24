@@ -6,7 +6,8 @@
 package ai.fuzzycomputers;
 
 /**
- *
+ * Interface which contains method which computes fuzzy value for given value
+ * and given fuzzy scope.
  * @author Dawid Chojnacki
  */
 public interface FuzzyComputerInterface {

@@ -17,7 +17,7 @@ import utils.BeanGetter;
 import utils.MPException;
 
 /**
- *
+ * Class wich computes Distance (fuzzy value) for given trip (Fuzzyficable).
  * @author Dawid Chojnacki
  */
 public class TripsFuzzyficator extends AbstractFuzzyficator {
