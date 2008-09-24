@@ -6,7 +6,7 @@
 package ai.fuzzyficators.usagecomputers;
 
 /**
- *
+ * Interface provides method for computing usage of given part.
  * @author Dawid Chojnacki
  */
 public interface UsageComputerInterface {

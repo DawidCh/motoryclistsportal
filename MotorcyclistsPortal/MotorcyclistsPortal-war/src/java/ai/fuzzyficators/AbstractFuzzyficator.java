@@ -14,7 +14,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * Abstract class wich provides processing (fuzzyfing) collection of
+ * Fuzzyficable elements.
  * @author Dawid
  */
 public abstract class AbstractFuzzyficator {

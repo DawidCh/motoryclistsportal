@@ -7,7 +7,8 @@ package ai.fuzzyficators.usagecomputers;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * Class provides method for computing usage of given part using square
+ * function: ax^2.
  * @author Dawid Chojnacki
  */
 public class SquareUsageComputer implements UsageComputerInterface {
