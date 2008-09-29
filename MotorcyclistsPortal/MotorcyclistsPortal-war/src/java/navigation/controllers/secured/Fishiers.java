@@ -44,7 +44,7 @@ public class Fishiers {
      */
     public final ModelAndView showList(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: showList");
+        Logger.getLogger("errorLogger").trace("Entering to: showList");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -54,7 +54,7 @@ public class Fishiers {
         formInfo.put("pageTitle", localeProvider.getMessage(
                 "fishiers.pageTitle", null, defaultLocale));
         formInfo.put("fishiers", fishiers);
-        Logger.getLogger("E").trace("Exiting from: showList");
+        Logger.getLogger("errorLogger").trace("Exiting from: showList");
         return new ModelAndView("fishiers/list", formInfo);
     }
 
@@ -68,7 +68,7 @@ public class Fishiers {
      */
     public final ModelAndView addFishier(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: addFishier");
+        Logger.getLogger("errorLogger").trace("Entering to: addFishier");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -90,7 +90,7 @@ public class Fishiers {
             formInfo.put("bike", bike);
         } catch (MPException mPException) {
             form = null;
-            Logger.getLogger("E").error("Bike not found in Fishiers.add");
+            Logger.getLogger("errorLogger").error("Bike not found in Fishiers.add");
         }
         List < Motorcycle > bikes = MPUtilities.findBikesWithoutFishier();
         formInfo.put("bikes", bikes);
@@ -121,7 +121,7 @@ public class Fishiers {
                     formInfo.put("message", message);
                     formInfo.put("messColor", ApplicationSettings.getFailColour());
                     formInfo.put("action", "new.html");
-                    Logger.getLogger("E").
+                    Logger.getLogger("errorLogger").
                             error("Error wihle persisting in db at "
                             + "Fishiers.add: "
                             + exception.getMessage());
@@ -130,7 +130,7 @@ public class Fishiers {
         }
         formInfo.put("action", "new.html");
         result = new ModelAndView("fishiers/add", formInfo);
-        Logger.getLogger("E").trace("Exiting from: addFishier");
+        Logger.getLogger("errorLogger").trace("Exiting from: addFishier");
         return result;
     }
 
@@ -144,7 +144,7 @@ public class Fishiers {
      */
     public final ModelAndView editFishier(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: editFishier");
+        Logger.getLogger("errorLogger").trace("Entering to: editFishier");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -166,7 +166,7 @@ public class Fishiers {
             fishier = MPUtilities.findFishier(fishierId);
             formInfo.put("fishier", fishier);
         } catch (Exception ex) {
-            Logger.getLogger("E").error("Fishier not found at fishiers edit: "
+            Logger.getLogger("errorLogger").error("Fishier not found at fishiers edit: "
                     + fishierId);
             HashMap < String, Object > map = new HashMap < String, Object >();
             map.put("message", localeProvider.getMessage(
@@ -195,7 +195,7 @@ public class Fishiers {
                             getMessage("error.errorWhileAdding",
                             null, defaultLocale);
                     formInfo.put("messColor", ApplicationSettings.getFailColour());
-                    Logger.getLogger("E").error("Error wihle persisting"
+                    Logger.getLogger("errorLogger").error("Error wihle persisting"
                             + "in db at Fishiers.edit: "
                             + exception.getMessage());
                     exception.printStackTrace();
@@ -207,7 +207,7 @@ public class Fishiers {
         if (result == null) {
             result = new ModelAndView("fishiers/add", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: editFishier");
+        Logger.getLogger("errorLogger").trace("Exiting from: editFishier");
         return result;
     }
 
@@ -221,7 +221,7 @@ public class Fishiers {
      */
     public final ModelAndView deleteFishier(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: deleteFishier");
+        Logger.getLogger("errorLogger").trace("Entering to: deleteFishier");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -264,7 +264,7 @@ public class Fishiers {
                         "error.errorWhileDeleting", null, defaultLocale);
                 formInfo.put("message", message);
                 formInfo.put("messColor", ApplicationSettings.getFailColour());
-                Logger.getLogger("E").
+                Logger.getLogger("errorLogger").
                         error("Error wihle deleting in db at Fishiers.delete: "
                         + exception.getMessage());
                 if (bikeId != null) {
@@ -277,7 +277,7 @@ public class Fishiers {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger("E").error("Fishier not found at fishiers edit: ");
+            Logger.getLogger("errorLogger").error("Fishier not found at fishiers edit: ");
             formInfo.put("message", localeProvider.getMessage(
                     "fishiers.fishierNotFound", null, defaultLocale));
             formInfo.put("messColor", ApplicationSettings.getFailColour());
@@ -292,7 +292,7 @@ public class Fishiers {
                         this.details(request, response).getView(), formInfo);
             }
         }
-        Logger.getLogger("E").trace("Exiting from: deleteFishier");
+        Logger.getLogger("errorLogger").trace("Exiting from: deleteFishier");
         return result;
     }
 
@@ -308,7 +308,7 @@ public class Fishiers {
             final HttpServletRequest request,
             final HttpServletResponse response)
             throws Exception {
-        Logger.getLogger("E").trace("Entering to: deleteElement");
+        Logger.getLogger("errorLogger").trace("Entering to: deleteElement");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -326,7 +326,7 @@ public class Fishiers {
                     "success", null, defaultLocale));
             formInfo.put("messColor", ApplicationSettings.getSuccColour());
         } catch (Exception exception) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Error while deleting fishier element at"
                     + "Fishiers.deleteElement: " + elementId);
             exception.printStackTrace();
@@ -337,7 +337,7 @@ public class Fishiers {
         }
         formInfo = ( HashMap < String, Object > ) this.details(
                 request, response).getModel();
-        Logger.getLogger("E").trace("Exiting from: deleteElement");
+        Logger.getLogger("errorLogger").trace("Exiting from: deleteElement");
         return new ModelAndView("fishiers/details", formInfo);
     }
 
@@ -353,7 +353,7 @@ public class Fishiers {
             final HttpServletRequest request,
             final HttpServletResponse response)
             throws Exception {
-        Logger.getLogger("E").trace("Entering to: addElement");
+        Logger.getLogger("errorLogger").trace("Entering to: addElement");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -377,13 +377,13 @@ public class Fishiers {
             FishiersElement fishEl = BeanGetter.lookupFishiersElementFacade().
                     find(new Integer(fishierElementBridge));
             if (fishEl == null) {
-                Logger.getLogger("E").error(
+                Logger.getLogger("errorLogger").error(
                         "Error while finding"
                         + "fishierelement in Fishiers.addElement");
                 throw new Exception();
             }
             if (fishier == null) {
-                Logger.getLogger("E").error(
+                Logger.getLogger("errorLogger").error(
                         "Error while finding fishier in Fishiers.addElement");
                 throw new Exception();
             }
@@ -427,7 +427,7 @@ public class Fishiers {
                     "error.wrongDate", null, defaultLocale));
             formInfo.put("messColor", ApplicationSettings.getFailColour());
         } catch (Exception exception) {
-            Logger.getLogger("E").error("Error while adding fishier"
+            Logger.getLogger("errorLogger").error("Error while adding fishier"
                     + "element at Fishiers.addElement");
             exception.printStackTrace();
             formInfo.put("message", localeProvider.
@@ -435,7 +435,7 @@ public class Fishiers {
             formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.put("periodLength", periodLength);
         }
-        Logger.getLogger("E").trace("Exiting from: addElement");
+        Logger.getLogger("errorLogger").trace("Exiting from: addElement");
         return new ModelAndView("fishiers/details", formInfo);
     }
 
@@ -451,7 +451,7 @@ public class Fishiers {
             final HttpServletRequest request,
             final HttpServletResponse response)
             throws Exception {
-        Logger.getLogger("E").trace("Entering to: details");
+        Logger.getLogger("errorLogger").trace("Entering to: details");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -479,7 +479,7 @@ public class Fishiers {
             fishierElementBridges =
                     MPUtilities.findFishierElementBridgeByFishier(fishierId);
         } catch (Exception ex) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Fishier not found at fishiers edit: " + fishierId);
             formInfo.put("message",
                     localeProvider.getMessage("fishiers.fishierNotFound",
@@ -493,7 +493,7 @@ public class Fishiers {
         if (result == null) {
             result = new ModelAndView("fishiers/details", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: details");
+        Logger.getLogger("errorLogger").trace("Exiting from: details");
         return result;
     }
 
@@ -509,7 +509,7 @@ public class Fishiers {
             final HttpServletRequest request,
             final HttpServletResponse response)
             throws Exception {
-        Logger.getLogger("E").trace("Entering to: editElement");
+        Logger.getLogger("errorLogger").trace("Entering to: editElement");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -529,7 +529,7 @@ public class Fishiers {
                     BeanGetter.lookupFishierElementBridgeFacade().
                     find(new Integer(fishierElementBridgeId));
             if (fishEl == null) {
-                Logger.getLogger("E").error("Error while finding"
+                Logger.getLogger("errorLogger").error("Error while finding"
                         + "fishierelementbridge in Fishiers.editElement");
                 throw new Exception();
             }
@@ -563,7 +563,7 @@ public class Fishiers {
                     getMessage("error.wrongDate", null, defaultLocale));
             formInfo.put("messColor", ApplicationSettings.getFailColour());
         } catch (Exception exception) {
-            Logger.getLogger("E").error("Error while editing fishier"
+            Logger.getLogger("errorLogger").error("Error while editing fishier"
                     + "element at Fishiers.editElement");
             exception.printStackTrace();
             formInfo.put("message", localeProvider.
@@ -574,7 +574,7 @@ public class Fishiers {
                     MPUtilities.findFishierElementBridgeByFishier(
                     fishier.getId().toString()));
         }
-        Logger.getLogger("E").trace("Exiting from: editElement");
+        Logger.getLogger("errorLogger").trace("Exiting from: editElement");
         return new ModelAndView("fishiers/details", formInfo);
     }
 
@@ -586,14 +586,14 @@ public class Fishiers {
      */
     private boolean validateForm(HttpServletRequest request,
             HashMap < String, Object > formInfo) {
-        Logger.getLogger("E").trace("Entering to: validateForm");
+        Logger.getLogger("errorLogger").trace("Entering to: validateForm");
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         String message;
         String description = request.getParameter("description");
         boolean result = true;
         if (description == null || description.length() == 0) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Not all fields filled in Fishiers.add");
             message = localeProvider.getMessage(
                     "error.notAllFilled", null, defaultLocale);
@@ -602,7 +602,7 @@ public class Fishiers {
             formInfo.put("action", "new.html");
             result = false;
         }
-        Logger.getLogger("E").trace("Exiting from: validateForm");
+        Logger.getLogger("errorLogger").trace("Exiting from: validateForm");
         return result;
     }
 }

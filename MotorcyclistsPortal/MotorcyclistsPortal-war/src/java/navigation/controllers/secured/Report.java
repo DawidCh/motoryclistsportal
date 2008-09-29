@@ -40,7 +40,7 @@ public class Report {
      */
     public final ModelAndView generateReport(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: generateReport");
+        Logger.getLogger("errorLogger").trace("Entering to: generateReport");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: loc, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -60,7 +60,7 @@ public class Report {
         List < FuzzyValue > fuzzyPartUsage = null;
         List < FuzzyValue > fuzzyTripDistance = null;
         List < FuzzyValue > fuzzyReplaceAdvise = null;
-        
+
         formInfo.put("bikes", bikes);
         formInfo.put("bike", bike);
         formInfo.put("fishierElements", fishierElements);
@@ -75,7 +75,8 @@ public class Report {
             fuzzyTripDistance = replacementAdvisor.
                     processTripCollection(trips);
             fuzzyReplaceAdvise = replacementAdvisor.processAdvision();
-            fuzzyAverageValue = FuzzyDriver.getFuzzyUserDistance().getDescription();
+            fuzzyAverageValue = FuzzyDriver.getFuzzyUserDistance().
+                    getDescription();
             formInfo.put("fuzzyPartUsage", fuzzyPartUsage);
             formInfo.put("fuzzyTripLength", fuzzyTripDistance);
             formInfo.put("fuzzyReplaceAdvise", fuzzyReplaceAdvise);
@@ -85,18 +86,18 @@ public class Report {
             formInfo.put("errorMessage", localeProvider.
                     getMessage(mpException.getMessage(), null, defaultLocale));
             formInfo.put("messColor", ApplicationSettings.getFailColour());
-            Logger.getLogger("E").debug("Empty list given");
+            Logger.getLogger("errorLogger").debug("Empty list given");
         } catch (Exception exception) {
             formInfo.put("message", localeProvider.getMessage(
                     "ai.computingError", null, defaultLocale));
             formInfo.put("messColor", ApplicationSettings.getFailColour());
-            Logger.getLogger("E").error(exception);
+            Logger.getLogger("errorLogger").error(exception);
         } finally {
             if (result == null) {
                 result = new ModelAndView("unsecured/error", formInfo);
             }
         }
-        Logger.getLogger("E").trace("Exiting from: generateReport");
+        Logger.getLogger("errorLogger").trace("Exiting from: generateReport");
         return result;
     }
 }

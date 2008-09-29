@@ -32,7 +32,7 @@ public class Error implements Controller {
      * @throws java.lang.Exception
      */
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: handleRequest");
+        Logger.getLogger("errorLogger").trace("Entering to: handleRequest");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -45,7 +45,7 @@ public class Error implements Controller {
                 getAttribute(AbstractProcessingFilter.
                 SPRING_SECURITY_LAST_EXCEPTION_KEY);
         try {
-            Logger.getLogger("E").error(aex.getMessage());
+            Logger.getLogger("errorLogger").error(aex.getMessage());
             formInfo.put("errorMessage", aex.getMessage());
         } catch (NullPointerException nullPointerException) {
             String errorMessage = request.getParameter("errorMessage");
@@ -57,7 +57,7 @@ public class Error implements Controller {
                         null, defaultLocale));
             }
         }
-        Logger.getLogger("E").trace("Exiting from: handleRequest");
+        Logger.getLogger("errorLogger").trace("Exiting from: handleRequest");
         return new ModelAndView("unsecured/error", formInfo);
     }
 }

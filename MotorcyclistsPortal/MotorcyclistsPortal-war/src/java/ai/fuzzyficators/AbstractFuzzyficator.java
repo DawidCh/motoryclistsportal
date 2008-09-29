@@ -51,13 +51,13 @@ public abstract class AbstractFuzzyficator {
     public List < FuzzyValue > processCollection(
             final List < Fuzzyficable  > objects)
             throws Exception {
-        Logger.getLogger("E").trace("Entering to: processCollection");
+        Logger.getLogger("errorLogger").trace("Entering to: processCollection");
         List < FuzzyValue > result = new ArrayList < FuzzyValue >();
         for (int i = 0; i < objects.size(); i++) {
             Fuzzyficable object = objects.get(i);
             result.add(this.processElement(object));
         }
-        Logger.getLogger("E").trace("Exiting from: processCollection");
+        Logger.getLogger("errorLogger").trace("Exiting from: processCollection");
         return result;
     }
 }

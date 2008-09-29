@@ -31,7 +31,7 @@ public class DetailedUserService implements UserDetailsService {
         DetailedUserInformation userInfo;
         User user = BeanGetter.lookupUserFacade().find(login);
         if(user == null){
-            Logger.getLogger("E").error("login: "+login);
+            Logger.getLogger("errorLogger").error("login: "+login);
             throw new UsernameNotFoundException(login);
         }
         userInfo = new DetailedUserInformation(user);

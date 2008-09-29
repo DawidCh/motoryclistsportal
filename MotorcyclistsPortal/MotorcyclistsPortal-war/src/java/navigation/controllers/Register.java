@@ -40,7 +40,7 @@ public class Register implements Controller {
      */
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: handleRequest");
+        Logger.getLogger("errorLogger").trace("Entering to: handleRequest");
         ModelAndView result = null;
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -62,11 +62,11 @@ public class Register implements Controller {
                 formInfo.put("message", message);
                 formInfo.put("messColor", ApplicationSettings.getSuccColour());
             } catch (MPException mPException) {
-                Logger.getLogger("E").error("Error while registering user.");
+                Logger.getLogger("errorLogger").error("Error while registering user.");
             }
         }
         result = new ModelAndView("unsecured/register", formInfo);
-        Logger.getLogger("E").trace("Exiting from: handleRequest");
+        Logger.getLogger("errorLogger").trace("Exiting from: handleRequest");
         return result;
     }
 
@@ -79,7 +79,7 @@ public class Register implements Controller {
      */
     private boolean verifyForm(HashMap<String, Object> formInfo,
             final HttpServletRequest request) throws MPException {
-        Logger.getLogger("E").trace("Entering to: verifyForm");
+        Logger.getLogger("errorLogger").trace("Entering to: verifyForm");
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         Date birthdate = null;
@@ -117,7 +117,7 @@ public class Register implements Controller {
             message = localeProvider.getMessage("error.wrongDate",
                     null, defaultLocale);
             formInfo.put("message", message);
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Wrong date format in Register from "
                     + formInfo.get("birthdate"));
             formInfo.put("messColor", ApplicationSettings.getFailColour());
@@ -144,7 +144,7 @@ public class Register implements Controller {
             formInfo.put("messColor", ApplicationSettings.getFailColour());
             throw new MPException("Wrong password length.");
         }
-        Logger.getLogger("E").trace("Exiting from: verifyForm");
+        Logger.getLogger("errorLogger").trace("Exiting from: verifyForm");
         return result;
     }
 
@@ -157,7 +157,7 @@ public class Register implements Controller {
     private void createUserObject(HashMap<String, Object> formInfo,
             final HttpServletRequest request)
             throws MPException {
-        Logger.getLogger("E").trace("Entering to: createUserObject");
+        Logger.getLogger("errorLogger").trace("Entering to: createUserObject");
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         String message = "";
@@ -169,7 +169,7 @@ public class Register implements Controller {
             loginData = new LoginData((String) formInfo.get("newLogin"),
                     (String) formInfo.get("password"));
         } catch (Exception exception) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Error while creating LoginData object");
             formInfo.put("message", localeProvider.getMessage(
                     "register.shaerror", null, defaultLocale));
@@ -194,7 +194,7 @@ public class Register implements Controller {
             BeanGetter.lookupUserFacade().create(user);
         } catch (Exception exception) {
             String excMess = exception.getMessage();
-            Logger.getLogger("E").error("Error while adding to database "
+            Logger.getLogger("errorLogger").error("Error while adding to database "
                     + "in Register: " + excMess);
             message = localeProvider.getMessage("register.addtobase", null,
                     defaultLocale);
@@ -210,6 +210,6 @@ public class Register implements Controller {
             formInfo.put("messColor", ApplicationSettings.getFailColour());
             throw new MPException("Error while creating user.");
         }
-        Logger.getLogger("E").trace("Exiting from: createUserObject");
+        Logger.getLogger("errorLogger").trace("Exiting from: createUserObject");
     }
 }

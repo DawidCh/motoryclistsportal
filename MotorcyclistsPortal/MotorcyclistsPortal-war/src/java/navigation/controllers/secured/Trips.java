@@ -47,7 +47,7 @@ public class Trips {
      */
     public final ModelAndView showList(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: showList");
+        Logger.getLogger("errorLogger").trace("Entering to: showList");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -65,7 +65,7 @@ public class Trips {
         formInfo.put("trips", trips);
         formInfo.put("pageTitle", localeProvider.
                 getMessage("trips.pageTitle", null, defaultLocale));
-        Logger.getLogger("E").trace("Exiting from: showList");
+        Logger.getLogger("errorLogger").trace("Exiting from: showList");
         return new ModelAndView("trips/list", formInfo);
     }
 
@@ -79,7 +79,7 @@ public class Trips {
      */
     public final ModelAndView addTrip(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: addTrip");
+        Logger.getLogger("errorLogger").trace("Entering to: addTrip");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -106,7 +106,7 @@ public class Trips {
                 Motorcycle bike = MPUtilities.findBike(
                         (String) formInfo.get("bike"));
                 if (bike == null) {
-                    Logger.getLogger("E").
+                    Logger.getLogger("errorLogger").
                             error("Bike not found at Trips add: "
                             + (String) formInfo.get("bike"));
                     message = localeProvider.getMessage("trips.bikeNotFound",
@@ -140,7 +140,7 @@ public class Trips {
                                 null, defaultLocale);
                         formInfo.put("messColor",
                                 ApplicationSettings.getFailColour());
-                        Logger.getLogger("E").
+                        Logger.getLogger("errorLogger").
                                 error("Error wihle persisting in db "
                                 + "at Trip.add: "
                                 + exception.getMessage());
@@ -149,7 +149,7 @@ public class Trips {
             }
             formInfo.put("message", message);
         }
-        Logger.getLogger("E").trace("Exiting from: addTrip");
+        Logger.getLogger("errorLogger").trace("Exiting from: addTrip");
         return new ModelAndView("trips/add", formInfo);
     }
 
@@ -163,7 +163,7 @@ public class Trips {
      */
     public final ModelAndView editTrip(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: editTrip");
+        Logger.getLogger("errorLogger").trace("Entering to: editTrip");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -188,7 +188,7 @@ public class Trips {
         try {
             trip = BeanGetter.lookupTripFacade().find(new Integer(tripId));
         } catch (Exception exception) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Trip not found at trips edit: " + tripId);
             Map map = this.showList(request, response).getModel();
             map.put("message", localeProvider.getMessage("trips.tripNotFound",
@@ -223,7 +223,7 @@ public class Trips {
                             getMessage("error.errorWhileAdding",
                             null, defaultLocale);
                     formInfo.put("messColor", ApplicationSettings.getFailColour());
-                    Logger.getLogger("E").
+                    Logger.getLogger("errorLogger").
                             error("Error wihle persisting in db at Trip.add: "
                             + exception.getMessage());
                 }
@@ -243,7 +243,7 @@ public class Trips {
             formInfo.put("action", "edit.html");
             result = new ModelAndView("trips/add", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: editTrip");
+        Logger.getLogger("errorLogger").trace("Exiting from: editTrip");
         return result;
     }
 
@@ -257,7 +257,7 @@ public class Trips {
      */
     public final ModelAndView deleteTrip(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: deleteTrip");
+        Logger.getLogger("errorLogger").trace("Entering to: deleteTrip");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -268,7 +268,7 @@ public class Trips {
         String tripId = request.getParameter("trip");
         ModelAndView result = null;
         if (tripId == null) {
-            Logger.getLogger("E").error("Null trip id at Trips.deleteTrip");
+            Logger.getLogger("errorLogger").error("Null trip id at Trips.deleteTrip");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("error.otherError", null, defaultLocale));
             result = new ModelAndView("unsecured/error", formInfo);
@@ -294,7 +294,7 @@ public class Trips {
         if (result == null) {
             result = new ModelAndView("/trips/list", map);
         }
-        Logger.getLogger("E").trace("Exiting from: deleteTrip");
+        Logger.getLogger("errorLogger").trace("Exiting from: deleteTrip");
         return result;
     }
 
@@ -308,7 +308,7 @@ public class Trips {
      */
     public final ModelAndView details(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: details");
+        Logger.getLogger("errorLogger").trace("Entering to: details");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -326,7 +326,7 @@ public class Trips {
             }
             formInfo.put("trip", trip);
         } catch (Exception ex) {
-            Logger.getLogger("E").error("Trip not found");
+            Logger.getLogger("errorLogger").error("Trip not found");
             formInfo.put("errorMessage", localeProvider.getMessage(
                     "trips.tripNotFound", null, defaultLocale));
             ex.printStackTrace();
@@ -336,7 +336,7 @@ public class Trips {
         if (result == null) {
             result = new ModelAndView("trips/details", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: details");
+        Logger.getLogger("errorLogger").trace("Exiting from: details");
         return result;
     }
 
@@ -350,7 +350,7 @@ public class Trips {
      */
     private void editTrip(Trip trip, HashMap < String, Object > formInfo,
             HttpServletRequest request) throws ParseException, MPException {
-        Logger.getLogger("E").trace("Entering to: editTrip");
+        Logger.getLogger("errorLogger").trace("Entering to: editTrip");
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
         String message = null;
@@ -360,7 +360,7 @@ public class Trips {
         Date newDate = sdf.parse((String) formInfo.get("date"));
         Motorcycle bike = MPUtilities.findBike((String) formInfo.get("bikeId"));
         if (bike == null) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Bike not found at Trips add: "
                     + (String) formInfo.get("bikeId"));
             message = localeProvider.getMessage("trips.bikeNotFound",
@@ -391,7 +391,7 @@ public class Trips {
                     lookupTripTypeFacade().
                     toTripType((String) formInfo.get("type")));
         }
-        Logger.getLogger("E").trace("Exiting from: editTrip");
+        Logger.getLogger("errorLogger").trace("Exiting from: editTrip");
     }
 
     /**
@@ -402,7 +402,7 @@ public class Trips {
      */
     private boolean validateForm(HashMap < String, Object > formInfo,
             HttpServletRequest request) {
-        Logger.getLogger("E").trace("Entering to: validateForm");
+        Logger.getLogger("errorLogger").trace("Entering to: validateForm");
         String message;
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -429,7 +429,7 @@ public class Trips {
                 if (request.getParameter(currentKey) == null
                         || request.getParameter(currentKey).isEmpty()) {
                     formInfo.put(currentKey, null);
-                    Logger.getLogger("E").
+                    Logger.getLogger("errorLogger").
                             error("Not all fields filled in new trip: "
                             + currentKey);
                     message = localeProvider.getMessage("error.notAllFilled",
@@ -443,7 +443,7 @@ public class Trips {
             formInfo.put("action", "new.html");
             result = false;
         }
-        Logger.getLogger("E").trace("Exiting from: validateForm");
+        Logger.getLogger("errorLogger").trace("Exiting from: validateForm");
         return result;
     }
 
@@ -456,7 +456,7 @@ public class Trips {
     private void createTrip(HashMap < String, Object > formInfo,
             HttpServletRequest request, Motorcycle bike) throws ParseException,
             MPException {
-        Logger.getLogger("E").trace("Entering to: createTrip");
+        Logger.getLogger("errorLogger").trace("Entering to: createTrip");
         String message;
         Trip newTrip;
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -485,6 +485,6 @@ public class Trips {
         formInfo.put("formTitle", localeProvider.
                 getMessage("trips.formTitle.edit", null,
                 defaultLocale));
-        Logger.getLogger("E").trace("Exiting from: createTrip");
+        Logger.getLogger("errorLogger").trace("Exiting from: createTrip");
     }
 }

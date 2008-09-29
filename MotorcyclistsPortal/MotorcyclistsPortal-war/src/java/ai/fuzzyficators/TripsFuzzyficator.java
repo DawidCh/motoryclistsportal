@@ -30,7 +30,7 @@ public class TripsFuzzyficator extends AbstractFuzzyficator {
      */
     @Override
     public final Distance processElement(Fuzzyficable object) throws Exception {
-        Logger.getLogger("E").trace("Entering to: processElement");
+        Logger.getLogger("errorLogger").trace("Entering to: processElement");
         if (!(object instanceof Trip)) {
             throw new MPException("Object passed to"
                     + "TripsFuzzyficator.processElement"
@@ -44,7 +44,7 @@ public class TripsFuzzyficator extends AbstractFuzzyficator {
         Distance distanceResults = (Distance) FuzzyDriver.
                 getTrapeziumFuzzySetForValue(
                 distances, trip.getDistance());
-        Logger.getLogger("E").trace("Exiting from: processElement");
+        Logger.getLogger("errorLogger").trace("Exiting from: processElement");
         return distanceResults;
     }
 }

@@ -50,7 +50,7 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
      * @throws java.lang.Exception
      */
     public Usage processElement(Fuzzyficable object) throws Exception {
-        Logger.getLogger("E").trace("Entering to: processElement");
+        Logger.getLogger("errorLogger").trace("Entering to: processElement");
         if (!(object instanceof FishierElementBridge)) {
             throw new MPException("Object passed to"
                     + "FishierElementBridgheFuzzyficator.processElement"
@@ -105,7 +105,7 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
             fuzzyUsageResult = (Usage) FuzzyDriver.
                     getTrapeziumFuzzySetForValue(usages, doubleUsage);
         }
-        Logger.getLogger("E").trace("Exiting from: processElement");
+        Logger.getLogger("errorLogger").trace("Exiting from: processElement");
         return fuzzyUsageResult;
     }
 
@@ -117,13 +117,13 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
      */
     private int getDiffInMonths(final Calendar earlierDate,
             final Calendar laterDate) {
-        Logger.getLogger("E").trace("Entering to: getDiffInMonths");
+        Logger.getLogger("errorLogger").trace("Entering to: getDiffInMonths");
         int monthsCount = -1;
         while (earlierDate.before(laterDate)) {
             earlierDate.add(Calendar.MONTH, 1);
             monthsCount++;
         }
-        Logger.getLogger("E").trace("Exiting from: getDiffInMonths");
+        Logger.getLogger("errorLogger").trace("Exiting from: getDiffInMonths");
         return monthsCount;
     }
 }

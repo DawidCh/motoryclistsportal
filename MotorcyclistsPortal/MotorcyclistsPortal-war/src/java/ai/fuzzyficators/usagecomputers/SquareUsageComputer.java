@@ -21,14 +21,14 @@ public class SquareUsageComputer implements UsageComputerInterface {
      */
     public double computePercentageValue(final int partUsageInUnits,
             final int partAvailabilityUsage) {
-        Logger.getLogger("E").trace("Entering to: computePercentageValue");
+        Logger.getLogger("errorLogger").trace("Entering to: computePercentageValue");
         double aFactor = 1.0 / Math.pow(partAvailabilityUsage, 2.0);
         double percetnageUsage = aFactor * Math.pow(partUsageInUnits, 2.0);
         if (percetnageUsage > 1.0) {
             Logger.getLogger("fuzzyLogger").info("Percentage usage upper"
                     + "100% in FuzzyDriver.computeUsage");
         }
-        Logger.getLogger("E").trace("Exiting from: computePercentageValue");
+        Logger.getLogger("errorLogger").trace("Exiting from: computePercentageValue");
         return percetnageUsage;
     }
 }

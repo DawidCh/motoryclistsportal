@@ -26,7 +26,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
     @Override
     public TrapeziumMembershipFunction extractFuzzyValue
             (Object collection) throws MPException {
-        Logger.getLogger("E").trace("Entering to: extractFuzzyValue");
+        Logger.getLogger("errorLogger").trace("Entering to: extractFuzzyValue");
         if (!(collection instanceof List)) {
             throw new MPException("Object passed to" +
                     "TrapeziumComputer.processFuzzyfication is not properly");
@@ -50,7 +50,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
             }
         }
         maxValue.setMembershipFunctionValue(membershipFunctionValue);
-        Logger.getLogger("E").trace("Exiting from: extractFuzzyValue");
+        Logger.getLogger("errorLogger").trace("Exiting from: extractFuzzyValue");
         return maxValue;
     }
 
@@ -65,7 +65,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
     private double computeMembershipFunctionValue(
             TrapeziumMembershipFunction trapesiumInterface,
             Double doubleValue) {
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Entering to: computeMembershipFunctionValue");
         double alpha = trapesiumInterface.getAlpha();
         double beta = trapesiumInterface.getBeta();
@@ -81,7 +81,7 @@ public class TrapeziumComputer implements FuzzyComputerInterface {
             result = (1.0 / (gamma - delta)) * doubleValue
                     - (delta / (gamma - delta));
         }
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Exiting from: computeMembershipFunctionValue");
         return result;
     }
