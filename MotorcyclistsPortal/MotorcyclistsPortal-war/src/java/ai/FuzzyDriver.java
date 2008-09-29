@@ -93,29 +93,20 @@ public class FuzzyDriver {
     }
 
     /**
-     * Getter for fishier element bridge fuzzyficator.
-     * @return fishier element bridge fuzzyficator
-     */
-    private AbstractFuzzyficator getfishierElementBridgeFuzzyficator() {
-        return fishierElementBridgeFuzzyficator;
-    }
-
-    /**
-     * Getter for trips fuzzyficator.
-     * @return trips fuzzyficator
-     */
-    private AbstractFuzzyficator getTripsFuzzyficator() {
-        return tripsFuzzyficator;
-    }
-
-    /**
      * Method used for processing advision.
      * @return List of Advision objects. Each line represents advision for
      * one fishier element bridge in given fishier.
+     * @throws MPException when method is called before
+     * processFishierElementBridgeCollection(...).
      */
-    public final List < FuzzyValue > processAdvision() {
+    public final List < FuzzyValue > processAdvision() throws MPException {
         Logger.getLogger("errorLogger").trace("Entering to: "
                 + this.getClass().getCanonicalName() + " processAdvision");
+        if (this.usageOfFuzzyElementBridges == null) {
+            throw new MPException("usageOfFuzzyElementBridges is null."
+                    + " Call FuzzyDriver."
+                    + "processFishierElementBridgeCollection(...) first.");
+        }
         List < FuzzyValue > result = new ArrayList < FuzzyValue >();
         List < FuzzyDecision > decisions =
                 BeanGetter.lookupFuzzyDecisionFacade().findAll();
@@ -150,27 +141,6 @@ public class FuzzyDriver {
         Logger.getLogger("errorLogger").trace("Exiting from: "
                 + this.getClass().getCanonicalName() + " processAdvision");
         return result;
-    }
-
-    /**
-     * Settter for fishier element bridge fuzzyficator.
-     * @param fishierElementBridgeFuzzyficator new value of
-     * fishierElementBridgeFuzzyficator
-     */
-    public final void setfishierElementBridgeFuzzyficator(
-            final AbstractFuzzyficator
-            fishierElementBridgeFuzzyficator) {
-        this.fishierElementBridgeFuzzyficator =
-                fishierElementBridgeFuzzyficator;
-    }
-
-    /**
-     * Setter for trips fuzzyficator.
-     * @param tripsFuzzyficator new value of tripsFuzzyficator
-     */
-    private void setTripsFuzzyficator(final AbstractFuzzyficator
-            tripsFuzzyficator) {
-        this.tripsFuzzyficator = tripsFuzzyficator;
     }
 
     /**
