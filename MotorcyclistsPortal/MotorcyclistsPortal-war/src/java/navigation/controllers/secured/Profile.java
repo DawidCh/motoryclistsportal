@@ -40,7 +40,7 @@ public class Profile extends AbstractController {
     protected ModelAndView handleRequestInternal(
             final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: handleRequestInternal");
+        Logger.getLogger("errorLogger").trace("Entering to: handleRequestInternal");
         ModelAndView result = null;
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         HashMap<String, Object> formInfo = new HashMap<String, Object>();
@@ -56,7 +56,7 @@ public class Profile extends AbstractController {
             formInfo.put("message", localeProvider.getMessage(
                     "profile.errorRecivingData", null, defaultLocale));
             formInfo.put("messColor", ApplicationSettings.getFailColour());
-            Logger.getLogger("E").error("Error while reciving data from database"
+            Logger.getLogger("errorLogger").error("Error while reciving data from database"
                     + "at Profile: " + exception.getMessage());
             return new ModelAndView("user/profile", formInfo);
         }
@@ -74,7 +74,7 @@ public class Profile extends AbstractController {
         formInfo.put("birthdate", sdf.format(user.getBirthdate()));
         // </editor-fold>
         if (null != request.getParameter("form")) {
-            Logger.getLogger("E").error(request.getParameter("city"));
+            Logger.getLogger("errorLogger").error(request.getParameter("city"));
             //<editor-fold defaultstate="collapsed" desc="data verification">
             String message = new String();
             String password = request.getParameter("password");
@@ -109,7 +109,7 @@ public class Profile extends AbstractController {
                 message = localeProvider.getMessage("profile.wrongDate", null,
                         defaultLocale);
                 formInfo.put("message", message);
-                Logger.getLogger("E").
+                Logger.getLogger("errorLogger").
                         error("Wrong date format in Register from "
                         + formInfo.get("birthdate"));
                 formInfo.put("messColor", ApplicationSettings.getFailColour());
@@ -170,7 +170,7 @@ public class Profile extends AbstractController {
                 result = new ModelAndView("user/profile", formInfo);
             } catch (Exception exception) {
                 String excMess = exception.getMessage();
-                Logger.getLogger("E").error("Error while setting data to"
+                Logger.getLogger("errorLogger").error("Error while setting data to"
                         + "database in Profile: " + excMess);
                 message = localeProvider.getMessage("profile.addtobase",
                         null, defaultLocale) + localeProvider.
@@ -183,7 +183,7 @@ public class Profile extends AbstractController {
         if (result == null) {
             result = new ModelAndView("user/profile", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: handleRequestInternal");
+        Logger.getLogger("errorLogger").trace("Exiting from: handleRequestInternal");
         return result;
     }
 }

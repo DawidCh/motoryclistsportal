@@ -51,7 +51,7 @@ public class DetailedUserInformation extends User {
         Double result = this.user.getUserDistance();
         if (result == null) {
             result = 0.0;
-            Logger.getLogger("E").error("Average trip distance");
+            Logger.getLogger("errorLogger").error("Average trip distance");
         }
         return result;
     }

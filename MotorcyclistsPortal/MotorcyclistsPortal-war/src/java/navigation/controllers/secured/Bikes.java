@@ -43,7 +43,7 @@ public class Bikes {
      */
     public final ModelAndView showList(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: showList");
+        Logger.getLogger("errorLogger").trace("Entering to: showList");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -56,7 +56,7 @@ public class Bikes {
         formInfo.put("bikes", bikes);
         formInfo.put("pageTitle", localeProvider.
                 getMessage("bikes.pageTitle", null, defaultLocale));
-        Logger.getLogger("E").trace("Exiting from: showList");
+        Logger.getLogger("errorLogger").trace("Exiting from: showList");
         return new ModelAndView("bikes/list", formInfo);
     }
 
@@ -70,7 +70,7 @@ public class Bikes {
      */
     public final ModelAndView addBike(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: addBike");
+        Logger.getLogger("errorLogger").trace("Entering to: addBike");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -117,13 +117,13 @@ public class Bikes {
                             defaultLocale);
                     formInfo.put("messColor",
                             ApplicationSettings.getFailColour());
-                    Logger.getLogger("E").debug("Error while number parsing");
+                    Logger.getLogger("errorLogger").debug("Error while number parsing");
                 } catch (Exception exception) {
                     message = localeProvider.getMessage(
                             "error.errorWhileAdding",
                             null, defaultLocale);
                     formInfo.put("messColor", ApplicationSettings.getFailColour());
-                    Logger.getLogger("E").
+                    Logger.getLogger("errorLogger").
                             error(
                             "Error while persisting in db at Bikes.add: ");
                     exception.printStackTrace();
@@ -138,7 +138,7 @@ public class Bikes {
         if (result == null) {
             result = new ModelAndView("bikes/add", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: addBike");
+        Logger.getLogger("errorLogger").trace("Exiting from: addBike");
         return new ModelAndView("bikes/add", formInfo);
     }
 
@@ -152,7 +152,7 @@ public class Bikes {
      */
     public final ModelAndView reassignFishier(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: reassignFishier");
+        Logger.getLogger("errorLogger").trace("Entering to: reassignFishier");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -186,7 +186,7 @@ public class Bikes {
             formInfo.put("messColor", ApplicationSettings.getSuccColour());
             formInfo.putAll(this.showList(request, response).getModel());
         } catch (Exception ex) {
-            Logger.getLogger("E").error("Error while reassigning fishier to"
+            Logger.getLogger("errorLogger").error("Error while reassigning fishier to"
                     + "bike in Bikes.reassignFishier");
             message = localeProvider.getMessage("error.otherError",
                     null, defaultLocale);
@@ -194,7 +194,7 @@ public class Bikes {
             formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.putAll(this.showList(request, response).getModel());
         }
-        Logger.getLogger("E").trace("Exiting from: reassignFishier");
+        Logger.getLogger("errorLogger").trace("Exiting from: reassignFishier");
         return new ModelAndView("bikes/details", formInfo);
     }
 
@@ -208,7 +208,7 @@ public class Bikes {
      */
     public final ModelAndView editBike(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: editBike");
+        Logger.getLogger("errorLogger").trace("Entering to: editBike");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -230,7 +230,7 @@ public class Bikes {
             formInfo.put("action", "edit.html");
             formInfo.putAll(this.createHashMapFromBike(bike));
         } catch (Exception exception) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Bike not found at bikes edit: " + bikeId);
             formInfo.clear();
             formInfo.putAll(this.showList(request, response).getModel());
@@ -259,7 +259,7 @@ public class Bikes {
                     formInfo.put("messColor",
                             ApplicationSettings.getFailColour());
                 } catch (Exception exception) {
-                    Logger.getLogger("E").error("Error while persisting bike");
+                    Logger.getLogger("errorLogger").error("Error while persisting bike");
                     message = localeProvider.
                             getMessage("error.errorWhileAdding",
                             null, defaultLocale);
@@ -275,7 +275,7 @@ public class Bikes {
         if (result == null) {
             result = new ModelAndView("bikes/add", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: editBike");
+        Logger.getLogger("errorLogger").trace("Exiting from: editBike");
         return result;
     }
 
@@ -289,7 +289,7 @@ public class Bikes {
      */
     public final ModelAndView deleteBike(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: deleteBike");
+        Logger.getLogger("errorLogger").trace("Entering to: deleteBike");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -301,7 +301,7 @@ public class Bikes {
         ModelAndView result = null;
         Map map = null;
         if (bikeId == null) {
-            Logger.getLogger("E").error("Null bike id at deleteBike");
+            Logger.getLogger("errorLogger").error("Null bike id at deleteBike");
             formInfo.put("errorMessage", localeProvider.
                     getMessage("error.otherError", null, defaultLocale));
             result = new ModelAndView("unsecured/error", formInfo);
@@ -324,7 +324,7 @@ public class Bikes {
                 result = new ModelAndView("/bikes/list", map);
             }
         }
-        Logger.getLogger("E").trace("Exiting from: deleteBike");
+        Logger.getLogger("errorLogger").trace("Exiting from: deleteBike");
         return result;
     }
 
@@ -338,7 +338,7 @@ public class Bikes {
      */
     public final ModelAndView details(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: details");
+        Logger.getLogger("errorLogger").trace("Entering to: details");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -356,7 +356,7 @@ public class Bikes {
             }
             formInfo.put("bike", bike);
         } catch (MPException exception) {
-            Logger.getLogger("E").error("Bike not found");
+            Logger.getLogger("errorLogger").error("Bike not found");
             formInfo.put("messColor", ApplicationSettings.getFailColour());
             formInfo.put("errorMessage", localeProvider.
                     getMessage("bikes.bikeNotFound", null, defaultLocale));
@@ -365,7 +365,7 @@ public class Bikes {
         if (result == null) {
             result = new ModelAndView("bikes/details", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: details");
+        Logger.getLogger("errorLogger").trace("Exiting from: details");
         return result;
     }
 
@@ -380,7 +380,7 @@ public class Bikes {
      */
     public final ModelAndView assignFishier(final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: assignFishier");
+        Logger.getLogger("errorLogger").trace("Entering to: assignFishier");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -399,7 +399,7 @@ public class Bikes {
                 formInfo.put("fishier", fishier);
                 if (bike == null || bike.isEmpty()
                         || fishier == null || fishier.isEmpty()) {
-                    Logger.getLogger("E").
+                    Logger.getLogger("errorLogger").
                             debug("Bike not found at Bikes.assignFishier");
                     throw new Exception();
                 }
@@ -427,7 +427,7 @@ public class Bikes {
                 formInfo.put("messColor", ApplicationSettings.getSuccColour());
                 formInfo.putAll(this.showList(request, response).getModel());
             } catch (Exception exception) {
-                Logger.getLogger("E").
+                Logger.getLogger("errorLogger").
                         error("Error while assigning fishier to bike"
                         + "in Bikes.assignFishier");
                 message = localeProvider.getMessage("error.otherError",
@@ -445,7 +445,7 @@ public class Bikes {
         if (result == null) {
             result = new ModelAndView("bikes/selectFishier", formInfo);
         }
-        Logger.getLogger("E").trace("Exiting from: assignFishier");
+        Logger.getLogger("errorLogger").trace("Exiting from: assignFishier");
         return result;
     }
 
@@ -455,7 +455,7 @@ public class Bikes {
      * @param bike bike existing in the db
      */
     private void prepareBike(Motorcycle fromRequest, Motorcycle bike) {
-        Logger.getLogger("E").trace("Entering to: prepareBike");
+        Logger.getLogger("errorLogger").trace("Entering to: prepareBike");
         if (!fromRequest.getNickname().equals(bike.getNickname())) {
             bike.setNickname(fromRequest.getNickname());
         }
@@ -483,7 +483,7 @@ public class Bikes {
         if (fromRequest.getMileage() != bike.getMileage()) {
             bike.setMileage(fromRequest.getMileage());
         }
-        Logger.getLogger("E").trace("Exiting from: prepareBike");
+        Logger.getLogger("errorLogger").trace("Exiting from: prepareBike");
     }
 
     /**
@@ -494,7 +494,7 @@ public class Bikes {
      */
     private boolean validateInputForm(
             HttpServletRequest request, HashMap < String, Object > formInfo) {
-        Logger.getLogger("E").trace("Entering to: validateInputForm");
+        Logger.getLogger("errorLogger").trace("Entering to: validateInputForm");
         String message = null;
         boolean result = true;
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -544,10 +544,10 @@ public class Bikes {
             formData.put("message", message);
             formData.put("messColor", ApplicationSettings.getFailColour());
             result = false;
-            Logger.getLogger("E").debug(mpException.getMessage());
+            Logger.getLogger("errorLogger").debug(mpException.getMessage());
         }
         formInfo.putAll(formData);
-        Logger.getLogger("E").trace("Exiting from: validateInputForm");
+        Logger.getLogger("errorLogger").trace("Exiting from: validateInputForm");
         return result;
     }
 
@@ -557,7 +557,7 @@ public class Bikes {
      * @return HashMap with bike fields
      */
     private HashMap < String, Object > createHashMapFromBike(Motorcycle bike) {
-        Logger.getLogger("E").trace("Entering to: createHashMapFromBike");
+        Logger.getLogger("errorLogger").trace("Entering to: createHashMapFromBike");
         HashMap < String, Object > result = new HashMap < String, Object >();
         result.put("nickname", bike.getNickname());
         result.put("manufacturer", bike.getManufacturer());
@@ -567,7 +567,7 @@ public class Bikes {
         result.put("power", bike.getPower());
         result.put("mileage", bike.getMileage());
         result.put("displacement", bike.getEnginecapacity());
-        Logger.getLogger("E").trace("Exiting from: createHashMapFromBike");
+        Logger.getLogger("errorLogger").trace("Exiting from: createHashMapFromBike");
         return result;
     }
 
@@ -578,7 +578,7 @@ public class Bikes {
      */
     private Motorcycle createMotorcycleFromValidatedRequets(HttpServletRequest
             request) throws NumberFormatException {
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Entering to: createMotorcycleFromValidatedRequets");
         Motorcycle result = new Motorcycle();
         result.setNickname(request.getParameter("nickname"));
@@ -590,7 +590,7 @@ public class Bikes {
         result.setMileage(Double.parseDouble(request.getParameter("mileage")));
         result.setEnginecapacity(Integer.parseInt(
                 request.getParameter("displacement")));
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Exiting from: createMotorcycleFromValidatedRequets");
         return result;
     }
@@ -604,7 +604,7 @@ public class Bikes {
      */
     private void assignFishierElementBridgesToFishier(Fishier newFishier,
             Motorcycle bike,  Fishier oldFishier) {
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Entering to: assignFishierElementBridgesToFishier");
         List < FishierElementBridge > fishElBridgeColl =
                 new ArrayList < FishierElementBridge >();
@@ -621,7 +621,7 @@ public class Bikes {
             fishElBridgeColl.add(element);
         }
         newFishier.setFishierElementBridgeCollection(fishElBridgeColl);
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Exiting from: assignFishierElementBridgesToFishier");
     }
 }

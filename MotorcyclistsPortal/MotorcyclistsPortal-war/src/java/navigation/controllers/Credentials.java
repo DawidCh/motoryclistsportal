@@ -34,7 +34,7 @@ public class Credentials implements Controller {
      */
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: handleRequest");
+        Logger.getLogger("errorLogger").trace("Entering to: handleRequest");
         ModelAndView result = null;
         if (null == request.getUserPrincipal()) {
             Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -52,13 +52,13 @@ public class Credentials implements Controller {
                 AuthenticationException aex = (AuthenticationException) request.
                         getSession(false).getAttribute(AbstractProcessingFilter.
                         SPRING_SECURITY_LAST_EXCEPTION_KEY);
-                Logger.getLogger("E").error(aex.getMessage());
+                Logger.getLogger("errorLogger").error(aex.getMessage());
             }
             result = new ModelAndView("login", formInfo);
         } else {
             result = new ModelAndView("redirect:/secured/main.html");
         }
-        Logger.getLogger("E").trace("Exiting from: handleRequest");
+        Logger.getLogger("errorLogger").trace("Exiting from: handleRequest");
         return result;
     }
 }

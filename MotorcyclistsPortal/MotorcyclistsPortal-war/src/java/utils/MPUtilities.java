@@ -32,7 +32,7 @@ public class MPUtilities {
      * @throws utils.MPException
      */
     public static Motorcycle findBike(String bikeId) throws MPException {
-        Logger.getLogger("E").trace("Entering to: findBike");
+        Logger.getLogger("errorLogger").trace("Entering to: findBike");
         Motorcycle result = null;
         for (Motorcycle bike : BeanGetter.getUserInfo().
                 getMotorcycleCollection()) {
@@ -45,7 +45,7 @@ public class MPUtilities {
             throw new MPException("Bike not found at Utilities.findBike: "
                     + bikeId);
         }
-        Logger.getLogger("E").trace("Exiting from: findBike");
+        Logger.getLogger("errorLogger").trace("Exiting from: findBike");
         return result;
     }
 
@@ -54,19 +54,19 @@ public class MPUtilities {
      * @return List of Trip objects or null
      */
     public static List<Trip> findTrips() {
-        Logger.getLogger("E").trace("Entering to: findTrips");
+        Logger.getLogger("errorLogger").trace("Entering to: findTrips");
         List<Trip> trips = null;
         try {
             trips = BeanGetter.getUserInfo().getTripCollection();
             if (trips == null || trips.size() == 0) {
-                Logger.getLogger("E").warn("No trips found");
+                Logger.getLogger("errorLogger").warn("No trips found");
             }
         } catch (MPException mpException) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Exception caught in MPUtilities.findTrips: "
                     + mpException.getMessage());
         }
-        Logger.getLogger("E").trace("Exiting from: findTrips");
+        Logger.getLogger("errorLogger").trace("Exiting from: findTrips");
         return trips;
     }
 
@@ -77,7 +77,7 @@ public class MPUtilities {
      * @throws utils.MPException
      */
     public static Trip findTrip(String tripId) throws MPException {
-        Logger.getLogger("E").trace("Entering to: findTrip");
+        Logger.getLogger("errorLogger").trace("Entering to: findTrip");
         Trip result = null;
         for (Trip trip : BeanGetter.getUserInfo().getTripCollection()) {
             if (trip.getId().toString().equals(tripId)) {
@@ -87,7 +87,7 @@ public class MPUtilities {
         if (result == null) {
             throw new MPException("Trip not found at MPUtilities.findTrip");
         }
-        Logger.getLogger("E").trace("Exiting from: findTrip");
+        Logger.getLogger("errorLogger").trace("Exiting from: findTrip");
         return result;
     }
 
@@ -96,16 +96,16 @@ public class MPUtilities {
      * @return Fishier if found
      */
     public static List<Fishier> findFishiers() {
-        Logger.getLogger("E").trace("Entering to: findFishiers");
+        Logger.getLogger("errorLogger").trace("Entering to: findFishiers");
         List<Fishier> fishiers = null;
         try {
             fishiers = BeanGetter.getUserInfo().getFishiers();
         } catch (MPException mpException) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Exception caught in MPUtilities.findFishiers: "
                     + mpException.getMessage());
         }
-        Logger.getLogger("E").trace("Exiting from: findFishiers");
+        Logger.getLogger("errorLogger").trace("Exiting from: findFishiers");
         return fishiers;
     }
 
@@ -116,7 +116,7 @@ public class MPUtilities {
      * @throws utils.MPException
      */
     public static Fishier findFishier(String fishierId) throws MPException {
-        Logger.getLogger("E").trace("Entering to: findFishier");
+        Logger.getLogger("errorLogger").trace("Entering to: findFishier");
         Fishier result = null;
         for (Fishier fishier : BeanGetter.getUserInfo().getFishiers()) {
             if (fishier.getId().toString().equals(fishierId)) {
@@ -127,7 +127,7 @@ public class MPUtilities {
             throw new MPException(
                     "Fishier not found at MPUtilities.findFishier");
         }
-        Logger.getLogger("E").trace("Exiting from: findFishier");
+        Logger.getLogger("errorLogger").trace("Exiting from: findFishier");
         return result;
     }
 
@@ -137,20 +137,20 @@ public class MPUtilities {
      * @return List of Motorcycle objects or null if user is not logged in
      */
     public static List < Motorcycle > findBikesWithFishiers() {
-        Logger.getLogger("E").trace("Entering to: findBikesWithFishiers");
+        Logger.getLogger("errorLogger").trace("Entering to: findBikesWithFishiers");
         List < Motorcycle > bikes = null;
         try {
             bikes = BeanGetter.lookupMotorcycleFacade().
                     findWithFishier(BeanGetter.getUserInfo().getUsername());
             if (bikes == null || bikes.size() == 0) {
-                Logger.getLogger("E").warn("No bikes found");
+                Logger.getLogger("errorLogger").warn("No bikes found");
             }
         } catch (MPException mpException) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Exception cautght in Report.findBikesWithFishiers: "
                     + mpException.getMessage());
         }
-        Logger.getLogger("E").trace("Exiting from: findBikesWithFishiers");
+        Logger.getLogger("errorLogger").trace("Exiting from: findBikesWithFishiers");
         return bikes;
     }
 
@@ -161,15 +161,15 @@ public class MPUtilities {
      */
     public static List < FishierElementBridge >
             findFishierElementBridgeByFishier(final String fishierId) {
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Entering to: findFishierElementBridgeByFishier");
         List < FishierElementBridge > result =
                 BeanGetter.lookupFishierElementBridgeFacade().
                 findAllByFishier(fishierId);
         if (result == null || result.size() == 0) {
-            Logger.getLogger("E").warn("No elements found");
+            Logger.getLogger("errorLogger").warn("No elements found");
         }
-        Logger.getLogger("E").
+        Logger.getLogger("errorLogger").
                 trace("Exiting from: findFishierElementBridgeByFishier");
         return result;
     }
@@ -181,7 +181,7 @@ public class MPUtilities {
      * @throws java.lang.Exception
      */
     public static String computeSha(String messageToDigest) throws Exception {
-        Logger.getLogger("E").trace("Entering to: computeSha");
+        Logger.getLogger("errorLogger").trace("Entering to: computeSha");
         String result = new String();
         MessageDigest md = MessageDigest.getInstance("sha");
         md.reset();
@@ -189,7 +189,7 @@ public class MPUtilities {
         for (byte b : md.digest()) {
             result += Integer.toHexString(b & 0xff);
         }
-        Logger.getLogger("E").trace("Exiting from: computeSha");
+        Logger.getLogger("errorLogger").trace("Exiting from: computeSha");
         return result;
     }
 
@@ -201,7 +201,7 @@ public class MPUtilities {
      * incorrect, 0 if passwords are given properly
      */
     public static int checkPassword(final String pass, final String secPass) {
-        Logger.getLogger("E").trace("Entering to: checkPassword");
+        Logger.getLogger("errorLogger").trace("Entering to: checkPassword");
         int result = 0;
         if (!pass.equals(secPass)) {
             result = 1;
@@ -209,7 +209,7 @@ public class MPUtilities {
                 || pass.length() < ApplicationSettings.getPassLength()[0]) {
             result = 2;
         }
-        Logger.getLogger("E").trace("Exiting from: checkPassword");
+        Logger.getLogger("errorLogger").trace("Exiting from: checkPassword");
         return result;
     }
 
@@ -223,7 +223,7 @@ public class MPUtilities {
             bikes = BeanGetter.lookupMotorcycleFacade().
                     findWithoutFishier(BeanGetter.getUserInfo().getUsername());
         } catch (MPException mpException) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Exception caught in"
                     + " MPUtilities.findBikesWithoutFishier: "
                     + mpException.getMessage());

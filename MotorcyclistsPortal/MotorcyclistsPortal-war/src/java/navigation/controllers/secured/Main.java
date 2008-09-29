@@ -32,14 +32,14 @@ public class Main extends AbstractController {
     protected final ModelAndView handleRequestInternal(
             final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: handleRequestInternal");
+        Logger.getLogger("errorLogger").trace("Entering to: handleRequestInternal");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         HashMap < String, Object > info = new HashMap < String, Object >();
         info.put("pageTitle", localeProvider.getMessage("main.pageTitle", null,
                 RequestContextUtils.getLocale(request)));
         // </editor-fold>
-        Logger.getLogger("E").trace("Exiting from: handleRequestInternal");
+        Logger.getLogger("errorLogger").trace("Exiting from: handleRequestInternal");
         return new ModelAndView("secured/main", info);
     }
 }

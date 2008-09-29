@@ -38,7 +38,7 @@ public class VarLoader extends HandlerInterceptorAdapter {
     public boolean preHandle(final HttpServletRequest request,
             final HttpServletResponse response, final Object object)
             throws Exception {
-        Logger.getLogger("E").trace("Entering to: preHandle");
+        Logger.getLogger("errorLogger").trace("Entering to: preHandle");
         boolean result = true;
         if (null != request.getParameter("saveLocale")
                 && SecurityContextHolder.getContext().getAuthentication().
@@ -52,7 +52,7 @@ public class VarLoader extends HandlerInterceptorAdapter {
                 result = false;
             }
         }
-        Logger.getLogger("E").trace("Exiting from: preHandle");
+        Logger.getLogger("errorLogger").trace("Exiting from: preHandle");
         return result;
     }
 
@@ -69,7 +69,7 @@ public class VarLoader extends HandlerInterceptorAdapter {
     public void postHandle(final HttpServletRequest request,
             final HttpServletResponse response, final Object object,
             final ModelAndView map) throws Exception {
-        Logger.getLogger("E").trace("Entering to: postHandle");
+        Logger.getLogger("errorLogger").trace("Entering to: postHandle");
         try {
             map.addObject("languages", BeanGetter.
                     getApplicationSettings(request).getAvailableLanguages());
@@ -83,7 +83,7 @@ public class VarLoader extends HandlerInterceptorAdapter {
             map.addObject("failColor", ApplicationSettings.getFailColour());
             map.addObject("succColor", ApplicationSettings.getSuccColour());
         } catch (Exception ex) {
-            Logger.getLogger("E").info("User is not in the session "
+            Logger.getLogger("errorLogger").info("User is not in the session "
                     + "in " + this.getClass().getCanonicalName()
                     + " postHandle");
         }
@@ -91,7 +91,7 @@ public class VarLoader extends HandlerInterceptorAdapter {
             SecurityContextHolder.setContext(new SecurityContextImpl());
             request.getSession(false).invalidate();
         }
-        Logger.getLogger("E").trace("Exiting from: postHandle");
+        Logger.getLogger("errorLogger").trace("Exiting from: postHandle");
     }
 
     /**
@@ -101,20 +101,20 @@ public class VarLoader extends HandlerInterceptorAdapter {
      */
     public void persistDLocales(final HttpServletRequest request)
             throws MPException {
-        Logger.getLogger("E").trace("Entering to: persistDLocales");
+        Logger.getLogger("errorLogger").trace("Entering to: persistDLocales");
         Locale localeToSet = RequestContextUtils.getLocale(request);
         try {
             DetailedUserInformation userInfo = BeanGetter.getUserInfo();
             userInfo.setLocale(localeToSet);
             BeanGetter.lookupUserFacade().edit(userInfo.getUser());
         } catch (Exception ex) {
-            Logger.getLogger("E").
+            Logger.getLogger("errorLogger").
                     error("Error while persisting language at UserSession");
             LocaleProvider loc = BeanGetter.getLocaleProvider(request);
             throw new MPException(
                     loc.getMessage("session.errorWhilePersist",
                     null, localeToSet));
         }
-        Logger.getLogger("E").trace("Exiting from: persistDLocales");
+        Logger.getLogger("errorLogger").trace("Exiting from: persistDLocales");
     }
 }

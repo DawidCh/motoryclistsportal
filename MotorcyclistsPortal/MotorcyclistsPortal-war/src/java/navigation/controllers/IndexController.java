@@ -31,7 +31,7 @@ public class IndexController implements Controller {
      * @throws java.lang.Exception
      */
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Logger.getLogger("E").trace("Entering to: handleRequest");
+        Logger.getLogger("errorLogger").trace("Entering to: handleRequest");
         // <editor-fold defaultstate="collapsed" desc="Generated vars: localeProvider, defaultLocale,formInfo and put vars into">
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale currentLocale = RequestContextUtils.getLocale(request);
@@ -39,7 +39,7 @@ public class IndexController implements Controller {
         formInfo.put("pageTitle", localeProvider.getMessage("index.pageTitle",
                 null, currentLocale));
         // </editor-fold>
-        Logger.getLogger("E").trace("Exiting from: handleRequest");
+        Logger.getLogger("errorLogger").trace("Exiting from: handleRequest");
         return new ModelAndView("index", formInfo);
     }
 
