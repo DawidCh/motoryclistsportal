@@ -124,6 +124,7 @@ public class FuzzyDriver {
                         adviceResult = fuzzyDecision.getAdvise();
                         Logger.getLogger("fuzzyLogger").debug("Fits perfectly: "
                                 + adviceResult.getDescription());
+                        break;
                     }
                 }
             }
