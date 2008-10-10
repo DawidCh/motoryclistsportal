@@ -54,7 +54,7 @@ public class User implements Serializable {
     private LoginData loginData;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Trip> tripCollection;
-    @Column(name = "userdistance", nullable = false)
+    @Column(name = "averagedistance", nullable = false)
     private Double userDistance;
 
     public User() {
