@@ -4,7 +4,6 @@
  */
 package navigation.controllers.secured;
 
-import com.sun.tools.xjc.generator.bean.BeanGenerator;
 import entities.Fishier;
 import entities.FishierElementBridge;
 import security.DetailedUserInformation;
