@@ -63,9 +63,9 @@ public class FishierElementBridgeFuzzyficator extends AbstractFuzzyficator {
         Double doubleUsage = 0.0;
         if (activityPeriod.equals("distance")) {
             Integer changeDistance = fishierElBr.getChangemileage();
-            Integer bikeMileage = new Integer(fishierElBr.getFishier().
+            Double bikeMileage = new Double(fishierElBr.getFishier().
                     getMotorcycle().getMileage().toString());
-            Integer partMileage = bikeMileage - changeDistance;
+            Integer partMileage = bikeMileage.intValue() - changeDistance;
             Integer partAvailabilityMileage = fishierElBr.getPeriodlength();
             if (partMileage > partAvailabilityMileage) {
                 fuzzyUsageResult = BeanGetter.lookupUsageFacade().findHardest();

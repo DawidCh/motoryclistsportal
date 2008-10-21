@@ -64,7 +64,8 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public User(String login, String name, String surname, String city, boolean gender, Date birthdate, String locale, String mileagetype) {
+    public User(String login, String name, String surname, String city,
+            boolean gender, Date birthdate, String locale, String mileagetype) {
         this.login = login;
         this.name = name;
         this.surname = surname;
@@ -75,7 +76,8 @@ public class User implements Serializable {
         this.mileagetype = mileagetype;
     }
 
-    public User(String login, String name, String surname, String city, String gender, Date birthdate, Locale locale, String mileageType){
+    public User(String login, String name, String surname, String city,
+            String gender, Date birthdate, Locale locale, String mileageType){
         this.login = login;
         this.name = name;
         this.surname = surname;
@@ -84,14 +86,6 @@ public class User implements Serializable {
         this.birthdate = birthdate;
         this.setLocale(locale);
         this.mileagetype = mileageType;
-    }
-
-    public void setUserDistance(Double userDistance) {
-        this.userDistance = userDistance;
-    }
-
-    public Double getUserDistance() {
-        return userDistance;
     }
 
     public String getName() {
@@ -217,12 +211,11 @@ public class User implements Serializable {
         return "entities.User[login=" + login + "]";
     }
 
-    public String getMileagetype() {
-        return mileagetype;
+    public Double getUserDistance() {
+        return userDistance;
     }
 
-    public void setMileagetype(String mileagetype) {
-        this.mileagetype = mileagetype;
+    public void setUserDistance(Double userDistance) {
+        this.userDistance = userDistance;
     }
-
 }

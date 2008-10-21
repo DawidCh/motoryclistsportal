@@ -37,7 +37,7 @@ public class TripFacade implements TripFacadeLocal {
     }
     
     public List<Trip> findByLogin(String login){
-        return em.createQuery("select object(o) from Trip as o where o.user.login='"+login+"'").getResultList();
+        return em.createQuery("select object(o) from Trip as o where o.user.login='"+login+"' order by o.date").getResultList();
     }
 
     public List<Trip> findAll() {

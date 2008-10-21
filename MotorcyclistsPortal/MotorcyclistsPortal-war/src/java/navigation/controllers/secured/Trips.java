@@ -111,7 +111,8 @@ public class Trips {
                             + (String) formInfo.get("bike"));
                     message = localeProvider.getMessage("trips.bikeNotFound",
                             null, defaultLocale);
-                    formInfo.put("messColor", ApplicationSettings.getFailColour());
+                    formInfo.put("messColor",
+                            ApplicationSettings.getFailColour());
                 } else {
                     try {
                         this.createTrip(formInfo, request, bike);
@@ -202,7 +203,7 @@ public class Trips {
             boolean wellValidated = this.validateForm(formInfo, request);
             if (wellValidated) {
                 try {
-                    this.editTrip(trip, formInfo, request);
+                    this.persistTrip(trip, formInfo, request);
                     BeanGetter.lookupTripFacade().edit(trip);
                     formInfo.put("messColor", ApplicationSettings.getSuccColour());
                     message = localeProvider.getMessage("success",
@@ -220,11 +221,11 @@ public class Trips {
                     formInfo.put("messColor", ApplicationSettings.getFailColour());
                 } catch (Exception exception) {
                     message = localeProvider.
-                            getMessage("error.errorWhileAdding",
+                            getMessage("error.errorWhileEditing",
                             null, defaultLocale);
                     formInfo.put("messColor", ApplicationSettings.getFailColour());
                     Logger.getLogger("errorLogger").
-                            error("Error wihle persisting in db at Trip.add: "
+                            error("Error wihle persisting in db at Trip.edit: "
                             + exception.getMessage());
                 }
                 formInfo.put("message", message);
@@ -274,11 +275,17 @@ public class Trips {
             result = new ModelAndView("unsecured/error", formInfo);
         }
         Map map = null;
+        Motorcycle bike = null;
         Trip tripToDel = null;
+        Double tripDist;
         try {
             tripToDel = MPUtilities.findTrip(tripId);
+            bike = tripToDel.getBike();
+            tripDist = tripToDel.getDistance();
             BeanGetter.lookupTripFacade().remove(tripToDel);
             FuzzyDriver.recalculateUserDistance();
+            bike.setMileage(bike.getMileage() - tripDist);
+            BeanGetter.lookupMotorcycleFacade().edit(bike);
             map = this.showList(request, response).getModel();
             map.put("message", localeProvider.
                 getMessage("success", null, defaultLocale));
@@ -348,7 +355,7 @@ public class Trips {
      * @throws java.text.ParseException
      * @throws utils.MPException
      */
-    private void editTrip(Trip trip, HashMap < String, Object > formInfo,
+    private void persistTrip(Trip trip, HashMap < String, Object > formInfo,
             HttpServletRequest request) throws ParseException, MPException {
         Logger.getLogger("errorLogger").trace("Entering to: editTrip");
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
@@ -358,17 +365,17 @@ public class Trips {
                 formInfo.get("distance"));
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date newDate = sdf.parse((String) formInfo.get("date"));
-        Motorcycle bike = MPUtilities.findBike((String) formInfo.get("bikeId"));
+        Motorcycle bike = MPUtilities.findBike((String) formInfo.get("bike"));
         if (bike == null) {
             Logger.getLogger("errorLogger").
-                    error("Bike not found at Trips add: "
-                    + (String) formInfo.get("bikeId"));
+                    error("Bike not found at Trips.edit: "
+                    + (String) formInfo.get("bike"));
             message = localeProvider.getMessage("trips.bikeNotFound",
                     null, defaultLocale);
             formInfo.put("message", message);
             formInfo.put("messColor", ApplicationSettings.getFailColour());
         }
-        if (!trip.getBike().getId().equals((String) formInfo.get("bikeId"))) {
+        if (!trip.getBike().getId().equals((String) formInfo.get("bike"))) {
             trip.setBike(bike);
         }
         if (!trip.getDate().equals(newDate)) {
@@ -457,7 +464,6 @@ public class Trips {
             HttpServletRequest request, Motorcycle bike) throws ParseException,
             MPException {
         Logger.getLogger("errorLogger").trace("Entering to: createTrip");
-        String message;
         Trip newTrip;
         LocaleProvider localeProvider = BeanGetter.getLocaleProvider(request);
         Locale defaultLocale = RequestContextUtils.getLocale(request);
@@ -473,6 +479,8 @@ public class Trips {
                 (String) formInfo.get("type"), bike,
                 BeanGetter.getUserInfo().getUser());
         BeanGetter.lookupTripFacade().create(newTrip);
+        bike.setMileage(bike.getMileage() + doubleDistance);
+        BeanGetter.lookupMotorcycleFacade().edit(bike);
         FuzzyDriver.recalculateUserDistance();
         formInfo = new HashMap < String, Object >();
         formInfo.put("title", newTrip.getTitle());
