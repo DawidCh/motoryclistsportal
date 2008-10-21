@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Dawid Chojnacki
+ * @author kalosh
  */
 @Stateless
 public class UserFacade implements UserFacadeLocal {
@@ -33,12 +33,12 @@ public class UserFacade implements UserFacadeLocal {
     }
 
     public User find(Object id) {
-        return em.find(User.class, id);
+        return em.find(entities.User.class, id);
     }
 
     public List<User> findAll() {
-        return em.createQuery
-                ("select object(o) from User as o").getResultList();
+        return em.
+                createQuery("select object(o) from User as o").getResultList();
     }
 
 }
