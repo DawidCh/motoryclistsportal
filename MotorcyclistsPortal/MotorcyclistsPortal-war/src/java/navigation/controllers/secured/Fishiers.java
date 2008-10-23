@@ -396,7 +396,8 @@ public class Fishiers {
             formInfo.put("messColor",
                     ApplicationSettings.getSuccColour());
             formInfo.put("fishierElementBridges",
-                    MPUtilities.findFishierElementBridges());
+                    MPUtilities.findFishierElementBridgeByFishier(
+                    fishier.getId().toString()));
         } catch (NumberFormatException nfe) {
             formInfo.put("periodLength", null);
             formInfo.put("changeMileage", null);
