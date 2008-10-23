@@ -44,8 +44,12 @@ public class BeanGetter {
      * @throws utils.MPException when user is not logged in
      */
     public static DetailedUserInformation getUserInfo() throws MPException {
-        if(!SecurityContextHolder.getContext().
-                getAuthentication().isAuthenticated()){
+        try {
+            if (!SecurityContextHolder.getContext().
+                    getAuthentication().isAuthenticated()) {
+                throw new MPException("User not logged in");
+            }
+        } catch (NullPointerException mPException) {
             throw new MPException("User not logged in");
         }
         return (DetailedUserInformation)
