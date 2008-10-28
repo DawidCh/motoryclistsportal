@@ -216,7 +216,8 @@ public class FuzzyDriver {
     }
 
     /**
-     * Method used for prividing fuzzy average distance value for current user.
+     * Method used for computing fuzzy value for given value and set of fuzzy
+     * values.
      * @param fuzzySets sets of object which represents all fuzzy sets in
      * applicaiton
      * @param value value for fuzzyfication
