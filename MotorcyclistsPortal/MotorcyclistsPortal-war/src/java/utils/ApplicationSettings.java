@@ -22,9 +22,17 @@ public class ApplicationSettings {
      */
     private static Locale locale = new Locale("pl_PL");
     /**
+     * Minimum password length.
+     */
+    private static final int MIN_PASS_LENGTH = 5;
+    /**
+     * Maximum password length.
+     */
+    private static final int MAX_PASS_LENGTH = 5;
+    /**
      * Password length (min, max).
      */
-    private static int[] passLength = {5, 10};
+    private static int[] passLength = {MIN_PASS_LENGTH, MAX_PASS_LENGTH};
     /**
      * Colour of successed message.
      */
