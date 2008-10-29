@@ -29,7 +29,7 @@ public class MPUtilities {
      * Method used for finding bike by given id.
      * @param bikeId number id of bike to find
      * @return Motorcycle object if found, null otherwise
-     * @throws utils.MPException
+     * @throws MPException
      */
     public static Motorcycle findBike(String bikeId) throws MPException {
         Logger.getLogger("errorLogger").trace("Entering to: findBike");
@@ -137,7 +137,8 @@ public class MPUtilities {
      * @return List of Motorcycle objects or null if user is not logged in
      */
     public static List < Motorcycle > findBikesWithFishiers() {
-        Logger.getLogger("errorLogger").trace("Entering to: findBikesWithFishiers");
+        Logger.getLogger("errorLogger").
+                trace("Entering to: findBikesWithFishiers");
         List < Motorcycle > bikes = null;
         try {
             bikes = BeanGetter.lookupMotorcycleFacade().
@@ -150,7 +151,8 @@ public class MPUtilities {
                     error("Exception cautght in Report.findBikesWithFishiers: "
                     + mpException.getMessage());
         }
-        Logger.getLogger("errorLogger").trace("Exiting from: findBikesWithFishiers");
+        Logger.getLogger("errorLogger").
+                trace("Exiting from: findBikesWithFishiers");
         return bikes;
     }
 

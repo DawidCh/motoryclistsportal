@@ -26,6 +26,10 @@ public class LocaleProvider {
 
     }
 
+    /**
+     * Get locales for current user.
+     * @return locales for user
+     */
     public MessageSource getMessages() {
         return messages;
     }
